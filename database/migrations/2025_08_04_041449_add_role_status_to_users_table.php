@@ -9,15 +9,11 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-  public function up()
+    public function up()
 {
-    Schema::create('services', function (Blueprint $table) {
-        $table->id();
-        $table->string('nama');
-        $table->string('paket');
-        $table->text('deskripsi')->nullable();
-        $table->integer('harga');
-        $table->timestamps();
+    Schema::table('users', function (Blueprint $table) {
+        $table->string('role')->default('kasir');
+        $table->string('status')->default('aktif');
     });
 }
 
@@ -27,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };
