@@ -6,6 +6,7 @@ use App\Http\Controllers\ServiceController;
 
 // Halaman utama (landing page)
 Route::get('/', function () {
+
     return view('welcome');
 })->name('home');
 
@@ -37,3 +38,6 @@ Route::post('/logout', function () {
 // Produk / Layanan: CRUD (pakai Controller)
 Route::get('/produk', [ServiceController::class, 'index'])->name('produk');
 Route::resource('/layanan', ServiceController::class)->except(['index']);
+    return view('kasir/home');
+});
+
