@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <title>Dashboard</title>
     <script src="https://kit.fontawesome.com/0948e65078.js" crossorigin="anonymous"></script>
 </head>
+
 <body class="bg-gray-50">
 <!-- Sidebar Start -->
 @include('components.sidebar_kasir')
@@ -144,5 +146,21 @@
 </div>
 <!-- Main Content End -->
 
+
+<body>
+    <a href="">login admin </a>
+    <a href="">login kasir </a>
+    <a href="">login driver </a>
+
+    <!-- Hero Section Start-->
+    <div class="container">
+        <div class="flex flex-wrap">
+
+        </div>
+    </div>
+    <!-- Hero Section End -->
+
+
 </body>
+
 </html>
