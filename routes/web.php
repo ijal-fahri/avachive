@@ -7,7 +7,6 @@ use App\Http\Controllers\ServiceController;
 
 // Halaman utama (landing page)
 Route::get('/', function () {
-
     return view('welcome');
 });
 
@@ -23,7 +22,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
+Route::get('/home', function () {
     return view('welcome');
 })->name('home');
 
@@ -47,15 +46,21 @@ Route::get('/pengaturan', function () {
     return view('pengaturan');
 })->name('pengaturan');
 
-// Logout (dummy)
+// Logout (sebaiknya gunakan yang dari auth.php)
 Route::post('/logout', function () {
+    Auth::logout();
     return redirect('/')->with('status', 'Berhasil logout');
 })->name('logout');
 
 // Produk / Layanan: CRUD (pakai Controller)
 Route::get('/produk', [ServiceController::class, 'index'])->name('produk');
-Route::resource('/layanan', ServiceController::class)->except(['index']);
+Route::resource('layanan', ServiceController::class)->except(['index']);
+
+// Route untuk kasir (saya lihat ada potongan kode yang tidak lengkap)
+Route::get('/kasir/home', function () {
     return view('kasir/home');
-});
+})->name('kasir.home');
 
-
+Route::get('/kasir/pelanggan', function () {
+    return view('kasir/pelanggan');
+})->name('kasir.pelanggan');
