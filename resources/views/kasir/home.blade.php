@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Document</title>
 </head>
-<body>
-  <h1>fadlan</h1>
-    
-<!-- Hero Section Start-->
-<div class="container">
-  <div class="flex flex-wrap">
 
-  </div>
-</div>
-<!-- Hero Section End -->
+<body>
+    <a href="">login admin </a>
+    <a href="">login kasir </a>
+    <a href="">login driver </a>
+
+    <!-- Hero Section Start-->
+    <div class="container">
+        <div class="flex flex-wrap">
+
+        </div>
+    </div>
+    <!-- Hero Section End -->
 
 </body>
+
 </html>
