@@ -3,8 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ServiceController;
-
+use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\LayananController;
 // Halaman utama (landing page)
 Route::get('/', function () {
     return view('welcome');
@@ -37,9 +37,10 @@ Route::get('/order', function () {
 })->name('dataorder');
 
 // Pengguna
-Route::get('/pengguna', function () {
-    return view('pengguna');
-})->name('datauser');
+Route::get('/pengguna', [PenggunaController::class, 'index'])->name('datauser');
+Route::post('/pengguna', [PenggunaController::class, 'store'])->name('pengguna.store');
+Route::put('/pengguna/{id}', [PenggunaController::class, 'update'])->name('pengguna.update');
+Route::delete('/pengguna/{id}', [PenggunaController::class, 'destroy'])->name('pengguna.destroy');
 
 // Pengaturan
 Route::get('/pengaturan', function () {
@@ -53,6 +54,13 @@ Route::post('/logout', function () {
 })->name('logout');
 
 // Produk / Layanan: CRUD (pakai Controller)
+Route::get('/produk', [LayananController::class, 'index'])->name('produk');
+Route::post('/produk', [LayananController::class, 'store'])->name('produk.store');
+Route::put('/produk/{id}', [LayananController::class, 'update'])->name('produk.update');
+Route::delete('/produk/{id}', [LayananController::class, 'destroy'])->name('produk.destroy');
+    return view('kasir/home');
+
+
 Route::get('/produk', [ServiceController::class, 'index'])->name('produk');
 Route::resource('layanan', ServiceController::class)->except(['index']);
 

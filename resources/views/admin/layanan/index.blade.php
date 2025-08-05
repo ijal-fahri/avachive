@@ -114,15 +114,16 @@
     tr:hover {
       background-color: #f9fbff;
     }
-    .aksi-buttons a, .aksi-buttons button {
-      margin-right: 5px;
+    .aksi-buttons {
+        display: flex;
+        gap: 5px;
+    }
+    .aksi-buttons button {
       padding: 0.4rem 0.8rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.85rem;
-      text-decoration: none;
-      display: inline-block;
     }
     .btn-edit { background: #00a8ff; color: white; }
     .btn-delete { background: #e84118; color: white; }
@@ -136,10 +137,11 @@
       height: 100%;
       overflow: auto;
       background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
     }
     .modal-content {
       background: #fff;
-      margin: 10% auto;
       padding: 2rem;
       border-radius: 12px;
       width: 90%;
@@ -153,6 +155,7 @@
       top: 1rem;
       font-size: 1.5rem;
       cursor: pointer;
+      line-height: 1;
     }
     .modal-content h4 {
       margin-top: 0;
@@ -160,7 +163,8 @@
     .modal-content input, .modal-content select {
       width: 100%;
       padding: 0.6rem;
-      margin: 0.5rem 0;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
       border-radius: 6px;
       border: 1px solid #ccc;
       font-family: 'Poppins', sans-serif;
@@ -174,87 +178,97 @@
       cursor: pointer;
       margin-top: 1rem;
     }
+    @media (max-width: 768px) {
+      .admin-wrapper { flex-direction: column; }
+      .sidebar { flex-direction: row; overflow-x: auto; width: 100%; padding: 0.5rem; }
+      .sidebar a { flex: 1; justify-content: center; font-size: 0.9rem; }
+    }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body>
-  <div class="main-content">
-    <div class="topbar">
-      <div>Data Layanan Laundry</div>
-      <div class="user-info">
-        <i class="bi bi-person-circle fs-5"></i> Rusqi
+  <div class="admin-wrapper">
+    <aside class="sidebar">
+      <h2>Avachive</h2>
+      <a href="{{ route('dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="{{ route('produk') }}" class="active"><i class="bi bi-list-check"></i> Layanan</a>
+      <a href="{{ route('dataorder') }}"><i class="bi bi-cart-check"></i> Order</a>
+      <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Pengguna</a>
+      <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
+    </aside>
+    <main class="main-content">
+      <div class="topbar">
+        <div>Data Layanan Laundry</div>
+        <div class="user-info">
+          <i class="bi bi-person-circle fs-5"></i> Rusqi
+        </div>
       </div>
-    </div>
-    <section class="produk-section">
-      <h3>Daftar Layanan</h3>
-      <button class="add-button" onclick="openModal('tambahModal')"><i class="bi bi-plus-circle"></i> Tambah Layanan</button>
-      <table>
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Nama Layanan</th>
-            <th>Paket</th>
-            <th>Deskripsi</th>
-            <th>Harga/Kg</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-        @foreach ($layanans as $index => $layanan)
-          <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>{{ $layanan->nama }}</td>
-            <td>{{ $layanan->paket }}</td>
-            <td>{{ $layanan->deskripsi }}</td>
-            <td>Rp {{ number_format($layanan->harga, 0, ',', '.') }}</td>
-            <td class="aksi-buttons">
-              <a href="javascript:void(0)" class="btn-edit" onclick="event.stopPropagation(); openEditModal(
-                '{{ $layanan->id }}',
-                {!! json_encode($layanan->nama) !!},
-                {!! json_encode($layanan->paket) !!},
-                {!! json_encode($layanan->deskripsi) !!},
-                '{{ $layanan->harga }}')">
-                <i class="bi bi-pencil-square"></i>
-              </a>
-              <form action="{{ route('produk.destroy', $layanan->id) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-delete" onclick="return confirm('Yakin ingin menghapus layanan ini?')">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
-            </td>
-          </tr>
-        @endforeach
-        </tbody>
-      </table>
-    </section>
+      <section class="produk-section">
+        <h3>Daftar Layanan</h3>
+        <button class="add-button" onclick="openModal('tambahModal')"><i class="bi bi-plus-circle"></i> Tambah Layanan</button>
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Layanan</th>
+              <th>Paket</th>
+              <th>Deskripsi</th>
+              <th>Harga/Kg</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($layanans as $index => $layanan)
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $layanan->nama }}</td>
+                <td>{{ $layanan->paket }}</td>
+                <td>{{ $layanan->deskripsi }}</td>
+                <td>Rp {{ number_format($layanan->harga, 0, ',', '.') }}</td>
+                <td class="aksi-buttons">
+                  <button class="btn-edit" onclick="openEditModal('{{ $layanan->id }}', `{{ json_encode($layanan) }}`)">
+                      <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <form action="{{ route('produk.destroy', $layanan->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-delete" onclick="return confirm('Yakin ingin menghapus layanan ini?')"><i class="bi bi-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </section>
+    </main>
   </div>
 
-  <!-- Modal Tambah -->
   <div id="tambahModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('tambahModal')">&times;</span>
       <h4>Tambah Layanan</h4>
       <form action="{{ route('produk.store') }}" method="POST">
         @csrf
+        <label>Nama Layanan</label>
         <input type="text" name="nama" placeholder="Nama Layanan" required />
+        <label>Paket</label>
         <select name="paket" required>
           <option value="">Pilih Paket</option>
-          <option>Standar</option>
-          <option>Express</option>
+          <option value="Standar">Standar</option>
+          <option value="Express">Express</option>
         </select>
+        <label>Deskripsi</label>
         <input type="text" name="deskripsi" placeholder="Deskripsi" />
+        <label>Harga per Kg</label>
         <input type="number" name="harga" placeholder="Harga per Kg" required />
         <button type="submit">Simpan</button>
       </form>
     </div>
   </div>
-
-  <!-- Modal Edit -->
+  
   <div id="editModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('editModal')">&times;</span>
@@ -262,39 +276,60 @@
       <form id="editForm" method="POST">
         @csrf
         @method('PUT')
-        <input type="text" name="nama" id="editNama" placeholder="Nama Layanan" required />
+        <label>Nama Layanan</label>
+        <input type="text" name="nama" id="editNama" required />
+        <label>Paket</label>
         <select name="paket" id="editPaket" required>
           <option value="Standar">Standar</option>
           <option value="Express">Express</option>
         </select>
-        <input type="text" name="deskripsi" id="editDeskripsi" placeholder="Deskripsi" />
-        <input type="number" name="harga" id="editHarga" placeholder="Harga per Kg" required />
-        <button type="submit">Update</button>
+        <label>Deskripsi</label>
+        <input type="text" name="deskripsi" id="editDeskripsi" />
+        <label>Harga per Kg</label>
+        <input type="number" name="harga" id="editHarga" required />
+        <button type="submit">Simpan Perubahan</button>
       </form>
     </div>
   </div>
 
   <script>
+    // Fungsi ini tetap sama, untuk membuka modal tambah
     function openModal(id) {
-      document.getElementById(id).style.display = 'block';
+      document.getElementById(id).style.display = 'flex';
     }
+    
+    // Fungsi untuk menutup modal manapun
     function closeModal(id) {
       document.getElementById(id).style.display = 'none';
     }
+    
+    // PERUBAHAN 3: Fungsi baru yang lebih pintar untuk membuka modal EDIT
+    function openEditModal(id, layananJson) {
+      // Mengubah string JSON menjadi objek JavaScript
+      const layanan = JSON.parse(layananJson);
+      
+      // Menyiapkan form edit
+      const form = document.getElementById('editForm');
+      form.action = '/produk/' + id; // Mengatur action form ke URL update yang benar
+      
+      // Mengisi nilai-nilai form dengan data yang ada
+      document.getElementById('editNama').value = layanan.nama;
+      document.getElementById('editPaket').value = layanan.paket;
+      document.getElementById('editDeskripsi').value = layanan.deskripsi;
+      document.getElementById('editHarga').value = layanan.harga;
+      
+      // Menampilkan modal edit
+      document.getElementById('editModal').style.display = 'flex';
+    }
+
+    // Fungsi untuk menutup modal jika diklik di luar area konten
     window.onclick = function(event) {
       ['tambahModal', 'editModal'].forEach(id => {
         let modal = document.getElementById(id);
-        if (event.target == modal) modal.style.display = "none";
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
       });
-    }
-    function openEditModal(id, nama, paket, deskripsi, harga) {
-      const form = document.getElementById('editForm');
-      form.action = '/produk/' + id;
-      document.getElementById('editNama').value = nama;
-      document.getElementById('editPaket').value = paket;
-      document.getElementById('editDeskripsi').value = deskripsi;
-      document.getElementById('editHarga').value = harga;
-      openModal('editModal');
     }
   </script>
 </body>
