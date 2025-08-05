@@ -58,7 +58,7 @@ Route::get('/produk', [LayananController::class, 'index'])->name('produk');
 Route::post('/produk', [LayananController::class, 'store'])->name('produk.store');
 Route::put('/produk/{id}', [LayananController::class, 'update'])->name('produk.update');
 Route::delete('/produk/{id}', [LayananController::class, 'destroy'])->name('produk.destroy');
-    return view('kasir/home');
+
 
 
 Route::get('/produk', [ServiceController::class, 'index'])->name('produk');
@@ -72,3 +72,15 @@ Route::get('/kasir/home', function () {
 Route::get('/kasir/pelanggan', function () {
     return view('kasir/pelanggan');
 })->name('kasir.pelanggan');
+
+Route::get('/kasir/buat_order', function () {
+    return view('kasir/buat_order');
+})->name('kasir.buat_order');
+
+Route::get('/kasir/data_order', function () {
+    return view('kasir/data_order');
+})->name('kasir.data_order');
+
+Route::get('/kasir/pengaturan', function () {
+    return view('kasir/pengaturan');
+})->name('kasir.pengaturan');
