@@ -79,18 +79,28 @@
                                 </div>
                                 <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">Kasif 1</div>
-                                    <div class="text-sm text-gray-500">kasif1@example.com</div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+6280076578</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bojong Menteng</td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button class="text-blue-600 hover:text-blue-900 mr-3 detail-pelanggan-btn" 
+                                data-nama="Kasif 1" 
+                                data-email="kasif1@example.com" 
+                                data-phone="+6280076578" 
+                                data-provinsi="Jawa Barat" 
+                                data-kota="Kab. Bogor" 
+                                data-kecamatan="Bojong Menteng" 
+                                data-kodepos="16610" 
+                                data-alamat="Jl. Bojong Menteng No. 123">
+                                <i class="fas fa-eye mr-1"></i> Detail
+                            </button>
                             <button class="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
                             <button class="text-red-600 hover:text-red-900">Hapus</button>
                         </td>
                     </tr>
-                    <!-- Data pelanggan lainnya -->
+                    <!-- Data pelanggan lainnya bisa ditambahkan di sini -->
                 </tbody>
             </table>
         </div>
@@ -123,17 +133,17 @@
 </div>
 <!-- Main Content End -->
 
-<<!-- Modal Tambah Pelanggan -->
-    <div id="pelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
-            <!-- Modal Header dengan tombol close -->
-            <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-gray-800">Tambah Pelanggan</h2>
-                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        
+<!-- Modal Tambah Pelanggan -->
+<div id="pelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
+        <!-- Modal Header dengan tombol close -->
+        <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Tambah Pelanggan</h2>
+            <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    
         <!-- Modal Body -->
         <div class="p-6">
             <form id="formPelanggan">
@@ -159,36 +169,21 @@
                 </div>
                 
                 <!-- Provinsi -->
-                <div class="mb-4">
+                                <div class="mb-4">
                     <label for="provinsi" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
-                    <select id="provinsi" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                        <option value="">Pilih Provinsi</option>
-                        <option>Jawa Barat</option>
-                        <option>Jawa Tengah</option>
-                        <option>Jawa Timur</option>
-                    </select>
+                    <input type="text" id="provinsi" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
                 <!-- Kota -->
-                <div class="mb-4">
+                                <div class="mb-4">
                     <label for="kota" class="block text-sm font-medium text-gray-700 mb-1">Kota</label>
-                    <select id="kota" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                        <option value="">Pilih Kota</option>
-                        <option>Bandung</option>
-                        <option>Jakarta</option>
-                        <option>Surabaya</option>
-                    </select>
+                    <input type="text" id="kota" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
                 <!-- Kecamatan -->
-                <div class="mb-4">
+                                <div class="mb-4">
                     <label for="kecamatan" class="block text-sm font-medium text-gray-700 mb-1">Kecamatan</label>
-                    <select id="kecamatan" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                        <option value="">Pilih Kecamatan</option>
-                        <option>Coblong</option>
-                        <option>Dago</option>
-                        <option>Setiabudi</option>
-                    </select>
+                    <input type="text" id="kecamatan" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
                 <!-- Kode Pos -->
@@ -204,17 +199,119 @@
                 </div>
                 
                 <!-- Modal Footer -->
-                    <div class="flex justify-end space-x-3 pt-4">
-                        <button type="button" id="cancelBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">Kembali</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Simpan Data</button>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancelBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">Kembali</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detail Pelanggan -->
+<div id="detailPelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
+        <!-- Modal Header -->
+        <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Detail Pelanggan</h2>
+            <button id="closeDetailModal" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="p-6">
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Nama Pelanggan</p>
+                        <p id="detail-nama" class="text-gray-900"></p>
                     </div>
-                </form>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">No. Handphone</p>
+                        <p id="detail-phone" class="text-gray-900"></p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Provinsi</p>
+                        <p id="detail-provinsi" class="text-gray-900"></p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Kota</p>
+                        <p id="detail-kota" class="text-gray-900"></p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Kecamatan</p>
+                        <p id="detail-kecamatan" class="text-gray-900"></p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Kode Pos</p>
+                        <p id="detail-kodepos" class="text-gray-900"></p>
+                    </div>
+                </div>
+                
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Detail Alamat</p>
+                    <p id="detail-alamat" class="text-gray-900 mt-1 p-2 bg-gray-100 rounded"></p>
+                </div>
+                
+            </div>
+            
+            <div class="flex justify-end pt-6">
+                <button id="closeDetailBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                    Tutup
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Modal functionality
+    // Modal Detail Pelanggan
+    const detailModal = document.getElementById('detailPelangganModal');
+    const closeDetailBtn = document.getElementById('closeDetailBtn');
+    const closeDetailModalBtn = document.getElementById('closeDetailModal');
+
+    // Open detail modal
+    document.querySelectorAll('.detail-pelanggan-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Set data to modal
+            document.getElementById('detail-nama').textContent = btn.dataset.nama;
+            document.getElementById('detail-phone').textContent = btn.dataset.phone;
+            document.getElementById('detail-provinsi').textContent = btn.dataset.provinsi;
+            document.getElementById('detail-kota').textContent = btn.dataset.kota;
+            document.getElementById('detail-kecamatan').textContent = btn.dataset.kecamatan;
+            document.getElementById('detail-kodepos').textContent = btn.dataset.kodepos;
+            document.getElementById('detail-alamat').textContent = btn.dataset.alamat;
+            
+            // Show modal
+            detailModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    // Close detail modal
+    const closeDetailModal = () => {
+        detailModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    };
+
+    closeDetailBtn.addEventListener('click', closeDetailModal);
+    closeDetailModalBtn.addEventListener('click', closeDetailModal);
+
+    // Close when clicking outside modal
+    window.addEventListener('click', (e) => {
+        if (e.target === detailModal) {
+            closeDetailModal();
+        }
+    });
+
+    // Modal functionality for tambah pelanggan
     const modal = document.getElementById('pelangganModal');
     const openBtn = document.getElementById('openModal');
     const closeBtn = document.getElementById('closeModal');

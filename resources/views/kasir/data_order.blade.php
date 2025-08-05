@@ -7,7 +7,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Data Order</title>
     <script src="https://kit.fontawesome.com/0948e65078.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
+        /* Tambahkan di bagian CSS */
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
         .order-card {
             transition: all 0.2s ease;
         }
@@ -33,6 +39,135 @@
         .status-processing {
             background-color: #dbeafe;
             color: #1e40af;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .service-box {
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .btn-green, .btn-gray {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-green {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-gray {
+            background-color: #dfe4ea;
+            color: #2d3436;
+        }
+
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Footer modal styles */
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        /* Riwayat Order Styles */
+        .history-section {
+            margin-top: 40px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .history-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .history-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            font-weight: 500;
+            color: #555;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .history-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .history-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .history-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-completed {
+            background-color: #dcfce7;
+            color: #166534;
         }
     </style>
 </head>
@@ -95,7 +230,13 @@
                     </div>
                     <div class="col-span-2 flex items-center justify-end font-medium">Rp 25.000</div>
                     <div class="col-span-3 flex items-center gap-2">
-                        <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm">
+                        <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm detail-btn"
+                            data-nama="Tati" data-hp="085712345678" data-alamat="Ciomas" 
+                            data-alamat-lengkap="Jawa Barat, Bogor, Ciomas" data-pengambilan="Ambil Sendiri"
+                            data-pembayaran="NonTunai" data-waktu-bayar="Bayar Sekarang" 
+                            data-waktu-order="04-08-2025 09:30" data-layanan="Cuci Sepatu"
+                            data-kategori="Satuan" data-harga="25000" data-jumlah="1" 
+                            data-subtotal="25000">
                             <i class="fas fa-eye mr-1"></i> Detail
                         </button>
                         <button class="text-gray-600 hover:text-gray-800 px-3 py-1 border border-gray-200 rounded-lg text-sm">
@@ -121,7 +262,13 @@
                     </div>
                     <div class="col-span-2 flex items-center justify-end font-medium">Rp 25.000</div>
                     <div class="col-span-3 flex items-center gap-2">
-                        <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm">
+                        <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm detail-btn"
+                            data-nama="Amay" data-hp="081234567890" data-alamat="Bogor Utara" 
+                            data-alamat-lengkap="Bogor Utara, Jawa Barat" data-pengambilan="Diantar"
+                            data-pembayaran="Tunai" data-waktu-bayar="Bayar Dulu" 
+                            data-waktu-order="04-08-2025 08:00" data-layanan="Setrika Baju"
+                            data-kategori="Kiloan" data-harga="15000" data-jumlah="2" 
+                            data-subtotal="30000">
                             <i class="fas fa-eye mr-1"></i> Detail
                         </button>
                         <button class="text-gray-600 hover:text-gray-800 px-3 py-1 border border-gray-200 rounded-lg text-sm">
@@ -147,7 +294,13 @@
                     </div>
                     <div class="col-span-2 flex items-center justify-end font-medium">Rp 30.000</div>
                     <div class="col-span-3 flex items-center gap-2">
-                        <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm">
+                        <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm detail-btn"
+                            data-nama="Gayar" data-hp="087812345678" data-alamat="Bogor Selatan" 
+                            data-alamat-lengkap="Bogor Selatan, Jawa Barat" data-pengambilan="Ambil Sendiri"
+                            data-pembayaran="NonTunai" data-waktu-bayar="Bayar Sekarang" 
+                            data-waktu-order="10-09-2023 10:45" data-layanan="Cuci Karpet"
+                            data-kategori="Satuan" data-harga="30000" data-jumlah="1" 
+                            data-subtotal="30000">
                             <i class="fas fa-eye mr-1"></i> Detail
                         </button>
                         <button class="text-gray-600 hover:text-gray-800 px-3 py-1 border border-gray-200 rounded-lg text-sm">
@@ -182,9 +335,171 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Riwayat Order Selesai -->
+        <div class="history-section mt-8">
+            <h3 class="history-title">Riwayat Order Selesai</h3>
+            <div class="history-container">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Pelanggan</th>
+                            <th>Tanggal</th>
+                            <th>Layanan</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Riwayat 1 -->
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-blue-600 font-medium">A</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Ahmad</p>
+                                        <p class="text-sm text-gray-500">081234567890</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>01-08-2025</td>
+                            <td>Cuci Kiloan</td>
+                            <td>Rp 45.000</td>
+                            <td><span class="history-badge badge-completed">Selesai</span></td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm">
+                                    <i class="fas fa-eye mr-1"></i> Detail
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Riwayat 2 -->
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-blue-600 font-medium">B</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Budi</p>
+                                        <p class="text-sm text-gray-500">082345678901</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>30-07-2025</td>
+                            <td>Cuci Sepatu</td>
+                            <td>Rp 75.000</td>
+                            <td><span class="history-badge badge-completed">Selesai</span></td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm">
+                                    <i class="fas fa-eye mr-1"></i> Detail
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Riwayat 3 -->
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-blue-600 font-medium">C</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Citra</p>
+                                        <p class="text-sm text-gray-500">083456789012</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>28-07-2025</td>
+                            <td>Setrika Baju</td>
+                            <td>Rp 35.000</td>
+                            <td><span class="history-badge badge-completed">Selesai</span></td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm">
+                                    <i class="fas fa-eye mr-1"></i> Detail
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Riwayat 4 -->
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-blue-600 font-medium">D</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Dewi</p>
+                                        <p class="text-sm text-gray-500">084567890123</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>25-07-2025</td>
+                            <td>Cuci Karpet</td>
+                            <td>Rp 120.000</td>
+                            <td><span class="history-badge badge-completed">Selesai</span></td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm">
+                                    <i class="fas fa-eye mr-1"></i> Detail
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Riwayat 5 -->
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <span class="text-blue-600 font-medium">E</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Eka</p>
+                                        <p class="text-sm text-gray-500">085678901234</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>20-07-2025</td>
+                            <td>Cuci Kiloan</td>
+                            <td>Rp 55.000</td>
+                            <td><span class="history-badge badge-completed">Selesai</span></td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm">
+                                    <i class="fas fa-eye mr-1"></i> Detail
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Main Content End -->
+
+<!-- Modal Detail Order -->
+<div class="modal" id="detailModal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <h4 class="text-xl font-bold mb-4">Detail Order</h4>
+        <div id="detailContent"></div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Ubah Status -->
+<div class="modal" id="confirmStatusModal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeConfirmModal()">&times;</span>
+        <h4 class="text-xl font-bold mb-4">Konfirmasi Ubah Status</h4>
+        <div id="confirmStatusContent"></div>
+        <div class="button-group mt-4">
+            <button class="btn-gray" onclick="closeConfirmModal()">Batal</button>
+            <button class="btn-green" id="confirmStatusBtn">Ya, Ubah Status</button>
+        </div>
+    </div>
+</div>
 
 <script>
     // Urutan perubahan status
@@ -201,53 +516,136 @@
         },
         'Selesai': {
             next: 'Diproses',
-            class: 'status-pending',
+            class: 'status-processing',
             text: 'Diproses'
         }
     };
 
-    // Fungsi untuk mengubah status secara siklus
+    // Modal functionality
+    const modal = document.getElementById('detailModal');
+    const detailContent = document.getElementById('detailContent');
+
+    // Fungsi untuk memformat nomor telepon
+    function formatPhoneNumber(phoneNumber) {
+        // Hilangkan semua karakter non-digit
+        const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+        
+        // Format sesuai standar Indonesia
+        if (cleaned.length === 12 && cleaned.startsWith('628')) {
+            return cleaned.replace(/(\d{3})(\d{3})(\d{4})(\d{2})/, '+$1 $2-$3-$4');
+        } else if (cleaned.length === 11 && cleaned.startsWith('08')) {
+            return cleaned.replace(/(\d{2})(\d{3})(\d{4})(\d{2})/, '+62 $1 $2-$3-$4');
+        } else if (cleaned.length === 10 && cleaned.startsWith('8')) {
+            return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '+62 $1-$2-$3');
+        }
+        return phoneNumber; // Kembalikan as-is jika format tidak dikenali
+    }
+
+    // Fungsi untuk membuka WhatsApp
+    function openWhatsApp(phoneNumber) {
+        // Hilangkan semua karakter non-digit
+        const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+        
+        // Konversi ke format internasional jika dimulai dengan 0
+        let whatsappNumber = cleaned;
+        if (cleaned.startsWith('0')) {
+            whatsappNumber = '62' + cleaned.substring(1);
+        } else if (cleaned.startsWith('8')) {
+            whatsappNumber = '62' + cleaned;
+        }
+        
+        window.open(`https://wa.me/${whatsappNumber}`, '_blank');
+    }
+
+    // Event listener untuk tombol detail
+    document.querySelectorAll('.detail-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const data = btn.dataset;
+            const total = parseInt(data.harga) * parseInt(data.jumlah);
+            const formattedPhone = formatPhoneNumber(data.hp);
+
+            detailContent.innerHTML = `
+                <p><strong>Nama:</strong> ${data.nama}</p>
+                <p><strong>No HP:</strong> ${formattedPhone}</p>
+                <p><strong>Alamat:</strong> ${data.alamat}</p>
+                <p><strong>Alamat Lengkap:</strong> ${data.alamatLengkap}</p>
+                <p><strong>Pengambilan:</strong> ${data.pengambilan}</p>
+                <p><strong>Pembayaran:</strong> ${data.pembayaran}</p>
+                <p><strong>Waktu Bayar:</strong> ${data.waktuBayar}</p>
+                <p><strong>Waktu Order:</strong> ${data.waktuOrder}</p>
+                <div class="service-box">
+                    ${data.layanan}<br/>
+                    Kategori: ${data.kategori}<br/>
+                    Harga: Rp ${parseInt(data.harga).toLocaleString()}<br/>
+                    Jumlah: ${data.jumlah}<br/>
+                    Subtotal: Rp ${parseInt(data.subtotal).toLocaleString()}
+                </div>
+                <p><strong>Total:</strong> Rp ${total.toLocaleString()}</p>
+                <div class="button-group">
+                    <button class="btn-green" onclick="openWhatsApp('${data.hp}')"><i class="bi bi-whatsapp"></i> WhatsApp</button>
+                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.alamatLengkap)}"
+                        class="btn-gray" target="_blank"><i class="bi bi-geo-alt-fill"></i> Buka Maps</a>
+                </div>
+            `;
+            modal.style.display = "flex";
+        });
+    });
+
+    // Modal Konfirmasi Ubah Status
+    const confirmModal = document.getElementById('confirmStatusModal');
+    const confirmContent = document.getElementById('confirmStatusContent');
+    const confirmBtn = document.getElementById('confirmStatusBtn');
+
+    let currentStatusElement = null;
+    let nextStatus = null;
+
     function cycleStatus(element) {
         const currentStatus = element.textContent;
-        const nextStatus = statusCycle[currentStatus];
+        nextStatus = statusCycle[currentStatus];
+        currentStatusElement = element;
         
+        // Tampilkan modal konfirmasi
+        confirmContent.innerHTML = `
+            <p>Anda yakin ingin mengubah status order dari:</p>
+            <p class="font-bold">${currentStatus} → ${nextStatus.text}</p>
+        `;
+        confirmModal.style.display = "flex";
+    }
+
+    // Fungsi untuk mengubah status setelah dikonfirmasi
+    function changeStatus() {
         // Hapus semua kelas status
-        element.classList.remove('status-pending', 'status-processing', 'status-completed');
+        currentStatusElement.classList.remove('status-pending', 'status-processing', 'status-completed');
         
         // Update ke status berikutnya
-        element.classList.add(nextStatus.class);
-        element.textContent = nextStatus.text;
+        currentStatusElement.classList.add(nextStatus.class);
+        currentStatusElement.textContent = nextStatus.text;
         
         // Dapatkan ID order
-        const orderId = element.closest('[data-order-id]').getAttribute('data-order-id');
-        
-        // Di sini Anda bisa menambahkan AJAX untuk menyimpan perubahan status ke database
+        const orderId = currentStatusElement.closest('[data-order-id]').getAttribute('data-order-id');
         console.log(`Order ID: ${orderId}, Status baru: ${nextStatus.text}`);
         
-        // Untuk demo, kita tampilkan alert
-        // alert(`Status order ${orderId} diubah menjadi ${nextStatus.text}`);
+        // Tutup modal
+        closeConfirmModal();
     }
 
-    // Jika ingin konfirmasi sebelum mengubah status
-    function cycleStatus(element) {
-        const currentStatus = element.textContent;
-        const nextStatus = statusCycle[currentStatus];
-        
-        if (confirm(`Ubah status dari ${currentStatus} menjadi ${nextStatus.text}?`)) {
-            // Hapus semua kelas status
-            element.classList.remove('status-pending', 'status-processing', 'status-completed');
-            
-            // Update ke status berikutnya
-            element.classList.add(nextStatus.class);
-            element.textContent = nextStatus.text;
-            
-            // Dapatkan ID order
-            const orderId = element.closest('[data-order-id]').getAttribute('data-order-id');
-            console.log(`Order ID: ${orderId}, Status baru: ${nextStatus.text}`);
-        }
+    // Event listener untuk tombol konfirmasi
+    confirmBtn.addEventListener('click', changeStatus);
+
+    function closeModal() {
+        modal.style.display = "none";
     }
-    
+
+    function closeConfirmModal() {
+        confirmModal.style.display = "none";
+        currentStatusElement = null;
+        nextStatus = null;
+    }
+
+    window.onclick = function(e) {
+        if (e.target === modal) closeModal();
+        if (e.target === confirmModal) closeConfirmModal();
+    }
 </script>
-
 </body>
 </html>
