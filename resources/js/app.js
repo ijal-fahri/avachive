@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 
+<<<<<<< Updated upstream
 // humburger
 
 const hamburger = document.querySelector('#hamburger');
@@ -12,3 +13,10 @@ hamburger.addEventListener('click', function() {
 });
 
 
+=======
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();
+>>>>>>> Stashed changes
