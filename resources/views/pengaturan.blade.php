@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -188,8 +189,8 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <h2>Avachive</h2>
-      <a href="admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
-    <a href="{{ route('produk') }}" ><i class="bi bi-list-check"></i> Layanan</a>
+      <a href="/admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="{{ route('produk') }}"><i class="bi bi-list-check"></i> Layanan</a>
       <a href="{{ route('dataorder') }}"><i class="bi bi-cart-check"></i> Order</a>
       <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Pengguna</a>
       <a href="{{ route('pengaturan') }}" class="active"><i class="bi bi-gear"></i> Pengaturan</a>
@@ -200,7 +201,7 @@
       <div class="topbar fade-in">
         <div>Pengaturan</div>
         <div class="user-info">
-          <i class="bi bi-person-circle fs-5"></i> Rusqi
+          <i class="bi bi-person-circle fs-5"></i> {{ Auth::user()->name }}
         </div>
       </div>
 
@@ -209,11 +210,10 @@
         <section class="settings-section">
           <h3>Profil Anda</h3>
           <div class="profile-info">
-            <img src="https://i.pravatar.cc/150?img=3" alt="Foto Profil">
+            <img src="{{ 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=random&size=150' }}" alt="Foto Profil">
             <div>
-              <strong>Rusqi Yudha</strong>
-              <p>Email: rusqi@email.com</p>
-              <p>Role: Admin</p>
+              <strong>{{ Auth::user()->name }}</strong>
+              <p>Role: {{ ucfirst(Auth::user()->usertype) }}</p>
             </div>
           </div>
           <form method="POST" action="{{ route('logout') }}">
@@ -240,7 +240,7 @@
           <h3>Tentang Aplikasi</h3>
           <p class="info-text">
             Aplikasi ini dibuat untuk membantu pemilik laundry dalam mengelola operasional harian secara efisien dan profesional.
-            Dikembangkan oleh <strong>Rusqi Yudha</strong> sebagai bagian dari sistem administrasi digital laundry modern.
+            Dikembangkan oleh <strong>My Team</strong> sebagai bagian dari sistem administrasi digital laundry modern.
           </p>
         </section>
       </div>

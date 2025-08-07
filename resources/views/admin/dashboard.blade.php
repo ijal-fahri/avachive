@@ -184,7 +184,7 @@
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
             <a href="{{ route('produk') }}" class="{{ request()->routeIs('produk') ? 'active' : '' }}">
-                <i class="bi bi-box"></i> Produk
+                <i class="bi bi-box"></i> Layanan
             </a>
             <a href="{{ route('dataorder') }}" class="{{ request()->routeIs('dataorder') ? 'active' : '' }}">
                 <i class="bi bi-cart-check"></i> Order
