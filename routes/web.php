@@ -3,9 +3,16 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KasirController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\kasir\KasirPelangganController;
+use App\Http\Controllers\kasir\KasirBuatOrderController;
+use App\Http\Controllers\kasir\KasirDataOrderController;
+use App\Http\Controllers\kasir\KasirSettingsController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LayananController;
-// Halaman utama (landing page)
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -19,6 +26,23 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//role
+Route::get('/admin/dashboard',[AdminController::class, 'index'])->middleware('auth','admin');
+Route::get('/kasir/dashboard',[KasirController::class, 'index'])->middleware('auth','kasir');
+Route::get('/driver/dashboard',[DriverController::class, 'index'])->middleware('auth','driver');
+
+// Kasir
+Route::resource('/kasir/pelanggan', KasirPelangganController::class);
+Route::resource('/kasir/buat_order', KasirBuatOrderController::class);
+Route::resource('/kasir/data_order', KasirDataOrderController::class);
+Route::resource('/kasir/pengaturan', KasirSettingsController::class);
+
+
+
+//admin
+
+
 
 require __DIR__.'/auth.php';
 
@@ -59,28 +83,3 @@ Route::post('/produk', [LayananController::class, 'store'])->name('produk.store'
 Route::put('/produk/{id}', [LayananController::class, 'update'])->name('produk.update');
 Route::delete('/produk/{id}', [LayananController::class, 'destroy'])->name('produk.destroy');
 
-
-
-Route::get('/produk', [ServiceController::class, 'index'])->name('produk');
-Route::resource('layanan', ServiceController::class)->except(['index']);
-
-// Route untuk kasir (saya lihat ada potongan kode yang tidak lengkap)
-Route::get('/kasir/home', function () {
-    return view('kasir/home');
-})->name('kasir.home');
-
-Route::get('/kasir/pelanggan', function () {
-    return view('kasir/pelanggan');
-})->name('kasir.pelanggan');
-
-Route::get('/kasir/buat_order', function () {
-    return view('kasir/buat_order');
-})->name('kasir.buat_order');
-
-Route::get('/kasir/data_order', function () {
-    return view('kasir/data_order');
-})->name('kasir.data_order');
-
-Route::get('/kasir/pengaturan', function () {
-    return view('kasir/pengaturan');
-})->name('kasir.pengaturan');

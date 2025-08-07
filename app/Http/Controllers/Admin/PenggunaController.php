@@ -11,48 +11,53 @@ class PenggunaController extends Controller
 {
     public function index()
     {
-        $users = User::where('role', '!=', 'admin')->get();
+        $users = User::where('usertype', '!=', 'admin')->get();
         return view('admin.pengguna.index', compact('users'));
     }
 
     public function store(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'nama' => 'required|string|max:100',
-        'email' => 'required|email|unique:users,email',
-        'role' => 'required|in:Kasir,Driver',
+    {
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'password' => 'required|min:8',
+            'usertype' => 'required|in:kasir,driver',
+        ]);
+
+        User::create([
+        'name' => $request->name,
+        'usertype' => $request->usertype,
+        'password' => Hash::make($request->password),
+        'plain_password' => $request->password, // ✅ Ini sudah benar
     ]);
 
-    // Simpan ke database
-    User::create([
-        'name' => $request->nama,
-        'email' => $request->email,
-        'role' => $request->role,
-        'password' => Hash::make('default123'), // password default
-    ]);
+        return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan.');
+    }
 
-    // Redirect atau return back
-    return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan.');
-}
     public function update(Request $request, $id)
-{
-    $user = User::findOrFail($id);
+    {
+        $user = User::findOrFail($id);
 
-    $request->validate([
-        'nama' => 'required|string',
-        'email' => 'required|email|unique:users,email,' . $id,
-        'role' => 'required|in:Kasir,Driver',
-    ]);
+        $request->validate([
+            'name' => 'required|string',
+            'password' => 'nullable|min:8',
+            'usertype' => 'required|in:kasir,driver',
+        ]);
 
-    $user->update([
-        'name' => $request->nama,
-        'email' => $request->email,
-        'role' => $request->role,
-    ]);
+        $data = [
+            'name' => $request->name,
+            'usertype' => $request->usertype,
+        ];
 
-    return redirect()->route('datauser')->with('success', 'Pengguna diperbarui.');
-}
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+            $data['plain_password'] = $request->password; // ✅ Simpan ulang password asli saat update
+        }
+
+        $user->update($data);
+
+        return redirect()->route('datauser')->with('success', 'Pengguna diperbarui.');
+    }
+
     public function destroy($id)
     {
         User::findOrFail($id)->delete();

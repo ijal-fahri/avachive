@@ -15,13 +15,8 @@
     </style>
 </head>
 <body class="bg-gray-50">
-<!-- Sidebar Start -->
 @include('components.sidebar_kasir')
-<!-- Sidebar End -->
-
-<!-- Main Content Start -->
 <div class="ml-0 lg:ml-64 min-h-screen p-6">
-    <!-- Header -->
     <div class="flex justify-between items-center mb-8">
         <div>
             <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Daftar Pelanggan</h1>
@@ -32,31 +27,27 @@
         </button>
     </div>
 
-    <!-- Search and Filter -->
     <div class="bg-white rounded-xl shadow-md p-4 mb-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div class="relative flex-grow">
-                <input type="text" placeholder="Cari pelanggan..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+        <form action="{{ route('pelanggan.index') }}" method="GET">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="relative flex-grow">
+                    <input type="text" name="search" placeholder="Cari pelanggan..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ request('search') }}">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <div class="flex gap-2">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">Cari</button>
+                </div>
             </div>
-            <div class="flex gap-2">
-                <select class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Filter Status</option>
-                    <option>Aktif</option>
-                    <option>Non-Aktif</option>
-                </select>
-                <select class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Urutkan</option>
-                    <option>Nama A-Z</option>
-                    <option>Nama Z-A</option>
-                    <option>Terbaru</option>
-                    <option>Terlama</option>
-                </select>
-            </div>
-        </div>
+        </form>
     </div>
 
-    <!-- Pelanggan Table -->
+    @if(session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Sukses!</strong>
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+    @endif
+
     <div class="bg-white rounded-xl shadow-md overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -70,73 +61,52 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach ($pelanggans as $pelanggan)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ($pelanggans->currentPage() - 1) * $pelanggans->perPage() + $loop->iteration }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <span class="text-blue-600 font-medium">K</span>
+                                    <span class="text-blue-600 font-medium">{{ substr($pelanggan->nama, 0, 1) }}</span>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">Kasif 1</div>
+                                    <div class="text-sm font-medium text-gray-900">{{ $pelanggan->nama }}</div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">+6280076578</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bojong Menteng</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pelanggan->no_handphone }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pelanggan->kecamatan }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <button class="text-blue-600 hover:text-blue-900 mr-3 detail-pelanggan-btn" 
-                                data-nama="Kasif 1" 
-                                data-email="kasif1@example.com" 
-                                data-phone="+6280076578" 
-                                data-provinsi="Jawa Barat" 
-                                data-kota="Kab. Bogor" 
-                                data-kecamatan="Bojong Menteng" 
-                                data-kodepos="16610" 
-                                data-alamat="Jl. Bojong Menteng No. 123">
+                                data-nama="{{ $pelanggan->nama }}" 
+                                data-phone="{{ $pelanggan->no_handphone }}" 
+                                data-provinsi="{{ $pelanggan->provinsi }}" 
+                                data-kota="{{ $pelanggan->kota }}" 
+                                data-kecamatan="{{ $pelanggan->kecamatan }}" 
+                                data-kodepos="{{ $pelanggan->kodepos }}" 
+                                data-alamat="{{ $pelanggan->detail_alamat }}">
                                 <i class="fas fa-eye mr-1"></i> Detail
                             </button>
-                            <button class="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
-                            <button class="text-red-600 hover:text-red-900">Hapus</button>
+                            <button class="text-blue-600 hover:text-blue-900 mr-3 openEditModal" data-id="{{ $pelanggan->id }}">Edit</button>
+                            <form action="{{ route('pelanggan.destroy', $pelanggan->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                            </form>
                         </td>
                     </tr>
-                    <!-- Data pelanggan lainnya bisa ditambahkan di sini -->
+                    @endforeach
                 </tbody>
             </table>
         </div>
         
-        <!-- Pagination -->
         <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-sm text-gray-700">
-                        Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">12</span> results
-                    </p>
-                </div>
-                <div>
-                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            <span class="sr-only">Previous</span>
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                        <a href="#" aria-current="page" class="z-10 bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 1 </a>
-                        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 2 </a>
-                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            <span class="sr-only">Next</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </nav>
-                </div>
-            </div>
+            {{ $pelanggans->links() }}
         </div>
     </div>
 </div>
-<!-- Main Content End -->
-
-<!-- Modal Tambah Pelanggan -->
-<div id="pelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10">
+<div id="pelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-gray-900 bg-opacity-50 transition-opacity">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
-        <!-- Modal Header dengan tombol close -->
         <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800">Tambah Pelanggan</h2>
             <button id="closeModal" class="text-gray-500 hover:text-gray-700">
@@ -144,61 +114,46 @@
             </button>
         </div>
     
-        <!-- Modal Body -->
         <div class="p-6">
-            <form id="formPelanggan">
-                <!-- Nama Pelanggan -->
+            <form id="formPelanggan" action="{{ route('pelanggan.store') }}" method="POST">
+                @csrf
                 <div class="mb-4">
                     <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Pelanggan</label>
-                    <input type="text" id="nama" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input type="text" name="nama" id="nama" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
-                <!-- Nomor Handphone -->
                 <div class="mb-4">
-                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">No. Handphone</label>
+                    <label for="no_handphone" class="block text-sm font-medium text-gray-700 mb-1">No. Handphone</label>
                     <div class="flex">
-                        <div class="flex-shrink-0 w-16">
-                            <select class="w-full px-2 py-2 border border-gray-300 rounded-l-md bg-gray-100 text-sm focus:outline-none">
-                                <option>+62</option>
-                                <option>+60</option>
-                                <option>+65</option>
-                            </select>
-                        </div>
-                        <input type="tel" id="phone" class="flex-grow px-3 py-2 border-t border-r border-b border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="tel" name="no_handphone" id="no_handphone" class="flex-grow px-3 py-2 border-t border-r border-b border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     </div>
                 </div>
                 
-                <!-- Provinsi -->
-                                <div class="mb-4">
+                <div class="mb-4">
                     <label for="provinsi" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
-                    <input type="text" id="provinsi" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input type="text" name="provinsi" id="provinsi" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
-                <!-- Kota -->
-                                <div class="mb-4">
+                <div class="mb-4">
                     <label for="kota" class="block text-sm font-medium text-gray-700 mb-1">Kota</label>
-                    <input type="text" id="kota" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input type="text" name="kota" id="kota" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
-                <!-- Kecamatan -->
-                                <div class="mb-4">
+                <div class="mb-4">
                     <label for="kecamatan" class="block text-sm font-medium text-gray-700 mb-1">Kecamatan</label>
-                    <input type="text" id="kecamatan" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input type="text" name="kecamatan" id="kecamatan" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
-                <!-- Kode Pos -->
                 <div class="mb-4">
                     <label for="kodepos" class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
-                    <input type="text" id="kodepos" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input type="text" name="kodepos" id="kodepos" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
-                <!-- Detail Alamat -->
                 <div class="mb-6">
-                    <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Detail Alamat (Nama Jalan, Gedung, No Rumah)</label>
-                    <textarea id="alamat" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                    <label for="detail_alamat" class="block text-sm font-medium text-gray-700 mb-1">Detail Alamat (Nama Jalan, Gedung, No Rumah)</label>
+                    <textarea name="detail_alamat" id="detail_alamat" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
                 </div>
                 
-                <!-- Modal Footer -->
                 <div class="flex justify-end space-x-3 pt-4">
                     <button type="button" id="cancelBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">Kembali</button>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Simpan Data</button>
@@ -208,10 +163,67 @@
     </div>
 </div>
 
-<!-- Modal Detail Pelanggan -->
-<div id="detailPelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10">
+<div id="editPelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-gray-900 bg-opacity-50 transition-opacity">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
-        <!-- Modal Header -->
+        <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Edit Pelanggan</h2>
+            <button id="closeEditModal" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    
+        <div class="p-6">
+            <form id="formEditPelanggan" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="mb-4">
+                    <label for="edit_nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Pelanggan</label>
+                    <input type="text" name="nama" id="edit_nama" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="edit_no_handphone" class="block text-sm font-medium text-gray-700 mb-1">No. Handphone</label>
+                    <div class="flex">
+                        <input type="tel" name="no_handphone" id="edit_no_handphone" class="flex-grow px-3 py-2 border-t border-r border-b border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="edit_provinsi" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
+                    <input type="text" name="provinsi" id="edit_provinsi" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="edit_kota" class="block text-sm font-medium text-gray-700 mb-1">Kota</label>
+                    <input type="text" name="kota" id="edit_kota" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="edit_kecamatan" class="block text-sm font-medium text-gray-700 mb-1">Kecamatan</label>
+                    <input type="text" name="kecamatan" id="edit_kecamatan" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="edit_kodepos" class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
+                    <input type="text" name="kodepos" id="edit_kodepos" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="edit_detail_alamat" class="block text-sm font-medium text-gray-700 mb-1">Detail Alamat (Nama Jalan, Gedung, No Rumah)</label>
+                    <textarea name="detail_alamat" id="edit_detail_alamat" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancelEditBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">Kembali</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="detailPelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-gray-900 bg-opacity-50 transition-opacity">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
         <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800">Detail Pelanggan</h2>
             <button id="closeDetailModal" class="text-gray-500 hover:text-gray-700">
@@ -219,7 +231,6 @@
             </button>
         </div>
         
-        <!-- Modal Body -->
         <div class="p-6">
             <div class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
@@ -343,11 +354,52 @@
         }
     });
 
-    // Form submission
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Process form data here
-        closeModal();
+    // Modal Edit Pelanggan
+    const editModal = document.getElementById('editPelangganModal');
+    const closeEditModalBtn = document.getElementById('closeEditModal');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const formEdit = document.getElementById('formEditPelanggan');
+
+    document.querySelectorAll('.openEditModal').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const pelangganId = e.target.dataset.id;
+            fetch(`/kasir/pelanggan/${pelangganId}/edit`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('edit_nama').value = data.nama;
+                    document.getElementById('edit_no_handphone').value = data.no_handphone;
+                    document.getElementById('edit_provinsi').value = data.provinsi;
+                    document.getElementById('edit_kota').value = data.kota;
+                    document.getElementById('edit_kecamatan').value = data.kecamatan;
+                    document.getElementById('edit_kodepos').value = data.kodepos;
+                    document.getElementById('edit_detail_alamat').value = data.detail_alamat;
+                    
+                    formEdit.action = `/kasir/pelanggan/${pelangganId}`;
+                    editModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+        });
+    });
+
+    const closeEditModal = () => {
+        editModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    };
+
+    closeEditModalBtn.addEventListener('click', closeEditModal);
+    cancelEditBtn.addEventListener('click', closeEditModal);
+
+    window.addEventListener('click', (e) => {
+        if (e.target === editModal) {
+            closeEditModal();
+        }
+    });
+
+    // Close when pressing Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !editModal.classList.contains('hidden')) {
+            closeEditModal();
+        }
     });
 </script>
 
