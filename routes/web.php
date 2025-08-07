@@ -3,9 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\PenggunaController;
-use App\Http\Controllers\Admin\LayananController;
-// Halaman utama (landing page)
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\DriverController;
@@ -13,6 +10,8 @@ use App\Http\Controllers\kasir\KasirPelangganController;
 use App\Http\Controllers\kasir\KasirBuatOrderController;
 use App\Http\Controllers\kasir\KasirDataOrderController;
 use App\Http\Controllers\kasir\KasirSettingsController;
+use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\LayananController;
 
 Route::get('/', function () {
     return view('welcome');
