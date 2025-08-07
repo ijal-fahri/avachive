@@ -12,6 +12,7 @@ use App\Http\Controllers\kasir\KasirDataOrderController;
 use App\Http\Controllers\kasir\KasirSettingsController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -72,10 +73,9 @@ Route::get('/pengaturan', function () {
 })->name('pengaturan');
 
 // Logout (sebaiknya gunakan yang dari auth.php)
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/')->with('status', 'Berhasil logout');
-})->name('logout');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
 
 // Produk / Layanan: CRUD (pakai Controller)
 Route::get('/produk', [LayananController::class, 'index'])->name('produk');
