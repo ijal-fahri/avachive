@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -230,6 +230,6 @@
     </main>
   </div>
 </body>
-</html> --}}
+</html>
 
-<h1>mantap</h1>
+

@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//role
 Route::get('/admin/dashboard',[AdminController::class, 'index'])->middleware('auth','admin');
 Route::get('/kasir/dashboard',[KasirController::class, 'index'])->middleware('auth','kasir');
 Route::get('/driver/dashboard',[DriverController::class, 'index'])->middleware('auth','driver');
@@ -37,6 +38,11 @@ Route::resource('/kasir/pelanggan', KasirPelangganController::class);
 Route::resource('/kasir/buat_order', KasirBuatOrderController::class);
 Route::resource('/kasir/data_order', KasirDataOrderController::class);
 Route::resource('/kasir/pengaturan', KasirSettingsController::class);
+
+
+
+//admin
+
 
 
 require __DIR__.'/auth.php';
@@ -77,25 +83,4 @@ Route::get('/produk', [LayananController::class, 'index'])->name('produk');
 Route::post('/produk', [LayananController::class, 'store'])->name('produk.store');
 Route::put('/produk/{id}', [LayananController::class, 'update'])->name('produk.update');
 Route::delete('/produk/{id}', [LayananController::class, 'destroy'])->name('produk.destroy');
-
-// Route untuk kasir (saya lihat ada potongan kode yang tidak lengkap)
-Route::get('/kasir/home', function () {
-    return view('kasir/home');
-})->name('kasir.home');
-
-Route::get('/kasir/pelanggan', function () {
-    return view('kasir/pelanggan');
-})->name('kasir.pelanggan');
-
-Route::get('/kasir/buat_order', function () {
-    return view('kasir/buat_order');
-})->name('kasir.buat_order');
-
-Route::get('/kasir/data_order', function () {
-    return view('kasir/data_order');
-})->name('kasir.data_order');
-
-Route::get('/kasir/pengaturan', function () {
-    return view('kasir/pengaturan');
-})->name('kasir.pengaturan');
 

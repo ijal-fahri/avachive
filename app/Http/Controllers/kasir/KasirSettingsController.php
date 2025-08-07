@@ -12,7 +12,7 @@ class KasirSettingsController extends Controller
      */
     public function index()
     {
-        return view ('kasir.settings');
+        return view ('kasir.pengaturan');
     }
 
     /**

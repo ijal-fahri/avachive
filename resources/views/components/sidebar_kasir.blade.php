@@ -8,7 +8,7 @@
       <li><a href="../kasir/pelanggan" class="block px-6 py-3 text-white hover:bg-teal-500 rounded-md transition duration-200">Pelanggan</a></li>
       <li><a href="../kasir/buat_order" class="block px-6 py-3 text-white hover:bg-teal-500 rounded-md transition duration-200">Buat Order</a></li>
       <li><a href="../kasir/data_order" class="block px-6 py-3 text-white hover:bg-teal-500 rounded-md transition duration-200">Data Order</a></li>
-      <li><a href="../kasir/settings" class="block px-6 py-3 text-white hover:bg-teal-500 rounded-md transition duration-200">Pengaturan</a></li>
+      <li><a href="../kasir/pengaturan" class="block px-6 py-3 text-white hover:bg-teal-500 rounded-md transition duration-200">Pengaturan</a></li>
     </ul>
   </nav>
 
