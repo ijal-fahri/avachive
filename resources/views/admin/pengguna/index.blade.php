@@ -245,12 +245,12 @@
 
         <!-- Main Content -->
         <main class="main-content fade-in">
-            <div class="topbar fade-in">
-                <div>Data Pengguna</div>
-                <div class="user-info">
-                    <i class="bi bi-person-circle fs-5"></i> Rusqi
-                </div>
-            </div>
+      <div class="topbar fade-in">
+        <div>Pengguna</div>
+        <div class="user-info">
+          <i class="bi bi-person-circle fs-5"></i> {{ Auth::user()->name }}
+        </div>
+      </div>
 
             <section class="user-section fade-in">
                 <h3>Daftar Pengguna</h3>
