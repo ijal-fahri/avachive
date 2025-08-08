@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\DataOrderController; 
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -53,9 +54,7 @@ Route::get('/home', function () {
 })->name('home');
 
 // Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Order
 Route::get('order', [DataOrderController::class, 'index'])->name('dataorder');
