@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\BuatOrder;
-use Carbon\Carbon; // Pastikan Carbon di-import
+use Carbon\Carbon;
 
 class DataOrderController extends Controller
 {
@@ -21,8 +21,6 @@ class DataOrderController extends Controller
 
         // Struktur data yang akan dikirim ke view
         $orderData = [];
-        
-        // 1. Array untuk menampung tahun, diinisialisasi sebagai array kosong
         $availableYears = [];
 
         foreach ($orders as $date => $ordersOnDate) {
@@ -37,7 +35,9 @@ class DataOrderController extends Controller
 
             foreach ($ordersOnDate as $order) {
                 $dailyOrders[] = [
+                    // Mengambil nama dari relasi 'pelanggan'
                     'nama' => $order->pelanggan->nama ?? 'Pelanggan Dihapus',
+                    'layanan' => $order->layanan, // <-- Menambahkan info layanan
                     'total_harga' => $order->total_harga,
                 ];
                 $dailyTotal += $order->total_harga;
@@ -52,10 +52,11 @@ class DataOrderController extends Controller
         // Mengurutkan tahun dari yang terbaru
         rsort($availableYears);
 
-        // 2. Mengirim variabel 'years' ke view bersama dengan 'orders'
+        // Mengirim data ke view 'admin.order'
+        // Pastikan nama view-nya benar
         return view('order', [
-            'orders' => $orderData,
-            'years' => $availableYears // <-- BARIS INI YANG MENGIRIM VARIABEL $years
+            'order_groups' => $orderData, // Mengganti nama variabel agar lebih jelas
+            'years' => $availableYears
         ]);
     }
 }

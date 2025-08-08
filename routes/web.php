@@ -13,6 +13,7 @@ use App\Http\Controllers\kasir\KasirSettingsController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\DataOrderController; 
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,9 +58,7 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 // Order
-Route::get('/order', function () {
-    return view('order');
-})->name('dataorder');
+Route::get('order', [DataOrderController::class, 'index'])->name('dataorder');
 
 // Pengguna
 Route::get('/pengguna', [PenggunaController::class, 'index'])->name('datauser');
