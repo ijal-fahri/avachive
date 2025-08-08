@@ -174,7 +174,7 @@
       <a href="/admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
       <a href="{{ route('produk.index') }}"><i class="bi bi-list-check"></i> Layanan</a>
       <a href="{{ route('dataorder') }}" class="active"><i class="bi bi-cart-check"></i> Order</a>
-      <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Pengguna</a>
+      <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Karyawan</a>
       <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
     </aside>
 
