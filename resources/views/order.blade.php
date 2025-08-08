@@ -194,11 +194,11 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="main-content">
-      <div class="topbar">
+    <main class="main-content fade-in">
+      <div class="topbar fade-in">
         <div>Data Order Laundry</div>
         <div class="user-info">
-          <i class="bi bi-person-circle"></i> Rusqi
+          <i class="bi bi-person-circle fs-5"></i> {{ Auth::user()->name }}
         </div>
       </div>
 

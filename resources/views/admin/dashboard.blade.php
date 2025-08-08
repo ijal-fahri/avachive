@@ -198,13 +198,13 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <div class="topbar">
-                <div>Selamat Datang, Admin!</div>
-                <div class="user-info">
-                    <i class="bi bi-person-circle fs-5"></i> Rusqi
-                </div>
-            </div>
+        <main class="main-content fade-in">
+      <div class="topbar fade-in">
+        <div>Selamat Datang, Admin!</div>
+        <div class="user-info">
+          <i class="bi bi-person-circle fs-5"></i> {{ Auth::user()->name }}
+        </div>
+      </div>
 
             <section class="dashboard-section">
                 <h3>Statistik Hari Ini</h3>

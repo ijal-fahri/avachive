@@ -221,21 +221,21 @@
       <a href="{{ route('dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
       <a href="{{ route('produk') }}"><i class="bi bi-list-check"></i> Layanan</a>
       <a href="{{ route('dataorder') }}"><i class="bi bi-cart-check"></i> Order</a>
-      <a href="{{ route('datauser') }}" class="active"><i class="bi bi-people"></i> Pengguna</a>
+      <a href="{{ route('datauser') }}" class="active"><i class="bi bi-people"></i> Karyawan</a>
       <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
     </aside>
 
     <!-- Main Content -->
     <main class="main-content fade-in">
       <div class="topbar fade-in">
-        <div>Data Pengguna</div>
+        <div>Pengaturan</div>
         <div class="user-info">
-          <i class="bi bi-person-circle fs-5"></i> Rusqi
+          <i class="bi bi-person-circle fs-5"></i> {{ Auth::user()->name }}
         </div>
       </div>
 
       <section class="user-section fade-in">
-        <h3>Daftar Pengguna</h3>
+        <h3>Daftar Karyawan</h3>
 
         @if(session('success'))
         <div style="background:#dff9fb; padding:10px; border-radius:8px; margin-bottom:15px; color:#0984e3;">

@@ -199,11 +199,11 @@
       <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Pengguna</a>
       <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
     </aside>
-    <main class="main-content">
-      <div class="topbar">
+    <main class="main-content fade-in">
+      <div class="topbar fade-in">
         <div>Data Layanan Laundry</div>
         <div class="user-info">
-          <i class="bi bi-person-circle fs-5"></i> Rusqi
+          <i class="bi bi-person-circle fs-5"></i> {{ Auth::user()->name }}
         </div>
       </div>
       <section class="produk-section">
