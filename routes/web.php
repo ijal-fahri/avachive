@@ -76,8 +76,5 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 
 // Produk / Layanan: CRUD (pakai Controller)
-Route::get('/produk', [LayananController::class, 'index'])->name('produk');
-Route::post('/produk', [LayananController::class, 'store'])->name('produk.store');
-Route::put('/produk/{id}', [LayananController::class, 'update'])->name('produk.update');
-Route::delete('/produk/{id}', [LayananController::class, 'destroy'])->name('produk.destroy');
+Route::resource('produk', LayananController::class);
 

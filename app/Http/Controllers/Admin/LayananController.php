@@ -10,44 +10,48 @@ class LayananController extends Controller
 {
     public function index()
     {
-        $layanans = Layanan::all();
+        $layanans = Layanan::latest()->get(); 
         return view('admin.layanan.index', compact('layanans'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string',
+            'nama' => 'required|string|max:255',
             'paket' => 'required|string',
-            'deskripsi' => 'nullable|string',
-            'harga' => 'required|integer',
+            'kategori' => 'required|string|in:Kiloan,Satuan',
+            'harga' => 'required|numeric|min:0',
         ]);
 
         Layanan::create($request->all());
 
-        return redirect()->route('produk')->with('success', 'Layanan berhasil ditambahkan.');
+        return redirect()->route('produk.index')->with('success', 'Layanan berhasil ditambahkan.');
     }
 
-    public function update(Request $request, $id)
+    /**
+     * NAMA VARIABEL DIUBAH DARI $layanan MENJADI $produk
+     */
+    public function update(Request $request, Layanan $produk)
     {
-        $layanan = Layanan::findOrFail($id);
-
         $request->validate([
-            'nama' => 'required|string',
+            'nama' => 'required|string|max:255',
             'paket' => 'required|string',
-            'deskripsi' => 'nullable|string',
-            'harga' => 'required|integer',
+            'kategori' => 'required|string|in:Kiloan,Satuan',
+            'harga' => 'required|numeric|min:0',
         ]);
 
-        $layanan->update($request->all());
+        $produk->update($request->all()); // <-- Menggunakan $produk
 
-        return redirect()->route('produk')->with('success', 'Layanan berhasil diperbarui.');
+        return redirect()->route('produk.index')->with('success', 'Layanan berhasil diperbarui.');
     }
 
-    public function destroy($id)
+    /**
+     * NAMA VARIABEL DIUBAH DARI $layanan MENJADI $produk
+     */
+    public function destroy(Layanan $produk)
     {
-        Layanan::findOrFail($id)->delete();
+        $produk->delete(); // <-- Menggunakan $produk
 
-        return redirect()->route('produk')->with('success', 'Layanan berhasil dihapus.');
+        return redirect()->route('produk.index')->with('success', 'Layanan berhasil dihapus.');
     }
 }
