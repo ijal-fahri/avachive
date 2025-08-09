@@ -301,9 +301,9 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h2>Avachive</h2>
-        <a href="{{ route('dashboard') }}"><i class="bi bi-box-seam"></i> Pengiriman</a>
-        <a href="{{ route('riwayat') }}"><i class="bi bi-clock-history"></i> Riwayat</a>
-        <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
+        <a href="/driver/dashboard"><i class="bi bi-box-seam"></i> Pengiriman</a>
+        <a href="/driver/riwayat"><i class="bi bi-clock-history"></i> Riwayat</a>
+        <a href="/driver/pengaturan"><i class="bi bi-gear"></i> Pengaturan</a>
     </aside>
 
     <!-- Main Content -->

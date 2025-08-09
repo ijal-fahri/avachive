@@ -19,12 +19,12 @@ class KasirPelangganController extends Controller
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where('nama', 'like', "%{$search}%")
-                  ->orWhere('no_handphone', 'like', "%{$search}%")
-                  ->orWhere('provinsi', 'like', "%{$search}%")
-                  ->orWhere('kota', 'like', "%{$search}%")
-                  ->orWhere('kecamatan', 'like', "%{$search}%")
-                  ->orWhere('kodepos', 'like', "%{$search}%")
-                  ->orWhere('detail_alamat', 'like', "%{$search}%");
+                ->orWhere('no_handphone', 'like', "%{$search}%")
+                ->orWhere('provinsi', 'like', "%{$search}%")
+                ->orWhere('kota', 'like', "%{$search}%")
+                ->orWhere('kecamatan', 'like', "%{$search}%")
+                ->orWhere('kodepos', 'like', "%{$search}%")
+                ->orWhere('detail_alamat', 'like', "%{$search}%");
         }
 
         // Sort

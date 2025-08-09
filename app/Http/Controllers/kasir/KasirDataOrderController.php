@@ -1,65 +1,56 @@
 <?php
 
+// file: KasirDataOrderController.php
+
 namespace App\Http\Controllers\kasir;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\BuatOrder;
+use App\Models\TambahPelanggan;
 
 class KasirDataOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request) // Tambahkan Request $request
     {
-        return view ('kasir.data_order');
+        $query = BuatOrder::with('pelanggan');
+
+        // Logika untuk fitur pencarian
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                // Cari berdasarkan nama pelanggan
+                $q->whereHas('pelanggan', function ($q2) use ($searchTerm) {
+                    $q2->where('nama', 'like', '%' . $searchTerm . '%');
+                })->orWhere('id', 'like', '%' . $searchTerm . '%'); // Atau cari berdasarkan ID order
+            });
+        }
+
+        // Logika untuk fitur filter status
+        if ($request->has('status') && $request->status != 'Semua') {
+            $query->where('status', $request->status);
+        }
+
+        // Pisahkan order yang belum selesai dan yang sudah selesai
+        $orders = $query->where('status', '!=', 'Selesai')->orderBy('created_at', 'desc')->get();
+        $historyOrders = BuatOrder::with('pelanggan')->where('status', 'Selesai')->orderBy('created_at', 'desc')->get();
+
+        return view('kasir.data_order', compact('orders', 'historyOrders'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Update the status of the specified resource.
      */
-    public function create()
+    public function updateStatus(Request $request, BuatOrder $order)
     {
-        //
-    }
+        $request->validate(['status' => 'required|in:Diproses,Sudah Bisa Diambil,Selesai']);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $order->status = $request->status;
+        $order->save();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json(['message' => 'Status berhasil diubah!', 'order' => $order]);
     }
 }

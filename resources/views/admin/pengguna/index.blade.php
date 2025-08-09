@@ -238,8 +238,8 @@
             <h2>Avachive</h2>
             <a href="admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a href="{{ route('produk') }}"><i class="bi bi-list-check"></i> Layanan</a>
-            <a href="{{ route('dataorder') }}"><i class="bi bi-cart-check"></i> Order</a>
-            <a href="{{ route('datauser') }}" class="active"><i class="bi bi-people"></i> Pengguna</a>
+            <a href="/admin/dataorder"><i class="bi bi-cart-check"></i> Order</a>
+            <a href="/admin/pengguna/index" class="active"><i class="bi bi-people"></i> Pengguna</a>
             <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
         </aside>
 

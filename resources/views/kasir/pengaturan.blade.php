@@ -46,11 +46,11 @@
             <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                     <div class="profile-avatar bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-                        SM
+                        {{ strtoupper(substr($user->name, 0, 2)) }}
                     </div>
                     <div class="text-center md:text-left">
-                        <h2 class="text-xl font-bold text-gray-800">Sitha Marino</h2>
-                        <p class="text-gray-600 mb-4">Kasir</p>
+                        <h2 class="text-xl font-bold text-gray-800">{{ $user->name }}</h2>
+                        <p class="text-gray-600 mb-4">{{ $user->usertype }}</p>
                     </div>
                 </div>
             </div>
@@ -97,6 +97,7 @@
             </div>
 
             <!-- Action Section -->
+            <!-- Action Section -->
             <div class="bg-white rounded-xl shadow-sm p-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Action</h2>
 
@@ -104,8 +105,14 @@
                     <!-- Log Out -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="logout-btn">
-                            <i class="bi bi-box-arrow-right"></i> Logout
+                        <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-lg transition-colors duration-200 border border-red-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Keluar
                         </button>
                     </form>
                 </div>
