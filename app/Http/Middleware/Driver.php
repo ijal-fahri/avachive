@@ -15,7 +15,7 @@ class Driver
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->usertype != 'Admin')
+        if(Auth::user()->usertype != 'driver')
         {
             return redirect('dashboard');
         }

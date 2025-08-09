@@ -186,7 +186,7 @@
             <a href="{{ route('produk') }}" class="{{ request()->routeIs('produk') ? 'active' : '' }}">
                 <i class="bi bi-box"></i> Produk
             </a>
-            <a href="{{ route('dataorder') }}" class="{{ request()->routeIs('dataorder') ? 'active' : '' }}">
+            <a href="/admin/dataorder" class="{{ request()->routeIs('dataorder') ? 'active' : '' }}">
                 <i class="bi bi-cart-check"></i> Order
             </a>
             <a href="{{ route('datauser') }}" class="{{ request()->routeIs('datauser') ? 'active' : '' }}">

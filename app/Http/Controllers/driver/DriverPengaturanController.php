@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\kasir;
+namespace App\Http\Controllers\driver;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class KasirSettingsController extends Controller
+class DriverPengaturanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = Auth::user();
-        return view('kasir.pengaturan', compact('user'));
+        
+        return view ('driver.pengaturan');
+    
     }
 
     /**
