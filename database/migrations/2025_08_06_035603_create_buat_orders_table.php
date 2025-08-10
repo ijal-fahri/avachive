@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('waktu_pembayaran');
             $table->string('metode_pengambilan');
             $table->integer('total_harga');
+            $table->string('status')->default('Diproses');
             $table->timestamps();
         });
     }

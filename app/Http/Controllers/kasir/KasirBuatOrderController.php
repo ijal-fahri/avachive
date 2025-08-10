@@ -16,7 +16,7 @@ class KasirBuatOrderController extends Controller
     public function index()
     {
         $pelanggans = TambahPelanggan::all();
-        $layanans = Layanan::all(); // Asumsikan ada model Layanan
+        $layanans = Layanan::all(); 
         return view('kasir.buat_order', compact('pelanggans', 'layanans'));
     }
 
@@ -28,7 +28,7 @@ class KasirBuatOrderController extends Controller
         // Validasi data
         $validatedData = $request->validate([
             'tambah_pelanggan_id' => 'required|exists:tambah_pelanggans,id',
-            'layanan' => 'required|json', // Data layanan dalam format JSON
+            'layanan' => 'required|json',
             'metode_pembayaran' => 'required|string',
             'waktu_pembayaran' => 'required|string',
             'metode_pengambilan' => 'required|string',

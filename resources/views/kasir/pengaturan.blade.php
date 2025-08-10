@@ -46,11 +46,11 @@
             <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                     <div class="profile-avatar bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
-                        SM
+                        {{ strtoupper(substr($user->name, 0, 2)) }}
                     </div>
                     <div class="text-center md:text-left">
-                        <h2 class="text-xl font-bold text-gray-800">Sitha Marino</h2>
-                        <p class="text-gray-600 mb-4">Kasir</p>
+                        <h2 class="text-xl font-bold text-gray-800">{{ $user->name }}</h2>
+                        <p class="text-gray-600 mb-4">{{ $user->usertype }}</p>
                     </div>
                 </div>
             </div>
@@ -96,6 +96,7 @@
                 </div>
             </div>
 
+            <!-- Action Section -->
             <!-- Action Section -->
             <div class="bg-white rounded-xl shadow-sm p-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Action</h2>

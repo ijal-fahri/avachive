@@ -12,13 +12,15 @@ use App\Http\Controllers\kasir\KasirDataOrderController;
 use App\Http\Controllers\kasir\KasirSettingsController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\driver\DriverPengaturanController;
+use App\Http\Controllers\driver\DriverRiwayatController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -28,37 +30,23 @@ Route::middleware('auth')->group(function () {
 });
 
 //role
-Route::get('/admin/dashboard',[AdminController::class, 'index'])->middleware('auth','admin');
+Route::get('/admin/dashboard',[AdminController::class, 'index'])->middleware('auth','admin')->name('admin.dashboard');
 Route::get('/kasir/dashboard',[KasirController::class, 'index'])->middleware('auth','kasir');
 Route::get('/driver/dashboard',[DriverController::class, 'index'])->middleware('auth','driver');
 
 // Kasir
 Route::resource('/kasir/pelanggan', KasirPelangganController::class);
 Route::resource('/kasir/buat_order', KasirBuatOrderController::class);
-Route::resource('/kasir/data_order', KasirDataOrderController::class);
+// Route::resource('/kasir/data_order', KasirDataOrderController::class);
 Route::resource('/kasir/pengaturan', KasirSettingsController::class);
+Route::get('/kasir/data_order', [KasirDataOrderController::class, 'index'])->middleware('auth','kasir')->name('kasir.dataorder.index');
+Route::patch('/kasir/data_order/{order}/status', [KasirDataOrderController::class, 'updateStatus'])->middleware('auth','kasir')->name('kasir.dataorder.update_status');
 
-
-
-//admin
-
-
+//Driver
+Route::resource('/driver/riwayat', DriverRiwayatController::class);
+Route::resource('/driver/pengaturan', DriverPengaturanController::class);
 
 require __DIR__.'/auth.php';
-
-Route::get('/home', function () {
-    return view('welcome');
-})->name('home');
-
-// Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
-// Order
-Route::get('/order', function () {
-    return view('order');
-})->name('dataorder');
 
 // Pengguna
 Route::get('/pengguna', [PenggunaController::class, 'index'])->name('datauser');
