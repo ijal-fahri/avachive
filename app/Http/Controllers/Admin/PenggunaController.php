@@ -27,7 +27,7 @@ class PenggunaController extends Controller
         'name' => $request->name,
         'usertype' => $request->usertype,
         'password' => Hash::make($request->password),
-        'plain_password' => $request->password, // ✅ Ini sudah benar
+        'plain_password' => $request->password, 
     ]);
 
         return redirect()->back()->with('success', 'Karyawan berhasil ditambahkan.');
@@ -50,7 +50,7 @@ class PenggunaController extends Controller
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
-            $data['plain_password'] = $request->password; // ✅ Simpan ulang password asli saat update
+            $data['plain_password'] = $request->password; 
         }
 
         $user->update($data);
