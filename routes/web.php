@@ -12,6 +12,9 @@ use App\Http\Controllers\kasir\KasirDataOrderController;
 use App\Http\Controllers\kasir\KasirSettingsController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\DataOrderController; 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\driver\DriverPengaturanController;
 use App\Http\Controllers\driver\DriverRiwayatController;
 
@@ -48,6 +51,16 @@ Route::resource('/driver/pengaturan', DriverPengaturanController::class);
 
 require __DIR__.'/auth.php';
 
+Route::get('/home', function () {
+    return view('welcome');
+})->name('home');
+
+// Dashboard
+Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+// Order
+Route::get('order', [DataOrderController::class, 'index'])->name('dataorder');
+
 // Pengguna
 Route::get('/pengguna', [PenggunaController::class, 'index'])->name('datauser');
 Route::post('/pengguna', [PenggunaController::class, 'store'])->name('pengguna.store');
@@ -60,14 +73,10 @@ Route::get('/pengaturan', function () {
 })->name('pengaturan');
 
 // Logout (sebaiknya gunakan yang dari auth.php)
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/')->with('status', 'Berhasil logout');
-})->name('logout');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
 
 // Produk / Layanan: CRUD (pakai Controller)
-Route::get('/produk', [LayananController::class, 'index'])->name('produk');
-Route::post('/produk', [LayananController::class, 'store'])->name('produk.store');
-Route::put('/produk/{id}', [LayananController::class, 'update'])->name('produk.update');
-Route::delete('/produk/{id}', [LayananController::class, 'destroy'])->name('produk.destroy');
+Route::resource('produk', LayananController::class);
 

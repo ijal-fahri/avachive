@@ -6,5 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Layanan extends Model
 {
-    protected $fillable = ['nama', 'paket', 'deskripsi', 'harga'];
+    // Tidak perlu 'use HasFactory;' jika tidak digunakan
+    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'nama',
+        'paket',
+        'kategori',
+        'harga',
+        'satuan', // <-- INI YANG DITAMBAHKAN
+    ];
 }
