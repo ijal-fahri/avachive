@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Buat Order</title>
     <script src="https://kit.fontawesome.com/0948e65078.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         /* Gaya CSS */
         .modal-content {
@@ -327,7 +330,7 @@
             const id = serviceCard.dataset.id;
             const name = serviceCard.dataset.nama;
             const price = parseInt(serviceCard.dataset.harga);
-            const category = 'Default'; // Ganti dengan data kategori yang benar
+            const category = serviceCard.querySelector('span.text-gray-800').textContent;
 
             if (selectedServices[id]) {
                 selectedServices[id].quantity++;
@@ -370,7 +373,72 @@
             }
         });
     });
-    
+
+    // Form Submission Handler
+    orderForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Disable tombol submit untuk mencegah multiple clicks
+        submitOrderBtn.disabled = true;
+        submitOrderBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Menyimpan...';
+        
+        // Kirim data form dengan AJAX
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                tambah_pelanggan_id: customerIdInput.value,
+                layanan: document.getElementById('layanan_input').value,
+                total_harga: document.getElementById('total_harga_input').value,
+                metode_pembayaran: document.getElementById('metode_pembayaran').value,
+                waktu_pembayaran: document.getElementById('waktu_pembayaran').value,
+                metode_pengambilan: document.getElementById('metode_pengambilan').value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Tampilkan SweetAlert sukses
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: 'Order berhasil disimpan',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    willClose: () => {
+                        // Redirect setelah alert ditutup
+                        window.location.href = "data_order"; // Ganti dengan URL yang sesuai
+                    }
+                });
+            } else {
+                // Tampilkan error jika ada
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: data.message || 'Terjadi kesalahan saat menyimpan order',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                submitOrderBtn.disabled = false;
+                submitOrderBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Simpan Order';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Terjadi kesalahan saat menyimpan order',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            submitOrderBtn.disabled = false;
+            submitOrderBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Simpan Order';
+        });
+    });
 </script>
 </body>
 </html>
