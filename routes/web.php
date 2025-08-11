@@ -43,6 +43,7 @@ Route::get('/kasir/data_order', [KasirDataOrderController::class, 'index'])->mid
 Route::patch('/kasir/data_order/{order}/status', [KasirDataOrderController::class, 'updateStatus'])->middleware('auth','kasir')->name('kasir.dataorder.update_status');
 
 //Driver
+Route::post('/driver/update-status/{id}', [DriverController::class, 'updateStatus']);
 Route::resource('/driver/riwayat', DriverRiwayatController::class);
 Route::resource('/driver/pengaturan', DriverPengaturanController::class);
 

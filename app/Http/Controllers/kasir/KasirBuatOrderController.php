@@ -38,6 +38,9 @@ class KasirBuatOrderController extends Controller
         // Simpan data order baru
         BuatOrder::create($validatedData);
 
-        return redirect()->route('buat_order.index')->with('success', 'Order berhasil dibuat!');
+        return response()->json([
+        'success' => true,
+        'message' => 'Order berhasil disimpan'
+    ]);
     }
 }
