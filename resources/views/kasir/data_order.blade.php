@@ -282,10 +282,6 @@
                 <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                     <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                         <div>
-                            <p class="text-sm text-gray-700">
-                                Menampilkan <span class="font-medium">1</span> sampai <span class="font-medium">3</span>
-                                dari <span class="font-medium">12</span> hasil
-                            </p>
                         </div>
                         <div>
                             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">

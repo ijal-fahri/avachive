@@ -8,6 +8,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         * {
@@ -22,12 +23,10 @@
             display: flex;
         }
 
-        /* Sidebar Hijau Tua */
         .sidebar {
             width: 220px;
             height: 100vh;
             background-color: #14532d;
-            /* hijau tua */
             color: #fff;
             padding: 20px;
             position: fixed;
@@ -61,7 +60,6 @@
 
         .sidebar a:hover {
             background-color: #166534;
-            /* hover hijau gelap */
         }
 
         .main-content {
@@ -241,7 +239,6 @@
             gap: 15px;
         }
 
-        /* Mobile Toggle Sidebar */
         #toggleMenu {
             display: none;
         }
@@ -298,7 +295,6 @@
     <input type="checkbox" id="toggleMenu" hidden />
     <label for="toggleMenu" class="mobile-toggle"><i class="bi bi-list"></i></label>
 
-    <!-- Sidebar -->
     <aside class="sidebar">
         <h2>Avachive</h2>
         <a href="/driver/dashboard"><i class="bi bi-box-seam"></i> Pengiriman</a>
@@ -306,7 +302,6 @@
         <a href="/driver/pengaturan"><i class="bi bi-gear"></i> Pengaturan</a>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-content">
         <div class="header">
             <h3>📦 Barang Siap Antar</h3>
@@ -325,23 +320,33 @@
         </div>
 
         <div class="card">
-            <table id="tablePengiriman">
+            <table class="table-auto w-full border">
                 <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>Nama Pelanggan</th>
-                        <th>Alamat</th>
-                        <th>Barang</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                        <th class="border px-4 py-2">Nama Pelanggan</th>
+                        <th class="border px-4 py-2">Metode Pengambilan</th>
+                        <th class="border px-4 py-2">Status</th>
+                        <th class="border px-4 py-2">Tanggal</th>
                     </tr>
                 </thead>
-                <tbody id="tbodyPengiriman"></tbody>
+                <tbody>
+                    @forelse($orders as $order)
+                        <tr>
+                            <td class="border px-4 py-2">{{ $order->pelanggan->nama ?? '-' }}</td>
+                            <td class="border px-4 py-2">{{ $order->metode_pengambilan }}</td>
+                            <td class="border px-4 py-2">{{ $order->status }}</td>
+                            <td class="border px-4 py-2">{{ $order->created_at->format('d-m-Y') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="border px-4 py-2 text-center">Tidak ada data</td>
+                        </tr>
+                    @endforelse
+                </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Modal -->
     <div class="modal" id="detailModal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -351,39 +356,6 @@
     </div>
 
     <script>
-        const dataPengiriman = [{
-                nama: "Fadlan",
-                hp: "+6285xxxx",
-                alamat: "Ciomas",
-                alamatLengkap: "Jawa Barat, Bogor, Ciomas",
-                layanan: "Cuci Sepatu",
-                kategori: "Satuan",
-                harga: 80000,
-                jumlah: 1,
-                subtotal: 80000,
-                status: "Belum Diantar",
-                waktuBayar: "Bayar Sekarang",
-                waktuOrder: "04-08-2025 09:30",
-                pembayaran: "NonTunai",
-                pengambilan: "Ambil Sendiri"
-            },
-            {
-                nama: "Dewi",
-                hp: "+6285xxxx",
-                alamat: "Bogor Utara",
-                alamatLengkap: "Bogor Utara, Jawa Barat",
-                layanan: "Setrika Baju",
-                kategori: "Kiloan",
-                harga: 15000,
-                jumlah: 2,
-                subtotal: 30000,
-                status: "Sudah Diantar",
-                waktuBayar: "Bayar Dulu",
-                waktuOrder: "04-08-2025 08:00",
-                pembayaran: "Tunai",
-                pengambilan: "Diantar"
-            }
-        ];
 
         const tbody = document.getElementById("tbodyPengiriman");
         const countBelum = document.getElementById("countBelum");
@@ -431,6 +403,10 @@
                 const data = btn.dataset;
                 const total = parseInt(data.harga) * parseInt(data.jumlah);
 
+                const waLink = `https://wa.me/${data.hp.replace(/\D/g, '')}?text=${encodeURIComponent(
+          Halo ${data.nama}, saya driver dari Avachive. Saya mau mengonfirmasi pengiriman untuk alamat: ${data.alamatLengkap}
+        )}`;
+
                 detailContent.innerHTML = `
           <p><strong>Nama:</strong> ${data.nama}</p>
           <p><strong>No HP:</strong> ${data.hp}</p>
@@ -449,7 +425,7 @@
           </div>
           <p><strong>Total:</strong> Rp ${total.toLocaleString()}</p>
           <div class="button-group">
-            <button class="btn-green"><i class="bi bi-whatsapp"></i> WhatsApp</button>
+            <a href="${waLink}" target="_blank" class="btn-green"><i class="bi bi-whatsapp"></i> WhatsApp</a>
             <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.alamatLengkap)}"
               class="btn-gray" target="_blank"><i class="bi bi-geo-alt-fill"></i> Buka Maps</a>
           </div>
@@ -461,12 +437,27 @@
         function closeModal() {
             modal.style.display = "none";
         }
-
         window.onclick = function(e) {
             if (e.target === modal) closeModal();
         }
-    </script>
 
+        document.querySelectorAll('.btn-done').forEach(btn => {
+            btn.addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Yakin sudah sesuai alamat?',
+                    text: "Pastikan barang diantar ke alamat yang benar.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, sudah benar',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('Selesai!', 'Status pengiriman diperbarui.', 'success');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
