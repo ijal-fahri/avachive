@@ -105,7 +105,7 @@
         </div>
     </div>
 </div>
-<div id="pelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-gray-900 bg-opacity-50 transition-opacity">
+<div id="pelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-white/50 backdrop-blur-sm transition-opacity">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
         <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800">Tambah Pelanggan</h2>
