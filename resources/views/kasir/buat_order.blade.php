@@ -9,7 +9,6 @@
     <title>Buat Order</title>
     <script src="https://kit.fontawesome.com/0948e65078.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <style>
         /* Gaya CSS */
         .modal-content {

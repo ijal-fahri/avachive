@@ -25,6 +25,17 @@
             height: 80px;
             font-size: 2rem;
         }
+        
+        /* Modal styles */
+        .modal-overlay {
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -57,32 +68,14 @@
 
             <!-- Support & About Section -->
             <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Support & About</h2>
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">About</h2>
 
                 <div class="space-y-3">
-                    <!-- Tutorial -->
-                    <div class="setting-card p-4 border rounded-lg cursor-pointer">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-book"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-medium">Tutorial Penggunaan Aplikasi</h3>
-                                    <p class="text-sm text-gray-500">Panduan lengkap menggunakan aplikasi</p>
-                                </div>
-                            </div>
-                            <i class="fas fa-chevron-right text-gray-400"></i>
-                        </div>
-                    </div>
-
                     <!-- About App -->
-                    <div class="setting-card p-4 border rounded-lg cursor-pointer">
+                    <div id="aboutAppCard" class="setting-card p-4 border rounded-lg cursor-pointer">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div
-                                    class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center mr-4">
+                                <div class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center mr-4">
                                     <i class="fas fa-info-circle"></i>
                                 </div>
                                 <div>
@@ -96,7 +89,6 @@
                 </div>
             </div>
 
-            <!-- Action Section -->
             <!-- Action Section -->
             <div class="bg-white rounded-xl shadow-sm p-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b">Action</h2>
@@ -121,34 +113,90 @@
     </div>
     <!-- Main Content End -->
 
-    <script>
-        // Fungsi untuk tombol logout
-        document.querySelectorAll('.setting-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const action = this.querySelector('h3').textContent;
+    <!-- About Application Modal -->
+    <div id="aboutAppModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0 bg-white/50 backdrop-blur-sm"></div>
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md modal-content relative">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800">Tentang Aplikasi</h3>
+                    <button id="closeAboutModal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-tshirt text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">Laundry Management System</h4>
+                            <p class="text-sm text-gray-600">Versi 1.0.0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 pt-4">
+                        <p class="text-gray-700 mb-3">Aplikasi ini dirancang untuk membantu pengelolaan bisnis laundry dengan fitur:</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            <li>Manajemen order laundry</li>
+                            <li>Manajemen pelanggan</li>
+                            <li>Laporan keuangan</li>
+                            <li>Manajemen layanan</li>
+                            <li>Monitoring status order</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button id="closeAboutBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                if (action === 'Log Out') {
-                    if (confirm('Apakah Anda yakin ingin keluar?')) {
-                        // Redirect ke halaman logout
-                        window.location.href = '/logout';
-                    }
-                } else if (action === 'Tutorial Penggunaan Aplikasi') {
-                    // Buka tutorial
-                    alert('Membuka tutorial penggunaan aplikasi');
-                } else if (action === 'Tentang Aplikasi') {
-                    // Buka tentang aplikasi
-                    alert('Membuka informasi tentang aplikasi');
-                }
-            });
+    <script>
+        // About Application Modal
+        const aboutModal = document.getElementById('aboutAppModal');
+        const aboutCard = document.getElementById('aboutAppCard');
+        const closeAboutBtn = document.getElementById('closeAboutBtn');
+        const closeAboutModalBtn = document.getElementById('closeAboutModal');
+        const modalOverlay = document.querySelector('.modal-overlay');
+
+        // Open about modal
+        aboutCard.addEventListener('click', () => {
+            aboutModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         });
 
-        // Fungsi untuk edit profil
-        document.querySelector('button').addEventListener('click', function() {
-            // Buka modal/edit profil
-            alert('Membuka form edit profil');
+        // Close about modal
+        const closeAboutModal = () => {
+            aboutModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        closeAboutBtn.addEventListener('click', closeAboutModal);
+        closeAboutModalBtn.addEventListener('click', closeAboutModal);
+        modalOverlay.addEventListener('click', closeAboutModal);
+
+        // Close when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !aboutModal.classList.contains('hidden')) {
+                closeAboutModal();
+            }
+        });
+
+        // Remove the old click handlers
+        document.querySelectorAll('.setting-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (this.id === 'aboutAppCard') {
+                    e.stopPropagation(); // Prevent the old alert from showing
+                }
+            });
         });
     </script>
 
 </body>
-
 </html>

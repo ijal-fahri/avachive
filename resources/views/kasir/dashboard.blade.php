@@ -167,59 +167,58 @@
 <!-- Main Content End -->
 
 <!-- Pelanggan Modal -->
-<div id="pelangganModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal">
-    <div class="modal-backdrop absolute inset-0 bg-black opacity-50"></div>
-    <div class="relative bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center z-10">
+<div id="pelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 pb-10 bg-white/50 backdrop-blur-sm transition-opacity overflow-y-auto">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 my-8 modal-content" style="max-height: 80vh; overflow-y: auto;">
+        <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800">Tambah Pelanggan</h2>
             <button id="closeModal" class="text-gray-500 hover:text-gray-700">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        
+    
         <div class="p-6">
-            <form id="formPelanggan" action="{{ route('pelanggan.store') }}" method="POST" class="mb-6">
+            <form id="formPelanggan" action="{{ route('pelanggan.store') }}" method="POST">
                 @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="mb-4">
-                        <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Pelanggan</label>
-                        <input type="text" name="nama" id="nama" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="no_handphone" class="block text-sm font-medium text-gray-700 mb-1">No. Handphone</label>
-                        <input type="tel" name="no_handphone" id="no_handphone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="provinsi" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
-                        <input type="text" name="provinsi" id="provinsi" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="kota" class="block text-sm font-medium text-gray-700 mb-1">Kota</label>
-                        <input type="text" name="kota" id="kota" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="kecamatan" class="block text-sm font-medium text-gray-700 mb-1">Kecamatan</label>
-                        <input type="text" name="kecamatan" id="kecamatan" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="kodepos" class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
-                        <input type="text" name="kodepos" id="kodepos" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <div class="mb-4">
+                    <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Pelanggan</label>
+                    <input type="text" name="nama" id="nama" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="no_handphone" class="block text-sm font-medium text-gray-700 mb-1">No. Handphone</label>
+                    <div class="flex">
+                        <input type="tel" name="no_handphone" id="no_handphone" class="flex-grow px-3 py-2 border-t border-r border-b border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     </div>
                 </div>
                 
+                <div class="mb-4">
+                    <label for="provinsi" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
+                    <input type="text" name="provinsi" id="provinsi" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="kota" class="block text-sm font-medium text-gray-700 mb-1">Kota</label>
+                    <input type="text" name="kota" id="kota" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="kecamatan" class="block text-sm font-medium text-gray-700 mb-1">Kecamatan</label>
+                    <input type="text" name="kecamatan" id="kecamatan" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="kodepos" class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
+                    <input type="text" name="kodepos" id="kodepos" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                
                 <div class="mb-6">
-                    <label for="detail_alamat" class="block text-sm font-medium text-gray-700 mb-1">Detail Alamat</label>
+                    <label for="detail_alamat" class="block text-sm font-medium text-gray-700 mb-1">Detail Alamat (Nama Jalan, Gedung, No Rumah)</label>
                     <textarea name="detail_alamat" id="detail_alamat" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
                 </div>
                 
                 <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" id="cancelBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Simpan</button>
+                    <button type="button" id="cancelBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">Kembali</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Simpan Data</button>
                 </div>
             </form>
         </div>
