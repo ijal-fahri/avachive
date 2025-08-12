@@ -2,12 +2,11 @@
 <header class="flex">
   <!-- Sidebar (hanya muncul saat layar besar) - Dipercantik -->
   <nav class="hidden lg:flex flex-col w-64 h-screen bg-gradient-to-b from-blue-800 to-blue-900 shadow-2xl fixed top-0 left-0 z-20">
-        <!-- Logo Section -->
-  <!-- Logo Section -->
-<div class="flex flex-col items-center justify-center py-8">
-    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-20 w-auto mb-4">
-    <span class="text-2xl font-bold text-white">Kasir</span>
-</div>
+    <!-- Logo Section -->
+    <div class="flex flex-col items-center justify-center py-8">
+      <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-20 w-auto mb-4">
+      <span class="text-2xl font-bold text-white">Kasir</span>
+    </div>
 
     <ul class="mt-6 space-y-1 px-2">
       <li>
@@ -35,12 +34,42 @@
         </a>
       </li>
       <li>
-        <a href="../kasir/data_order" class="flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 hover:text-white rounded-lg transition-all duration-200 group">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          Data Order
-        </a>
+        <!-- Data Order with submenu -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 text-blue-100 hover:bg-blue-700 hover:text-white rounded-lg transition-all duration-200 group">
+            <div class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Data Order
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" :class="{'transform rotate-90': open}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          
+          <!-- Submenu -->
+          <div x-show="open" x-transition:enter="transition ease-out duration-100" 
+               x-transition:enter-start="opacity-0 scale-95" 
+               x-transition:enter-end="opacity-100 scale-100" 
+               x-transition:leave="transition ease-in duration-75" 
+               x-transition:leave-start="opacity-100 scale-100" 
+               x-transition:leave-end="opacity-0 scale-95"
+               class="ml-8 mt-1 space-y-1">
+            <a href="../kasir/data_order" class="flex items-center px-4 py-2 text-sm text-blue-100 hover:bg-blue-700 hover:text-white rounded-lg transition-all duration-200 group">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+              List Order
+            </a>
+            <a href="../kasir/riwayat_order" class="flex items-center px-4 py-2 text-sm text-blue-100 hover:bg-blue-700 hover:text-white rounded-lg transition-all duration-200 group">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+              Riwayat Order
+            </a>
+          </div>
+        </div>
       </li>
       <li>
         <a href="../kasir/pengaturan" class="flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 hover:text-white rounded-lg transition-all duration-200 group">
@@ -98,12 +127,36 @@
           </a>
         </li>
         <li>
-          <a href="../kasir/data_order" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Data Order
-          </a>
+          <!-- Mobile submenu for Data Order -->
+          <div x-data="{ open: false }" class="relative">
+            <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Data Order
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" :class="{'transform rotate-90': open}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            
+            <!-- Mobile Submenu -->
+            <div x-show="open" x-transition class="ml-8 mt-1 space-y-1">
+              <a href="../kasir/list_order" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                List Order
+              </a>
+              <a href="../kasir/riwayat_order" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                Riwayat Order
+              </a>
+            </div>
+          </div>
         </li>
         <li>
           <a href="../kasir/pengaturan" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
@@ -118,3 +171,6 @@
     </nav>
   </div>
 </header>
+
+<!-- Add Alpine JS for the dropdown functionality -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>

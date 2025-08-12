@@ -187,121 +187,59 @@
     <!-- Main Content Start -->
     <div class="ml-0 lg:ml-64 min-h-screen p-6">
         <div class="max-w-6xl mx-auto">
-            <!-- Header Section -->
-            <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Data Order</h1>
-                    <p class="text-gray-600 mt-1">Daftar semua order pelanggan</p>
-                </div>
-                <div class="flex gap-3">
-                    <form action="{{ route('kasir.dataorder.index') }}" method="GET" class="flex gap-3">
-                        <div class="relative">
-                            <input type="text" name="search" placeholder="Cari order..."
-                                class="w-full md:w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ request('search') }}">
-                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                        </div>
-                        <select name="status" onchange="this.form.submit()"
-                            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="Filter Status">Filter Status</option>
-                            <option value="Semua" @if (request('status') == 'Semua') selected @endif>Semua</option>
-                            <option value="Diproses" @if (request('status') == 'Diproses') selected @endif>Diproses</option>
-                            <option value="Sudah Bisa Diambil" @if (request('status') == 'Sudah Bisa Diambil') selected @endif>Sudah
-                                Bisa Diambil</option>
-                            <option value="Selesai" @if (request('status') == 'Selesai') selected @endif>Selesai</option>
-                        </select>
-                    </form>
-                </div>
-            </div>
 
-
-            <!-- Order List -->
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                <!-- Table Header -->
-                <div class="grid grid-cols-12 gap-4 bg-gray-50 px-6 py-3 border-b font-medium text-gray-700">
-                    <div class="col-span-3">Pelanggan</div>
-                    <div class="col-span-2">Tanggal</div>
-                    <div class="col-span-2">Status</div>
-                    <div class="col-span-2 text-right">Subtotal</div>
-                    <div class="col-span-3">Aksi</div>
-                </div>
-
-                <!-- Order Items -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="divide-y divide-gray-200" id="orderList">
-                        @foreach ($orders as $order)
-                            <div class="order-card grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50"
-                                data-order-id="{{ $order->id }}">
-                                <div class="col-span-3 flex items-center">
-                                    <div
-                                        class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                        <span
-                                            class="text-blue-600 font-medium">{{ strtoupper(substr($order->pelanggan->nama, 0, 1)) }}</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-medium">{{ $order->pelanggan->nama }}</p>
-                                        <p class="text-sm text-gray-500">{{ $order->waktu_pembayaran }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-span-2 flex items-center text-gray-600">
-                                    {{ \Carbon\Carbon::parse($order->created_at)->format('d-m-Y') }}
-                                </div>
-                                <div class="col-span-2 flex items-center">
-                                    @php
-                                        $statusClass = '';
-                                        if ($order->status == 'Selesai') {
-                                            $statusClass = 'status-completed';
-                                        } elseif ($order->status == 'Diproses') {
-                                            $statusClass = 'status-processing';
-                                        } else {
-                                            $statusClass = 'status-pending';
-                                        }
-                                    @endphp
-                                    <span class="status-badge {{ $statusClass }}"
-                                        onclick="cycleStatus(this)">{{ $order->status }}</span>
-                                </div>
-                                <div class="col-span-2 flex items-center justify-end font-medium">Rp
-                                    {{ number_format($order->total_harga, 0, ',', '.') }}</div>
-                                <div class="col-span-3 flex items-center gap-2">
-                                    <button
-                                        class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm detail-btn"
-                                        data-order="{{ json_encode($order) }}">
-                                        <i class="fas fa-eye mr-1"></i> Detail
-                                    </button>
-                                    <button
-                                        class="text-gray-600 hover:text-gray-800 px-3 py-1 border border-gray-200 rounded-lg text-sm">
-                                        <i class="fas fa-print mr-1"></i> Cetak
-                                    </button>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Pagination -->
-                <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                        <div>
-                        </div>
-                        <div>
-                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                                <a href="#"
-                                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                    <span class="sr-only">Previous</span>
-                                    <i class="fas fa-chevron-left"></i>
-                                </a>
-                                <a href="#" aria-current="page"
-                                    class="z-10 bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">1</a>
-                                <a href="#"
-                                    class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">2</a>
-                                <a href="#"
-                                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                    <span class="sr-only">Next</span>
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </nav>
-                        </div>
-                    </div>
+            <!-- Riwayat Order Selesai -->
+            <div class="history-section mt-8">
+                <h3 class="history-title">Riwayat Order Selesai</h3>
+                <div class="history-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Pelanggan</th>
+                                <th>Tanggal</th>
+                                <th>Layanan</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($historyOrders as $order)
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                <span
+                                                    class="text-blue-600 font-medium">{{ strtoupper(substr($order->pelanggan->nama, 0, 1)) }}</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium">{{ $order->pelanggan->nama }}</p>
+                                                <p class="text-sm text-gray-500">{{ $order->pelanggan->no_handphone }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d-m-Y') }}</td>
+                                    <td>
+                                        @php
+                                            $layanan = json_decode($order->layanan, true);
+                                            echo implode(', ', array_column($layanan, 'nama'));
+                                        @endphp
+                                    </td>
+                                    <td>Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
+                                    <td><span class="history-badge badge-completed">{{ $order->status }}</span></td>
+                                    <td>
+                                        <button
+                                            class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm detail-btn"
+                                            data-order="{{ json_encode($order) }}">
+                                            <i class="fas fa-eye mr-1"></i> Detail
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
