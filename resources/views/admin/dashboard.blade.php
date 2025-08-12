@@ -72,7 +72,7 @@
             <a href="{{ route('dashboard') }}" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a href="{{ route('produk.index') }}"><i class="bi bi-list-check"></i> Layanan</a>
             <a href="{{ route('dataorder') }}"><i class="bi bi-cart-check"></i> Order</a>
-            <a href="#"><i class="bi bi-people"></i> Karyawan</a>
+            <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Karyawan</a>
             <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
         </aside>
 
