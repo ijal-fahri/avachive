@@ -9,6 +9,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\kasir\KasirPelangganController;
 use App\Http\Controllers\kasir\KasirBuatOrderController;
 use App\Http\Controllers\kasir\KasirDataOrderController;
+use App\Http\Controllers\kasir\KasirRiwayatOrderController;
 use App\Http\Controllers\kasir\KasirSettingsController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LayananController;
@@ -41,6 +42,8 @@ Route::resource('/kasir/buat_order', KasirBuatOrderController::class);
 Route::resource('/kasir/pengaturan', KasirSettingsController::class);
 Route::get('/kasir/data_order', [KasirDataOrderController::class, 'index'])->middleware('auth','kasir')->name('kasir.dataorder.index');
 Route::patch('/kasir/data_order/{order}/status', [KasirDataOrderController::class, 'updateStatus'])->middleware('auth','kasir')->name('kasir.dataorder.update_status');
+Route::get('/kasir/riwayat_order', [KasirRiwayatOrderController::class, 'index'])->name('kasir.riwayat-order');
+
 
 //Driver
 Route::post('/driver/update-status/{id}', [DriverController::class, 'updateStatus']);
