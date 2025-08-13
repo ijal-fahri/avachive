@@ -72,7 +72,7 @@
             <a href="{{ route('dashboard') }}" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a href="{{ route('produk.index') }}"><i class="bi bi-list-check"></i> Layanan</a>
             <a href="{{ route('dataorder') }}"><i class="bi bi-cart-check"></i> Order</a>
-            <a href="#"><i class="bi bi-people"></i> Karyawan</a>
+            <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Karyawan</a>
             <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
         </aside>
 
@@ -88,13 +88,36 @@
             <section class="dashboard-section">
                 <h3>Ringkasan Data</h3>
                 <div class="stat-box">
-                    <div class="stat-card"><h4>Pendapatan Tahun Ini</h4><p>Rp {{ number_format($pendapatan_tahun_ini, 0, ',', '.') }}</p></div>
-                    <div class="stat-card"><h4>Pendapatan Bulan Ini</h4><p>Rp {{ number_format($pendapatan_bulan_ini, 0, ',', '.') }}</p></div>
-                    <div class="stat-card"><h4>Total Order Tahun Ini</h4><p>{{ number_format($total_order_tahun_ini, 0, ',', '.') }}</p></div>
-                    <div class="stat-card"><h4>Total Order Bulan Ini</h4><p>{{ number_format($total_order_bulan_ini, 0, ',', '.') }}</p></div>
-                    <div class="stat-card"><h4>Jumlah Pelanggan</h4><p>{{ number_format($jumlah_pelanggan, 0, ',', '.') }}</p></div>
-                    <div class="stat-card"><h4>Jumlah Layanan</h4><p>{{ $jumlah_layanan }}</p></div>
-                </div>
+    <div class="stat-box">
+    <div class="stat-card">
+        <h4>Pendapatan Tahun Ini</h4>
+        <p>Rp {{ number_format($pendapatan_tahun_ini, 0, ',', '.') }}</p>
+    </div>
+    <div class="stat-card">
+        <h4>Pendapatan Bulan Ini</h4>
+        <p>Rp {{ number_format($pendapatan_bulan_ini, 0, ',', '.') }}</p>
+    </div>
+    <div class="stat-card">
+        <h4>Total Order Tahun Ini</h4>
+        <p>{{ number_format($total_order_tahun_ini, 0, ',', '.') }}</p>
+    </div>
+    <div class="stat-card">
+        <h4>Total Order Bulan Ini</h4>
+        <p>{{ number_format($total_order_bulan_ini, 0, ',', '.') }}</p>
+    </div>
+    <div class="stat-card">
+        <h4>Jumlah Pelanggan</h4>
+        <p>{{ number_format($jumlah_pelanggan, 0, ',', '.') }}</p>
+    </div>
+    <div class="stat-card">
+        <h4>Jumlah Layanan</h4>
+        <p>{{ $jumlah_layanan }}</p>
+    </div>
+    <div class="stat-card">
+        <h4>Order Selesai</h4>
+        <p>{{ $order_selesai }}</p>
+    </div>
+</div>
             </section>
 
             <section class="dashboard-section">
