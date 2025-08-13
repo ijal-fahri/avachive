@@ -23,9 +23,9 @@
         .produk-section { background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
         .produk-section h3 { margin-top: 0; font-weight: 600; color: #0984e3; }
         .button-group { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; align-items:center; }
-        .tab-button { background: #dfe6e9; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; }
+        .tab-button { background: #dfe6e9; border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; }
         .tab-button.active { background: #00cec9; color: white; }
-        .add-button { background: #00cec9; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; display:flex; align-items:center; gap:8px; }
+        .add-button { background: #00cec9; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; display:flex; align-items:center; gap:8px; }
         .add-button:hover { background: #01a3a4; }
         table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
         th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
@@ -53,6 +53,7 @@
             table td:last-child { border-bottom: 0; }
             .main-content { padding: 1rem; }
             .produk-section { padding: 1rem; }
+            
         }
     </style>
 </head>
@@ -63,17 +64,18 @@
         <a href="{{ route('dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a href="{{ route('produk.index') }}" class="active"><i class="bi bi-list-check"></i> Layanan</a>
         <a href="{{ route('dataorder') }}"><i class="bi bi-cart-check"></i> Order</a>
-        <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Pengguna</a>
+        <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Karyawan</a>
         <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
     </aside>
 
     <main class="main-content">
-        <div class="topbar">
-            <button class="hamburger-btn" id="hamburgerBtn"><i class="bi bi-list"></i></button>
-            <div>Data Layanan Laundry</div>
-            <div class="user-info">{{ Auth::user()->name ?? 'Admin' }}</div>
-        </div>
-
+       <div class="topbar">
+                <button class="hamburger-btn" id="hamburgerBtn"><i class="bi bi-list"></i></button>
+                <div>Data Layanan</div>
+                <div class="user-info">
+                    <i class="bi bi-person-circle fs-5"></i> {{ Auth::user()->name }}
+                </div>
+            </div>
         <section class="produk-section">
             <h3>Daftar Layanan</h3>
             <div class="button-group">
@@ -175,7 +177,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
     // Helper dan Elemen
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -190,9 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     let activeTab = localStorage.getItem('activeLayananTab') || 'Kiloan';
-
     // --- FUNGSI-FUNGSI ---
-
     // Fungsi untuk memfilter dan menomori ulang baris tabel
     function filterAndRenumberRows() {
         let visibleCount = 0;
@@ -207,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 row.style.display = 'none';
             }
         });
-
         // Hapus pesan "kosong" jika ada baris yang terlihat
         const emptyRow = tbody.querySelector('.empty-row');
         if (visibleCount > 0 && emptyRow) {
@@ -219,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
             tbody.appendChild(tr);
         }
     }
-
     // Fungsi untuk mengatur tab aktif
     function setActiveTab(tabName) {
         activeTab = tabName;
@@ -229,35 +226,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentTabButton) currentTabButton.classList.add('active');
         filterAndRenumberRows();
     }
-
     function openModal(modal) { modal.style.display = 'flex'; }
     function closeModal(modal) { modal.style.display = 'none'; }
-
     // Fungsi untuk membuka sidebar (hamburger)
     function toggleSidebar() {
         sidebar.classList.toggle('active');
         overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
     }
-
     // --- EVENT LISTENERS ---
-
     // Tombol Tab
     tabButtons.forEach(btn => {
         btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
     });
-
     // Tombol "Tambah Layanan"
     openTambahBtn.addEventListener('click', () => {
         tambahForm.reset();
         kategoriInput.value = activeTab;
         openModal(tambahModal);
     });
-
     // Event Delegation untuk tombol Edit dan Delete di dalam tabel
     tbody.addEventListener('click', (e) => {
         const editBtn = e.target.closest('.btn-edit');
         const deleteBtn = e.target.closest('.btn-delete');
-
         if (editBtn) {
             const data = JSON.parse(editBtn.dataset.json);
             let actionUrl = "{{ route('produk.update', ':id') }}";
@@ -269,7 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('editHarga').value = data.harga;
             openModal(editModal);
         }
-
         if (deleteBtn) {
             const id = deleteBtn.dataset.id;
             Swal.fire({
@@ -296,12 +285,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-
     // Event listener untuk tombol close dan batal di modal
     document.querySelectorAll('.close, #batalTambah, #batalEdit').forEach(btn => {
         btn.addEventListener('click', () => closeModal(btn.closest('.modal')));
     });
-
     // Notifikasi sukses dari session Laravel
     @if (session('success'))
         Swal.fire({
@@ -318,7 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hamburger Menu
     hamburgerBtn.addEventListener('click', toggleSidebar);
     overlay.addEventListener('click', toggleSidebar);
-
     // Inisialisasi halaman saat pertama kali dimuat
     setActiveTab(activeTab);
 });
