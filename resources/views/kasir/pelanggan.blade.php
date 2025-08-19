@@ -77,23 +77,34 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pelanggan->no_handphone }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pelanggan->kecamatan }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-blue-600 hover:text-blue-900 mr-3 detail-pelanggan-btn" 
-                                data-nama="{{ $pelanggan->nama }}" 
-                                data-phone="{{ $pelanggan->no_handphone }}" 
-                                data-provinsi="{{ $pelanggan->provinsi }}" 
-                                data-kota="{{ $pelanggan->kota }}" 
-                                data-kecamatan="{{ $pelanggan->kecamatan }}" 
-                                data-kodepos="{{ $pelanggan->kodepos }}" 
-                                data-alamat="{{ $pelanggan->detail_alamat }}">
-                                <i class="fas fa-eye mr-1"></i> Detail
-                            </button>
-                            <button class="text-blue-600 hover:text-blue-900 mr-3 openEditModal" data-id="{{ $pelanggan->id }}">Edit</button>
-                            <form action="{{ route('pelanggan.destroy', $pelanggan->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
-                            </form>
-                        </td>
+    <div class="flex items-center justify-end space-x-2">
+        <!-- Detail Button -->
+        <button class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm detail-btn bg-blue-50 hover:bg-blue-100 transition-colors" 
+            data-nama="{{ $pelanggan->nama }}" 
+            data-phone="{{ $pelanggan->no_handphone }}" 
+            data-provinsi="{{ $pelanggan->provinsi }}" 
+            data-kota="{{ $pelanggan->kota }}" 
+            data-kecamatan="{{ $pelanggan->kecamatan }}" 
+            data-kodepos="{{ $pelanggan->kodepos }}" 
+            data-alamat="{{ $pelanggan->detail_alamat }}">
+            <i class="fas fa-eye mr-1"></i> Detail
+        </button>
+        
+        <!-- Edit Button -->
+        <button class="text-yellow-600 hover:text-yellow-800 px-3 py-1 border border-yellow-100 rounded-lg text-sm bg-yellow-50 hover:bg-yellow-100 transition-colors openEditModal" data-id="{{ $pelanggan->id }}">
+            <i class="fas fa-edit mr-1"></i> Edit
+        </button>
+        
+        <!-- Delete Button -->
+        <form action="{{ route('pelanggan.destroy', $pelanggan->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-red-600 hover:text-red-800 px-3 py-1 border border-red-100 rounded-lg text-sm bg-red-50 hover:bg-red-100 transition-colors">
+                <i class="fas fa-trash-alt mr-1"></i> Hapus
+            </button>
+        </form>
+    </div>
+</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -163,7 +174,7 @@
     </div>
 </div>
 
-<div id="editPelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-gray-900 bg-opacity-50 transition-opacity">
+<div id="editPelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-white/50 backdrop-blur-sm transition-opacity">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
         <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800">Edit Pelanggan</h2>
@@ -222,7 +233,7 @@
     </div>
 </div>
 
-<div id="detailPelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-gray-900 bg-opacity-50 transition-opacity">
+<div id="detailPelangganModal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-10 bg-white/50 backdrop-blur-sm transition-opacity">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 modal-content">
         <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800">Detail Pelanggan</h2>
