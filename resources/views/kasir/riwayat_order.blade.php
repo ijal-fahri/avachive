@@ -455,7 +455,7 @@
         }
 
         // Fungsi untuk membuat dan membuka pesan WhatsApp
-        function openWhatsApp(orderData) {
+        function openWhatsApp(orderData, alamatLengkap) {
             const cleanedPhone = ('' + orderData.pelanggan.no_handphone).replace(/\D/g, '');
             let whatsappNumber = cleanedPhone.startsWith('0') ? '62' + cleanedPhone.substring(1) : cleanedPhone;
 
@@ -468,7 +468,6 @@
                 minute: '2-digit'
             });
 
-            // Membuat array string untuk setiap layanan dengan format rapi
             const layananMessages = layanan.map(item => {
                 return `*Nama Layanan:* ${item.nama}
 *Kategori:* Satuan
@@ -477,14 +476,12 @@
 *Subtotal:* Rp ${(item.harga * item.kuantitas).toLocaleString('id-ID')}`;
             });
 
-            // Gabungkan dengan pemisah
             const layananMessage = layananMessages.join('\n----------------\n');
 
-            // Membuat pesan utama
             const message = `*📌 Detail Pelanggan*
 *Nama:* ${orderData.pelanggan.nama}
 *No Handphone:* ${formatPhoneNumber(orderData.pelanggan.no_handphone)}
-*Alamat:* ${orderData.pelanggan.provinsi.kota.kecamatan.detail_alamat}
+*Alamat:* ${alamatLengkap}
 *Metode Pengambilan:* ${orderData.metode_pengambilan}
 *Waktu Pembayaran:* ${orderData.waktu_pembayaran}
 
@@ -513,7 +510,7 @@ ${waktuOrder}`;
 
         // Event listener tombol detail
         document.querySelectorAll('.detail-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
+    btn.addEventListener('click', () => {
                 const orderData = JSON.parse(btn.dataset.order);
                 const layanan = JSON.parse(orderData.layanan);
 
@@ -528,31 +525,45 @@ ${waktuOrder}`;
                     </div>
                 `;
                 });
+
+                // Gabungkan seluruh data alamat dari pelanggan
+                let alamatLengkap = '-';
+                if (orderData.pelanggan) {
+                    const provinsi = orderData.pelanggan.provinsi ?? '';
+                    const kota = orderData.pelanggan.kota ?? '';
+                    const kecamatan = orderData.pelanggan.kecamatan ?? '';
+                    const kodepos = orderData.pelanggan.kodepos ?? '';
+                    const detail_alamat = orderData.pelanggan.detail_alamat ?? '';
+                    alamatLengkap = `${detail_alamat}, ${kecamatan}, ${kota}, ${provinsi}, ${kodepos}`.replace(/^, |, $/g, '').replace(/(, ){2,}/g, ', ');
+                }
+
                 const formattedPhone = formatPhoneNumber(orderData.pelanggan.no_handphone);
 
                 detailContent.innerHTML = `
                 <div class="space-y-3">
                     <p><strong>Nama:</strong> ${orderData.pelanggan.nama}</p>
                     <p><strong>No HP:</strong> ${formattedPhone}</p>
-                    <p><strong>Alamat:</strong> ${orderData.pelanggan.alamat}</p>
+                    <p><strong>Alamat:</strong> ${alamatLengkap}</p>
                     <p><strong>Pengambilan:</strong> ${orderData.metode_pengambilan}</p>
                     <p><strong>Pembayaran:</strong> ${orderData.metode_pembayaran}</p>
                     <p><strong>Waktu Order:</strong> ${new Date(orderData.created_at).toLocaleString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                     <div class="mt-4">
                         <h5 class="font-semibold text-gray-700">Detail Layanan:</h5>
-                        ${layananHtml}
+                        <div class="services-container" style="max-height:200px;overflow-y:auto;">
+                            ${layananHtml}
+                        </div>
                     </div>
                     <p class="text-xl font-bold mt-4 text-right">Total: Rp ${parseInt(orderData.total_harga).toLocaleString('id-ID')}</p>
                 </div>
                 <div class="button-group">
                     <button class="btn-green" id="whatsappBtn"><i class="bi bi-whatsapp"></i> WhatsApp</button>
-                    <a href="http://maps.google.com/?q=${encodeURIComponent(orderData.pelanggan.alamat)}" class="btn-gray" target="_blank"><i class="bi bi-geo-alt-fill"></i> Buka Maps</a>
+                    <a href="http://maps.google.com/?q=${encodeURIComponent(alamatLengkap)}" class="btn-gray" target="_blank"><i class="bi bi-geo-alt-fill"></i> Buka Maps</a>
                 </div>
             `;
                 modal.style.display = "flex";
 
                 document.getElementById('whatsappBtn').addEventListener('click', () => {
-                    openWhatsApp(orderData);
+                    openWhatsApp(orderData, alamatLengkap);
                 });
             });
         });
@@ -565,6 +576,9 @@ ${waktuOrder}`;
         window.onclick = function(e) {
             if (e.target === modal) closeModal();
         }
+
+        const modal = document.getElementById('detailModal');
+        const detailContent = document.getElementById('detailContent');
     </script>
 </body>
 </html>

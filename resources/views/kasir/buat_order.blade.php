@@ -33,6 +33,38 @@
             top: 1rem;
         }
         [x-cloak] { display: none !important; }
+        
+        /* Styling untuk DP section */
+        .dp-section {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        
+        .dp-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .remaining-amount {
+            font-weight: bold;
+            color: #dc2626;
+            margin-top: 0.5rem;
+        }
+        
+        .payment-summary {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -52,72 +84,72 @@
                 <input type="hidden" name="tambah_pelanggan_id" id="tambah_pelanggan_id">
                 <input type="hidden" name="layanan" id="layanan_input">
                 <input type="hidden" name="total_harga" id="total_harga_input">
+                <input type="hidden" name="dp_amount" id="dp_amount_input" value="0">
+                <input type="hidden" name="remaining_amount" id="remaining_amount_input" value="0">
 
                 <div class="flex flex-col lg:flex-row gap-6">
                     <!-- Services Section -->
-<!-- Services Section -->
-<div class="lg:w-2/3">
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <!-- Header with title and search -->
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-semibold text-gray-800">Daftar Layanan</h2>
-            <div class="relative w-64">
-                <input type="text" 
-                       placeholder="Cari layanan..." 
-                       id="serviceSearch" 
-                       class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-            </div>
-        </div>
+                    <div class="lg:w-2/3">
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <!-- Header with title and search -->
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-xl font-semibold text-gray-800">Daftar Layanan</h2>
+                                <div class="relative w-64">
+                                    <input type="text" 
+                                           placeholder="Cari layanan..." 
+                                           id="serviceSearch" 
+                                           class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                </div>
+                            </div>
 
-        <!-- Category filter buttons -->
-        <div class="flex justify-center mb-6 space-x-4">
+                            <!-- Category filter buttons -->
+                            <div class="flex justify-center mb-6 space-x-4">
+                                <button type="button" 
+                                        class="category-filter px-4 py-2 rounded-full border border-blue-500 text-blue-500 hover:bg-blue-50 transition" 
+                                        data-category="Satuan">
+                                    Satuan
+                                </button>
+                                <button type="button" 
+                                        class="category-filter px-4 py-2 rounded-full border border-blue-500 text-blue-500 hover:bg-blue-50 transition" 
+                                        data-category="Kiloan">
+                                    Kiloan
+                                </button>
+                            </div>
 
-            <button type="button" 
-                    class="category-filter px-4 py-2 rounded-full border border-blue-500 text-blue-500 hover:bg-blue-50 transition" 
-                    data-category="Satuan">
-                Satuan
-            </button>
-            <button type="button" 
-                    class="category-filter px-4 py-2 rounded-full border border-blue-500 text-blue-500 hover:bg-blue-50 transition" 
-                    data-category="Kiloan">
-                Kiloan
-            </button>
-        </div>
-
-        <!-- Services list -->
-        <div class="grid grid-cols-1 gap-4 service-list">
-            @foreach ($layanans as $layanan)
-            <div class="service-card border rounded-lg p-4 hover:border-blue-400 cursor-pointer" 
-                 data-id="{{ $layanan->id }}" 
-                 data-nama="{{ $layanan->nama }}" 
-                 data-harga="{{ $layanan->harga }}"
-                 data-kategori="{{ $layanan->kategori }}"
-                 data-paket="{{ $layanan->paket }}">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-bold text-lg text-gray-800">{{ $layanan->nama }}</h3>
-                        <div class="flex gap-4 mt-1">
-                            <p class="text-sm text-gray-600">
-                                Paket: <span class="text-gray-800">{{ $layanan->paket }}</span>
-                            </p>
+                            <!-- Services list -->
+                            <div class="grid grid-cols-1 gap-4 service-list">
+                                @foreach ($layanans as $layanan)
+                                <div class="service-card border rounded-lg p-4 hover:border-blue-400 cursor-pointer" 
+                                     data-id="{{ $layanan->id }}" 
+                                     data-nama="{{ $layanan->nama }}" 
+                                     data-harga="{{ $layanan->harga }}"
+                                     data-kategori="{{ $layanan->kategori }}"
+                                     data-paket="{{ $layanan->paket }}">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-bold text-lg text-gray-800">{{ $layanan->nama }}</h3>
+                                            <div class="flex gap-4 mt-1">
+                                                <p class="text-sm text-gray-600">
+                                                    Paket: <span class="text-gray-800">{{ $layanan->paket }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right flex flex-col items-end">
+                                            <p class="font-bold text-blue-600">
+                                                Rp {{ number_format($layanan->harga, 0, ',', '.') }}
+                                            </p>
+                                            <button type="button" 
+                                                    class="mt-2 px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm hover:bg-blue-200 transition add-service-btn">
+                                                + Tambah
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                    <div class="text-right flex flex-col items-end">
-                        <p class="font-bold text-blue-600">
-                            Rp {{ number_format($layanan->harga, 0, ',', '.') }}
-                        </p>
-                        <button type="button" 
-                                class="mt-2 px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm hover:bg-blue-200 transition add-service-btn">
-                            + Tambah
-                        </button>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</div>
 
                     <!-- Order Summary Section -->
                     <div class="lg:w-1/3">
@@ -174,6 +206,14 @@
                                         <option value="Bayar Nanti">Bayar Nanti</option>
                                     </select>
                                 </div>
+                                
+                                <!-- DP Section (akan muncul jika Bayar Nanti dipilih) -->
+                                <div id="dpSection" class="dp-section hidden">
+                                    <h4 class="font-medium text-gray-700 mb-2">Pembayaran DP (Uang Muka)</h4>
+                                    <input type="number" id="dp_input" class="dp-input" placeholder="Masukkan jumlah DP" min="0">
+                                    <div id="remainingAmountDisplay" class="remaining-amount">Sisa yang harus dibayar: Rp 0</div>
+                                </div>
+                                
                                 <div>
                                     <label for="metode_pengambilan" class="block text-sm font-medium text-gray-700 mb-2">Metode Pengambilan</label>
                                     <select name="metode_pengambilan" id="metode_pengambilan" 
@@ -184,8 +224,25 @@
                                 </div>
                             </div>
 
+                            <!-- Payment Summary -->
+                            <div id="paymentSummary" class="payment-summary hidden">
+                                <h4 class="font-bold text-gray-800 mb-2">Rincian Pembayaran</h4>
+                                <div class="flex justify-between mb-1">
+                                    <span>Total Harga:</span>
+                                    <span id="summaryTotal">Rp 0</span>
+                                </div>
+                                <div class="flex justify-between mb-1">
+                                    <span>DP Dibayar:</span>
+                                    <span id="summaryDP">Rp 0</span>
+                                </div>
+                                <div class="flex justify-between font-bold text-green-700">
+                                    <span>Sisa Harus Dibayar:</span>
+                                    <span id="summaryRemaining">Rp 0</span>
+                                </div>
+                            </div>
+
                             <!-- Submit Button -->
-                            <button type="submit" id="submitOrderBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition flex items-center justify-center">
+                            <button type="submit" id="submitOrderBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition flex items-center justify-center mt-4">
                                 <i class="fas fa-save mr-2"></i> Simpan Order
                             </button>
                         </div>
@@ -240,6 +297,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Data Layanan yang dipilih
             let selectedServices = {};
+            let totalHarga = 0;
 
             // DOM Elements
             const customerModal = document.getElementById('customerModal');
@@ -257,6 +315,14 @@
             const totalPriceDisplay = document.getElementById('totalPriceDisplay');
             const serviceSearchInput = document.getElementById('serviceSearch');
             const servicesContainer = document.querySelector('.service-list');
+            const waktuPembayaranSelect = document.getElementById('waktu_pembayaran');
+            const dpSection = document.getElementById('dpSection');
+            const dpInput = document.getElementById('dp_input');
+            const remainingAmountDisplay = document.getElementById('remainingAmountDisplay');
+            const paymentSummary = document.getElementById('paymentSummary');
+            const summaryTotal = document.getElementById('summaryTotal');
+            const summaryDP = document.getElementById('summaryDP');
+            const summaryRemaining = document.getElementById('summaryRemaining');
 
             // Customer Modal Functions
             const openCustomerModal = () => {
@@ -330,13 +396,13 @@
 
             // Update Order Summary Function
             const updateSummary = () => {
-                let total = 0;
+                totalHarga = 0;
                 selectedServicesList.innerHTML = '';
                 const servicesArray = [];
 
                 for (const id in selectedServices) {
                     const service = selectedServices[id];
-                    total += service.price * service.quantity;
+                    totalHarga += service.price * service.quantity;
                     servicesArray.push({
                         id: service.id,
                         nama: service.name,
@@ -365,9 +431,12 @@
                     selectedServicesList.appendChild(summaryItem);
                 }
 
-                totalPriceDisplay.textContent = `Rp ${total.toLocaleString('id-ID')}`;
-                document.getElementById('total_harga_input').value = total;
+                totalPriceDisplay.textContent = `Rp ${totalHarga.toLocaleString('id-ID')}`;
+                document.getElementById('total_harga_input').value = totalHarga;
                 document.getElementById('layanan_input').value = JSON.stringify(servicesArray);
+                
+                // Update DP calculation if needed
+                updateDPCalculation();
             };
 
             // Add Service Functionality
@@ -430,6 +499,53 @@
                 });
             });
 
+            // DP Calculation Functions
+            const updateDPCalculation = () => {
+                const dpAmount = parseFloat(dpInput.value) || 0;
+                const remainingAmount = totalHarga - dpAmount;
+                
+                // Update display
+                remainingAmountDisplay.textContent = `Sisa yang harus dibayar: Rp ${remainingAmount.toLocaleString('id-ID')}`;
+                
+                // Update hidden inputs
+                document.getElementById('dp_amount_input').value = dpAmount;
+                document.getElementById('remaining_amount_input').value = remainingAmount;
+                
+                // Update payment summary
+                summaryTotal.textContent = `Rp ${totalHarga.toLocaleString('id-ID')}`;
+                summaryDP.textContent = `Rp ${dpAmount.toLocaleString('id-ID')}`;
+                summaryRemaining.textContent = `Rp ${remainingAmount.toLocaleString('id-ID')}`;
+            };
+
+            // Toggle DP Section based on payment time selection
+            waktuPembayaranSelect.addEventListener('change', function() {
+                if (this.value === 'Bayar Nanti') {
+                    dpSection.classList.remove('hidden');
+                    paymentSummary.classList.remove('hidden');
+                    updateDPCalculation();
+                } else {
+                    dpSection.classList.add('hidden');
+                    paymentSummary.classList.add('hidden');
+                    // Reset DP values
+                    dpInput.value = '';
+                    document.getElementById('dp_amount_input').value = 0;
+                    document.getElementById('remaining_amount_input').value = totalHarga;
+                }
+            });
+
+            // Update DP calculation when DP input changes
+            dpInput.addEventListener('input', function() {
+                let dpValue = parseFloat(this.value) || 0;
+                
+                // Ensure DP doesn't exceed total
+                if (dpValue > totalHarga) {
+                    dpValue = totalHarga;
+                    this.value = dpValue;
+                }
+                
+                updateDPCalculation();
+            });
+
             // Form Submission Handler
             orderForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -445,26 +561,39 @@
                     return;
                 }
 
+                // Validate DP if Bayar Nanti is selected
+                if (waktuPembayaranSelect.value === 'Bayar Nanti') {
+                    const dpAmount = parseFloat(dpInput.value) || 0;
+                    if (dpAmount <= 0) {
+                        Swal.fire({
+                            title: 'Peringatan!',
+                            text: 'Harap masukkan jumlah DP yang valid',
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
+                }
+
                 // Disable submit button
                 submitOrderBtn.disabled = true;
                 submitOrderBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Menyimpan...';
                 
                 try {
+                    const formData = new FormData();
+                    formData.append('tambah_pelanggan_id', customerIdInput.value);
+                    formData.append('layanan', document.getElementById('layanan_input').value);
+                    formData.append('total_harga', document.getElementById('total_harga_input').value);
+                    formData.append('metode_pembayaran', document.getElementById('metode_pembayaran').value);
+                    formData.append('waktu_pembayaran', document.getElementById('waktu_pembayaran').value);
+                    formData.append('metode_pengambilan', document.getElementById('metode_pengambilan').value);
+                    formData.append('dp_amount', document.getElementById('dp_amount_input').value);
+                    formData.append('remaining_amount', document.getElementById('remaining_amount_input').value);
+                    formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+
                     const response = await fetch(this.action, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            tambah_pelanggan_id: customerIdInput.value,
-                            layanan: document.getElementById('layanan_input').value,
-                            total_harga: document.getElementById('total_harga_input').value,
-                            metode_pembayaran: document.getElementById('metode_pembayaran').value,
-                            waktu_pembayaran: document.getElementById('waktu_pembayaran').value,
-                            metode_pengambilan: document.getElementById('metode_pengambilan').value
-                        })
+                        body: formData
                     });
 
                     const data = await response.json();
@@ -497,40 +626,40 @@
                     submitOrderBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Simpan Order';
                 }
             });
-        });
 
-        // Filter services by category
-    document.querySelectorAll('.category-filter').forEach(button => {
-        button.addEventListener('click', function() {
-            const category = this.dataset.category;
-            
-            // Update active button style
-            document.querySelectorAll('.category-filter').forEach(btn => {
-                btn.classList.remove('bg-blue-500', 'text-white');
-                btn.classList.add('border-blue-500', 'text-blue-500', 'hover:bg-blue-50');
+            // Filter services by category
+            document.querySelectorAll('.category-filter').forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    
+                    // Update active button style
+                    document.querySelectorAll('.category-filter').forEach(btn => {
+                        btn.classList.remove('bg-blue-500', 'text-white');
+                        btn.classList.add('border-blue-500', 'text-blue-500', 'hover:bg-blue-50');
+                    });
+                    
+                    this.classList.remove('border-blue-500', 'text-blue-500', 'hover:bg-blue-50');
+                    this.classList.add('bg-blue-500', 'text-white');
+                    
+                    // Filter services
+                    document.querySelectorAll('.service-card').forEach(card => {
+                        if (card.dataset.kategori === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
             });
-            
-            this.classList.remove('border-blue-500', 'text-blue-500', 'hover:bg-blue-50');
-            this.classList.add('bg-blue-500', 'text-white');
-            
-            // Filter services
-            document.querySelectorAll('.service-card').forEach(card => {
-                if (card.dataset.kategori === category) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
+
+            // Tampilkan kategori "Satuan" saat halaman dibuka
+            document.addEventListener('DOMContentLoaded', function() {
+                const satuanBtn = document.querySelector('.category-filter[data-category="Satuan"]');
+                if (satuanBtn) {
+                    satuanBtn.click();
                 }
             });
         });
-    });
-
-    // Tampilkan kategori "Satuan" saat halaman dibuka
-    document.addEventListener('DOMContentLoaded', function() {
-        const satuanBtn = document.querySelector('.category-filter[data-category="Satuan"]');
-        if (satuanBtn) {
-            satuanBtn.click();
-        }
-    });
     </script>
 </body>
 </html>

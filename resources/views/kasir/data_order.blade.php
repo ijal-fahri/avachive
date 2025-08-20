@@ -10,6 +10,34 @@
     <script src="https://kit.fontawesome.com/0948e65078.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
+        /* Tambahkan ini di bagian style */
+    .services-container {
+        max-height: 300px;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        margin-top: 0.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.375rem;
+    }
+    
+    /* Custom scrollbar untuk container layanan */
+    .services-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .services-container::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 10px;
+    }
+    
+    .services-container::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+    
+    .services-container::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
         /* Improved Table Styles */
         .order-table {
             width: 100%;
@@ -542,8 +570,7 @@ ${waktuOrder}`;
         window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
     }
 
-        // Event listener tombol detail
-    document.querySelectorAll('.detail-btn').forEach(btn => {
+       document.querySelectorAll('.detail-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const orderData = JSON.parse(btn.dataset.order);
         const layanan = JSON.parse(orderData.layanan);
@@ -560,27 +587,19 @@ ${waktuOrder}`;
             `;
         });
 
-        
-        // Ambil detail alamat dari relasi jika ada
-       let alamatLengkap = '-';
-if (orderData.pelanggan && orderData.pelanggan.detail_alamat) {
-    alamatLengkap = orderData.pelanggan.detail_alamat;
-} else if (
-    orderData.pelanggan &&
-    orderData.pelanggan.provinsi &&
-    orderData.pelanggan.provinsi.kota &&
-    orderData.pelanggan.provinsi.kota.kecamatan &&
-    orderData.pelanggan.provinsi.kota.kecamatan.detail_alamat
-) {
-    alamatLengkap = orderData.pelanggan.provinsi.nama + ', ' +
-        orderData.pelanggan.provinsi.kota.nama + ', ' +
-        orderData.pelanggan.provinsi.kota.kecamatan.nama + ', ' +
-        orderData.pelanggan.provinsi.kota.kecamatan.detail_alamat;
-} else if (orderData.pelanggan && orderData.pelanggan.alamat) {
-    alamatLengkap = orderData.pelanggan.alamat;
-}
+        // Gabungkan seluruh data alamat dari pelanggan
+        let alamatLengkap = '-';
+        if (orderData.pelanggan) {
+            const provinsi = orderData.pelanggan.provinsi ?? '';
+            const kota = orderData.pelanggan.kota ?? '';
+            const kecamatan = orderData.pelanggan.kecamatan ?? '';
+            const kodepos = orderData.pelanggan.kodepos ?? '';
+            const detail_alamat = orderData.pelanggan.detail_alamat ?? '';
+            // Format: [detail_alamat], [kecamatan], [kota], [provinsi], [kodepos]
+            alamatLengkap = `${provinsi}, ${kota}, ${kecamatan}, ${detail_alamat}, ${kodepos}`.replace(/^, |, $/g, '').replace(/(, ){2,}/g, ', ');
+        }
 
-            const formattedPhone = formatPhoneNumber(orderData.pelanggan.no_handphone);
+        const formattedPhone = formatPhoneNumber(orderData.pelanggan.no_handphone);
 
         detailContent.innerHTML = `
             <div class="space-y-3">
@@ -592,7 +611,9 @@ if (orderData.pelanggan && orderData.pelanggan.detail_alamat) {
                 <p><strong>Waktu Order:</strong> ${new Date(orderData.created_at).toLocaleString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                 <div class="mt-4">
                     <h5 class="font-semibold text-gray-700">Detail Layanan:</h5>
-                    ${layananHtml}
+                    <div class="services-container" style="max-height:200px;overflow-y:auto;">
+                        ${layananHtml}
+                    </div>
                 </div>
                 <p class="text-xl font-bold mt-4 text-right">Total: Rp ${parseInt(orderData.total_harga).toLocaleString('id-ID')}</p>
             </div>
@@ -601,7 +622,7 @@ if (orderData.pelanggan && orderData.pelanggan.detail_alamat) {
                 <a href="http://maps.google.com/?q=${encodeURIComponent(alamatLengkap)}" class="btn-gray" target="_blank"><i class="bi bi-geo-alt-fill"></i> Buka Maps</a>
             </div>
         `;
-            modal.style.display = "flex";
+        modal.style.display = "flex";
 
         document.getElementById('whatsappBtn').addEventListener('click', () => {
             openWhatsApp(orderData);
