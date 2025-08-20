@@ -194,7 +194,7 @@
                     <p class="text-gray-600 mt-1">Daftar semua order pelanggan</p>
                 </div>
                 <div class="flex gap-3">
-                    <form action="{{ route('kasir.dataorder.index') }}" method="GET" class="flex gap-3">
+                    <form action="{{ route('kasir.data_order') }}" method="GET" class="flex gap-3">
                         <div class="relative">
                             <input type="text" name="search" placeholder="Cari order..."
                                 class="w-full md:w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

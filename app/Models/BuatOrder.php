@@ -14,6 +14,7 @@ class BuatOrder extends Model
         'metode_pengambilan',
         'total_harga',
         'status',
+        'cabang_id',
     ];
 
     public function pelanggan()

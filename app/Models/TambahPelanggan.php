@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TambahPelanggan extends Model
 {
-    protected $fillable = ['nama', 'no_handphone', 'provinsi', 'kota','kecamatan','kodepos','detail_alamat'];
+    protected $fillable = ['nama', 'no_handphone', 'provinsi', 'kota','kecamatan','kodepos','detail_alamat','cabang_id',];
 }
