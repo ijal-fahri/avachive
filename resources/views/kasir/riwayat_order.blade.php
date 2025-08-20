@@ -10,168 +10,41 @@
     <script src="https://kit.fontawesome.com/0948e65078.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
-        /* Improved Table Styles */
-        .order-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 0.875rem;
+        /* Tambahkan di bagian CSS */
+        .mt-4 {
+            margin-top: 1rem;
         }
-        
-        .order-table thead th {
-            background-color: #f8fafc;
-            color: #64748b;
-            font-weight: 600;
-            text-align: left;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            position: sticky;
-            top: 0;
+
+        .order-card {
+            transition: all 0.2s ease;
         }
-        
-        .order-table tbody tr {
-            transition: background-color 0.2s ease;
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-        
-        .order-table tbody tr:hover {
-            background-color: #f8fafc;
-        }
-        
-        .order-table td {
-            padding: 1rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            vertical-align: middle;
-            color: #334155;
-        }
-        
-        .order-table td:first-child {
-            border-top-left-radius: 0.5rem;
-            border-bottom-left-radius: 0.5rem;
-        }
-        
-        .order-table td:last-child {
-            border-top-right-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
-        }
-        
-        .customer-cell {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .customer-avatar {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 9999px;
-            background-color: #e0f2fe;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0369a1;
-            font-weight: 500;
-            flex-shrink: 0;
-        }
-        
-        .customer-info {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .customer-name {
-            font-weight: 500;
-            color: #1e293b;
-        }
-        
-        .customer-phone {
-            color: #64748b;
-            font-size: 0.8125rem;
-        }
-        
+
         .status-badge {
-            display: inline-block;
-            padding: 0.35rem 0.75rem;
-            border-radius: 9999px;
             font-size: 0.75rem;
-            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        
+
         .status-completed {
             background-color: #dcfce7;
             color: #166534;
         }
-        
+
         .status-pending {
             background-color: #fef9c3;
             color: #854d0e;
         }
-        
+
         .status-processing {
             background-color: #dbeafe;
             color: #1e40af;
-        }
-        
-        .price-cell {
-            font-weight: 500;
-            text-align: right;
-        }
-        
-        .action-cell {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .action-btn {
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            transition: all 0.2s ease;
-        }
-        
-        .detail-btn {
-            background-color: #eff6ff;
-            color: #1d4ed8;
-            border: 1px solid #bfdbfe;
-        }
-        
-        .detail-btn:hover {
-            background-color: #dbeafe;
-        }
-        
-        .print-btn {
-            background-color: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .print-btn:hover {
-            background-color: #e2e8f0;
-        }
-
-        /* History Section */
-        .history-section {
-            margin-top: 2rem;
-            background: white;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .history-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1.25rem;
-            color: #1e293b;
-        }
-        
-        .history-container {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 1rem;
         }
 
         /* Modal Styles */
@@ -187,121 +60,121 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .modal-content {
             background-color: white;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
+            padding: 25px;
+            border-radius: 10px;
             width: 90%;
             max-width: 500px;
             position: relative;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        
+
         .modal-close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.25rem;
-            color: #94a3b8;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            color: #888;
             cursor: pointer;
-            transition: color 0.2s ease;
         }
-        
-        .modal-close:hover {
-            color: #64748b;
-        }
-        
+
         .service-box {
-            background-color: #f8fafc;
-            padding: 0.75rem;
-            border-radius: 0.375rem;
-            margin: 0.5rem 0;
-            border: 1px solid #e2e8f0;
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
         }
-        
-        .button-group {
-            margin-top: 1.5rem;
-            display: flex;
-            gap: 0.75rem;
-            justify-content: flex-end;
-        }
-        
+
         .btn-green,
         .btn-gray {
-            padding: 0.625rem 1rem;
+            padding: 10px 16px;
             border: none;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
+            border-radius: 6px;
+            font-size: 14px;
             cursor: pointer;
             font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            transition: all 0.2s ease;
         }
-        
+
         .btn-green {
-            background-color: #22c55e;
+            background-color: #2ecc71;
             color: white;
         }
-        
-        .btn-green:hover {
-            background-color: #16a34a;
-        }
-        
+
         .btn-gray {
-            background-color: #f1f5f9;
-            color: #334155;
+            background-color: #dfe4ea;
+            color: #2d3436;
         }
-        
-        .btn-gray:hover {
-            background-color: #e2e8f0;
-        }
-        
-        /* Pagination Styles */
-        .pagination {
+
+        .button-group {
+            margin-top: 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-top: 1px solid #e2e8f0;
-            background-color: white;
+            gap: 15px;
         }
-        
-        .pagination-info {
-            color: #64748b;
-            font-size: 0.875rem;
-        }
-        
-        .pagination-controls {
+
+        /* Footer modal styles */
+        .modal-footer {
+            margin-top: 20px;
             display: flex;
-            gap: 0.25rem;
+            justify-content: flex-end;
         }
-        
-        .page-btn {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #e2e8f0;
-            background-color: white;
-            color: #64748b;
-            border-radius: 0.25rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
+
+        /* Riwayat Order Styles */
+        .history-section {
+            margin-top: 40px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-        
-        .page-btn:hover {
-            background-color: #f1f5f9;
+
+        .history-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
         }
-        
-        .page-btn.active {
-            background-color: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        
-        .page-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+
+        .history-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            font-weight: 500;
+            color: #555;
+            border-bottom: 2px solid #eee;
+        }
+
+        .history-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .history-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-completed {
+            background-color: #dcfce7;
+            color: #166534;
         }
     </style>
 </head>
@@ -314,55 +187,36 @@
     <!-- Main Content Start -->
     <div class="ml-0 lg:ml-64 min-h-screen p-6">
         <div class="max-w-6xl mx-auto">
-            <!-- Header Section -->
-            <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Data Order</h1>
-                    <p class="text-gray-600 mt-1">Daftar semua order pelanggan</p>
-                </div>
-                <div class="flex gap-3">
-                    <form action="{{ route('kasir.riwayatorder.index') }}" method="GET" class="flex gap-3">
-                        <div class="relative">
-                            <input type="text" name="search" placeholder="Cari order..."
-                                class="w-full md:w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ request('search') }}">
-                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                        </div>
-                    </form>
-                </div>
-            </div>
 
             <!-- Riwayat Order Selesai -->
-            <div class="history-section">
+            <div class="history-section mt-8">
                 <h3 class="history-title">Riwayat Order Selesai</h3>
                 <div class="history-container">
-                    <table class="order-table">
+                    <table class="history-table">
                         <thead>
                             <tr>
-                                <th class="w-12">No</th>
                                 <th>Pelanggan</th>
                                 <th>Tanggal</th>
                                 <th>Layanan</th>
-                                <th class="text-right">Total</th>
+                                <th>Total</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $no = ($historyOrders->currentPage() - 1) * $historyOrders->perPage() + 1;
-                            @endphp
                             @foreach ($historyOrders as $order)
-                                <tr class="hover:bg-gray-50">
-                                    <td>{{ $no++ }}</td>
+                                <tr>
                                     <td>
-                                        <div class="customer-cell">
-                                            <div class="customer-avatar">
-                                                {{ strtoupper(substr($order->pelanggan->nama, 0, 1)) }}
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                <span
+                                                    class="text-blue-600 font-medium">{{ strtoupper(substr($order->pelanggan->nama, 0, 1)) }}</span>
                                             </div>
-                                            <div class="customer-info">
-                                                <span class="customer-name">{{ $order->pelanggan->nama }}</span>
-                                                <span class="customer-phone">{{ $order->pelanggan->no_handphone }}</span>
+                                            <div>
+                                                <p class="font-medium">{{ $order->pelanggan->nama }}</p>
+                                                <p class="text-sm text-gray-500">{{ $order->pelanggan->no_handphone }}
+                                                </p>
                                             </div>
                                         </div>
                                     </td>
@@ -373,58 +227,19 @@
                                             echo implode(', ', array_column($layanan, 'nama'));
                                         @endphp
                                     </td>
-                                    <td class="price-cell">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
-                                    <td><span class="status-badge status-completed">{{ $order->status }}</span></td>
+                                    <td>Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
+                                    <td><span class="history-badge badge-completed">{{ $order->status }}</span></td>
                                     <td>
-                                        <div class="action-cell">
-                                            <button class="action-btn detail-btn" data-order="{{ json_encode($order) }}">
-                                                <i class="fas fa-eye"></i>
-                                                <span class="hidden sm:inline">Detail</span>
-                                            </button>
-                                            <button class="action-btn print-btn">
-                                                <i class="fas fa-print"></i>
-                                                <span class="hidden sm:inline">Cetak</span>
-                                            </button>
-                                        </div>
+                                        <button
+                                            class="text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-100 rounded-lg text-sm detail-btn"
+                                            data-order="{{ json_encode($order) }}">
+                                            <i class="fas fa-eye mr-1"></i> Detail
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <!-- Pagination -->
-                <div class="pagination flex flex-col md:flex-row md:justify-between md:items-center gap-2 mt-4">
-                    <div class="pagination-info text-sm text-gray-600 mb-2 md:mb-0">
-                        Menampilkan <span class="font-medium">{{ $historyOrders->firstItem() }}</span>
-                        sampai <span class="font-medium">{{ $historyOrders->lastItem() }}</span>
-                        dari <span class="font-medium">{{ $historyOrders->total() }}</span> hasil
-                    </div>
-                    <nav class="pagination-controls flex gap-1" aria-label="Pagination">
-                        {{-- Previous Page Link --}}
-                        @if ($historyOrders->onFirstPage())
-                            <span class="page-btn disabled" aria-disabled="true"><i class="bi bi-chevron-left"></i></span>
-                        @else
-                            <a href="{{ $historyOrders->previousPageUrl() }}" class="page-btn" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></a>
-                        @endif
-
-                        {{-- Pagination Elements --}}
-                        @foreach ($historyOrders->getUrlRange(1, $historyOrders->lastPage()) as $page => $url)
-                            @if ($page == $historyOrders->currentPage())
-                                <span class="page-btn active" aria-current="page">{{ $page }}</span>
-                            @elseif ($page == 1 || $page == $historyOrders->lastPage() || ($page >= $historyOrders->currentPage() - 1 && $page <= $historyOrders->currentPage() + 1))
-                                <a href="{{ $url }}" class="page-btn">{{ $page }}</a>
-                            @elseif ($page == $historyOrders->currentPage() - 2 || $page == $historyOrders->currentPage() + 2)
-                                <span class="page-btn disabled">...</span>
-                            @endif
-                        @endforeach
-
-                        {{-- Next Page Link --}}
-                        @if ($historyOrders->hasMorePages())
-                            <a href="{{ $historyOrders->nextPageUrl() }}" class="page-btn" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></a>
-                        @else
-                            <span class="page-btn disabled" aria-disabled="true"><i class="bi bi-chevron-right"></i></span>
-                        @endif
-                    </nav>
                 </div>
             </div>
         </div>
@@ -440,7 +255,45 @@
         </div>
     </div>
 
+    <!-- Modal Konfirmasi Ubah Status -->
+    <div class="modal" id="confirmStatusModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeConfirmModal()">&times;</span>
+            <h4 class="text-xl font-bold mb-4">Konfirmasi Ubah Status</h4>
+            <div id="confirmStatusContent"></div>
+            <div class="button-group mt-4">
+                <button class="btn-gray" onclick="closeConfirmModal()">Batal</button>
+                <button class="btn-green" id="confirmStatusBtn">Ya, Ubah Status</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Urutan perubahan status
+        const statusCycle = {
+            'Diproses': {
+                next: 'Sudah Bisa Diambil',
+                class: 'status-pending'
+            },
+            'Sudah Bisa Diambil': {
+                next: 'Selesai',
+                class: 'status-completed'
+            },
+            'Selesai': {
+                next: 'Diproses',
+                class: 'status-processing'
+            }
+        };
+
+        // Modal functionality
+        const modal = document.getElementById('detailModal');
+        const detailContent = document.getElementById('detailContent');
+        const confirmModal = document.getElementById('confirmStatusModal');
+        const confirmContent = document.getElementById('confirmStatusContent');
+        const confirmBtn = document.getElementById('confirmStatusBtn');
+        let currentStatusElement = null;
+        let nextStatus = null;
+
         // Format nomor telepon
         function formatPhoneNumber(phoneNumber) {
             const cleaned = ('' + phoneNumber).replace(/\D/g, '');
@@ -455,7 +308,7 @@
         }
 
         // Fungsi untuk membuat dan membuka pesan WhatsApp
-        function openWhatsApp(orderData, alamatLengkap) {
+        function openWhatsApp(orderData) {
             const cleanedPhone = ('' + orderData.pelanggan.no_handphone).replace(/\D/g, '');
             let whatsappNumber = cleanedPhone.startsWith('0') ? '62' + cleanedPhone.substring(1) : cleanedPhone;
 
@@ -468,6 +321,7 @@
                 minute: '2-digit'
             });
 
+            // Membuat array string untuk setiap layanan dengan format rapi
             const layananMessages = layanan.map(item => {
                 return `*Nama Layanan:* ${item.nama}
 *Kategori:* Satuan
@@ -476,12 +330,14 @@
 *Subtotal:* Rp ${(item.harga * item.kuantitas).toLocaleString('id-ID')}`;
             });
 
+            // Gabungkan dengan pemisah
             const layananMessage = layananMessages.join('\n----------------\n');
 
+            // Membuat pesan utama
             const message = `*📌 Detail Pelanggan*
 *Nama:* ${orderData.pelanggan.nama}
 *No Handphone:* ${formatPhoneNumber(orderData.pelanggan.no_handphone)}
-*Alamat:* ${alamatLengkap}
+*Alamat:* ${orderData.pelanggan.provinsi.kota.kecamatan.detail_alamat}
 *Metode Pengambilan:* ${orderData.metode_pengambilan}
 *Waktu Pembayaran:* ${orderData.waktu_pembayaran}
 
@@ -504,13 +360,14 @@ ${orderData.metode_pembayaran}
 *📌 Waktu Order*
 ${waktuOrder}`;
 
+
             const encodedMessage = encodeURIComponent(message.trim());
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
         }
 
         // Event listener tombol detail
         document.querySelectorAll('.detail-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+            btn.addEventListener('click', () => {
                 const orderData = JSON.parse(btn.dataset.order);
                 const layanan = JSON.parse(orderData.layanan);
 
@@ -525,60 +382,100 @@ ${waktuOrder}`;
                     </div>
                 `;
                 });
-
-                // Gabungkan seluruh data alamat dari pelanggan
-                let alamatLengkap = '-';
-                if (orderData.pelanggan) {
-                    const provinsi = orderData.pelanggan.provinsi ?? '';
-                    const kota = orderData.pelanggan.kota ?? '';
-                    const kecamatan = orderData.pelanggan.kecamatan ?? '';
-                    const kodepos = orderData.pelanggan.kodepos ?? '';
-                    const detail_alamat = orderData.pelanggan.detail_alamat ?? '';
-                    alamatLengkap = `${detail_alamat}, ${kecamatan}, ${kota}, ${provinsi}, ${kodepos}`.replace(/^, |, $/g, '').replace(/(, ){2,}/g, ', ');
-                }
-
                 const formattedPhone = formatPhoneNumber(orderData.pelanggan.no_handphone);
 
                 detailContent.innerHTML = `
-                <div class="space-y-3">
-                    <p><strong>Nama:</strong> ${orderData.pelanggan.nama}</p>
-                    <p><strong>No HP:</strong> ${formattedPhone}</p>
-                    <p><strong>Alamat:</strong> ${alamatLengkap}</p>
-                    <p><strong>Pengambilan:</strong> ${orderData.metode_pengambilan}</p>
-                    <p><strong>Pembayaran:</strong> ${orderData.metode_pembayaran}</p>
-                    <p><strong>Waktu Order:</strong> ${new Date(orderData.created_at).toLocaleString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-                    <div class="mt-4">
-                        <h5 class="font-semibold text-gray-700">Detail Layanan:</h5>
-                        <div class="services-container" style="max-height:200px;overflow-y:auto;">
-                            ${layananHtml}
-                        </div>
-                    </div>
-                    <p class="text-xl font-bold mt-4 text-right">Total: Rp ${parseInt(orderData.total_harga).toLocaleString('id-ID')}</p>
+                <p><strong>Nama:</strong> ${orderData.pelanggan.nama}</p>
+                <p><strong>No HP:</strong> ${formattedPhone}</p>
+                <p><strong>Alamat:</strong> ${orderData.pelanggan.alamat}</p>
+                <p><strong>Pengambilan:</strong> ${orderData.metode_pengambilan}</p>
+                <p><strong>Pembayaran:</strong> ${orderData.metode_pembayaran}</p>
+                <p><strong>Waktu Order:</strong> ${new Date(orderData.created_at).toLocaleString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                <div class="mt-4">
+                    <h5 class="font-semibold">Detail Layanan:</h5>
+                    ${layananHtml}
                 </div>
+                <p class="text-xl font-bold mt-4">Total: Rp ${parseInt(orderData.total_harga).toLocaleString('id-ID')}</p>
                 <div class="button-group">
                     <button class="btn-green" id="whatsappBtn"><i class="bi bi-whatsapp"></i> WhatsApp</button>
-                    <a href="http://maps.google.com/?q=${encodeURIComponent(alamatLengkap)}" class="btn-gray" target="_blank"><i class="bi bi-geo-alt-fill"></i> Buka Maps</a>
+                    <a href="http://maps.google.com/?q=${encodeURIComponent(orderData.pelanggan.alamat)}" class="btn-gray" target="_blank"><i class="bi bi-geo-alt-fill"></i> Buka Maps</a>
                 </div>
             `;
                 modal.style.display = "flex";
 
                 document.getElementById('whatsappBtn').addEventListener('click', () => {
-                    openWhatsApp(orderData, alamatLengkap);
+                    openWhatsApp(orderData);
                 });
             });
         });
+
+        // Fungsi untuk memicu modal konfirmasi status
+        function cycleStatus(element) {
+            const currentStatus = element.textContent.trim();
+            const nextStatusData = statusCycle[currentStatus];
+
+            if (!nextStatusData) {
+                alert("Status tidak dikenal");
+                return;
+            }
+
+            nextStatus = nextStatusData.next;
+            currentStatusElement = element;
+
+            confirmContent.innerHTML = `
+            <p>Anda yakin ingin mengubah status order ini?</p>
+            <p class="font-bold mt-2">${currentStatus} → ${nextStatus}</p>
+        `;
+            confirmModal.style.display = "flex";
+        }
+
+        // Kirim permintaan ubah status ke server
+        function changeStatus() {
+            const orderId = currentStatusElement.closest('[data-order-id]').getAttribute('data-order-id');
+
+            fetch(`{{ url('kasir/data_order') }}/${orderId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        status: nextStatus
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        window.location.reload();
+                    } else {
+                        alert('Gagal mengubah status');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Gagal mengubah status. Silakan coba lagi.');
+                });
+        }
+
+        // Event listener tombol konfirmasi
+        confirmBtn.addEventListener('click', changeStatus);
 
         // Fungsi close modal
         function closeModal() {
             modal.style.display = "none";
         }
 
-        window.onclick = function(e) {
-            if (e.target === modal) closeModal();
+        function closeConfirmModal() {
+            confirmModal.style.display = "none";
+            currentStatusElement = null;
+            nextStatus = null;
         }
 
-        const modal = document.getElementById('detailModal');
-        const detailContent = document.getElementById('detailContent');
+        window.onclick = function(e) {
+            if (e.target === modal) closeModal();
+            if (e.target === confirmModal) closeConfirmModal();
+        }
     </script>
 </body>
+
 </html>

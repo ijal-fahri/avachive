@@ -35,7 +35,7 @@ class KasirDataOrderController extends Controller
         }
 
         // Pisahkan order yang belum selesai dan yang sudah selesai
-        $orders = $query->where('status', '!=', 'Selesai')->orderBy('created_at', 'desc')->paginate(10);
+        $orders = $query->where('status', '!=', 'Selesai')->orderBy('created_at', 'desc')->get();
         $historyOrders = BuatOrder::with('pelanggan')->where('status', 'Selesai')->orderBy('created_at', 'desc')->get();
 
         return view('kasir.data_order', compact('orders', 'historyOrders'));
