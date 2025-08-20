@@ -82,4 +82,3 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 
 // Produk / Layanan: CRUD (pakai Controller)
 Route::resource('produk', LayananController::class);
-

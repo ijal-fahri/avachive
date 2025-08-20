@@ -26,6 +26,9 @@
         .tab-button { background: #dfe6e9; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; }
         .tab-button.active { background: #00cec9; color: white; }
         .add-button { background: #00cec9; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; display:flex; align-items:center; gap:8px; }
+        .tab-button { background: #dfe6e9; border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; }
+        .tab-button.active { background: #00cec9; color: white; }
+        .add-button { background: #00cec9; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; display:flex; align-items:center; gap:8px; }
         .add-button:hover { background: #01a3a4; }
         table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
         th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
@@ -63,6 +66,7 @@
         <a href="{{ route('dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a href="{{ route('produk.index') }}" class="active"><i class="bi bi-list-check"></i> Layanan</a>
         <a href="{{ route('dataorder') }}"><i class="bi bi-cart-check"></i> Order</a>
+
         <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Pengguna</a>
         <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
     </aside>
@@ -74,6 +78,26 @@
             <div class="user-info">{{ Auth::user()->name ?? 'Admin' }}</div>
         </div>
 
+        <section class="produk-section">
+            <h3>Daftar Layanan</h3>
+            <div class="button-group">
+                <button class="tab-button" data-tab="Kiloan">Kiloan</button>
+                <button class="tab-button" data-tab="Satuan">Satuan</button>
+                <button id="openTambahBtn" class="add-button"><i class="bi bi-plus-circle"></i> Tambah Layanan</button>
+            </div>
+
+        <a href="{{ route('datauser') }}"><i class="bi bi-people"></i> Karyawan</a>
+        <a href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
+    </aside>
+
+    <main class="main-content">
+       <div class="topbar">
+                <button class="hamburger-btn" id="hamburgerBtn"><i class="bi bi-list"></i></button>
+                <div>Data Layanan</div>
+                <div class="user-info">
+                    <i class="bi bi-person-circle fs-5"></i> {{ Auth::user()->name }}
+                </div>
+            </div>
         <section class="produk-section">
             <h3>Daftar Layanan</h3>
             <div class="button-group">
