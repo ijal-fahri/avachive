@@ -25,6 +25,12 @@ use App\Http\Controllers\kasir\KasirDataOrderController;
 use App\Http\Controllers\kasir\KasirSettingsController;
 
 // Driver Controllers
+use App\Http\Controllers\kasir\KasirRiwayatOrderController;
+use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\DataOrderController; 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\driver\DriverPengaturanController;
 use App\Http\Controllers\driver\DriverRiwayatController;
 
@@ -65,6 +71,15 @@ Route::middleware('auth')->group(function () {
         // Fitur Order
         Route::get('/order', [DataOrderController::class, 'index'])->name('dataorder');
         Route::patch('/order/{order}/status', [DataOrderController::class, 'updateStatus'])->name('admin.order.updateStatus');
+// Kasir
+Route::resource('/kasir/pelanggan', KasirPelangganController::class);
+Route::resource('/kasir/buat_order', KasirBuatOrderController::class);
+// Route::resource('/kasir/data_order', KasirDataOrderController::class);
+Route::resource('/kasir/pengaturan', KasirSettingsController::class);
+Route::get('/kasir/data_order', [KasirDataOrderController::class, 'index'])->middleware('auth','kasir')->name('kasir.dataorder.index');
+Route::patch('/kasir/data_order/{order}/status', [KasirDataOrderController::class, 'updateStatus'])->middleware('auth','kasir')->name('kasir.dataorder.update_status');
+Route::get('/kasir/riwayat_order', [KasirRiwayatOrderController::class, 'index'])->name('kasir.riwayatorder.index');
+
 
         // Fitur Layanan (Produk)
         Route::resource('produk', LayananController::class);
@@ -99,3 +114,10 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+// Logout (sebaiknya gunakan yang dari auth.php)
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
+
+// Produk / Layanan: CRUD (pakai Controller)
+Route::resource('produk', LayananController::class);

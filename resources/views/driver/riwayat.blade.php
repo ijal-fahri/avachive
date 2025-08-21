@@ -378,11 +378,11 @@
                 modalTanggal.textContent = tanggal;
 
                 mapLink.href =
-                    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(alamat)}`;
-                whatsappLink.href =
-                    `https://wa.me/${hp.replace('+', '')}?text=Halo%20${encodeURIComponent(nama)},%20pesanan%20anda%20telah%20diantar.%20Terima%20kasih!`;
+                    https: //www.google.com/maps/search/?api=1&query=${encodeURIComponent(alamat)};
+                    whatsappLink.href =
+                    https: //wa.me/${hp.replace('+', '')}?text=Halo%20${encodeURIComponent(nama)},%20pesanan%20anda%20telah%20diantar.%20Terima%20kasih!;
 
-                modal.style.display = 'flex';
+                    modal.style.display = 'flex';
             });
         });
 
