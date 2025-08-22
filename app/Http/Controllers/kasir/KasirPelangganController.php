@@ -5,45 +5,65 @@ namespace App\Http\Controllers\kasir;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TambahPelanggan;
-use Illuminate\Support\Facades\Auth; // <-- DITAMBAHKAN
 
 class KasirPelangganController extends Controller
 {
     /**
-     * Menampilkan daftar pelanggan sesuai cabang kasir.
+     * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        // Ambil ID cabang dari kasir yang sedang login
-        $cabangId = Auth::user()->cabang_id;
+        $query = TambahPelanggan::query();
 
-        // DIUBAH: Mulai query dengan filter cabang terlebih dahulu
-        $query = TambahPelanggan::where('cabang_id', $cabangId);
-
-        // Search (logika ini sudah benar)
+        // Search
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where(function($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('no_handphone', 'like', "%{$search}%")
-                  ->orWhere('kecamatan', 'like', "%{$search}%");
-            });
+            $query->where('nama', 'like', "%{$search}%")
+                ->orWhere('no_handphone', 'like', "%{$search}%")
+                ->orWhere('provinsi', 'like', "%{$search}%")
+                ->orWhere('kota', 'like', "%{$search}%")
+                ->orWhere('kecamatan', 'like', "%{$search}%")
+                ->orWhere('kodepos', 'like', "%{$search}%")
+                ->orWhere('detail_alamat', 'like', "%{$search}%");
         }
 
-        // Sort (logika ini sudah benar)
+        // Sort
         if ($request->filled('sort')) {
-            // ... (logika sort Anda tidak perlu diubah)
+            switch ($request->input('sort')) {
+                case 'nama_asc':
+                    $query->orderBy('nama', 'asc');
+                    break;
+                case 'nama_desc':
+                    $query->orderBy('nama', 'desc');
+                    break;
+                case 'terbaru':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'terlama':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+            }
         } else {
+            // Default sort
             $query->orderBy('created_at', 'desc');
         }
-        
-        $pelanggans = $query->paginate(10);
+
+        // Pagination
+        $pelanggans = $query->paginate(10); // Menampilkan 10 data per halaman
 
         return view('kasir.pelanggan', compact('pelanggans'));
     }
 
     /**
-     * Menyimpan pelanggan baru ke database.
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
@@ -57,36 +77,33 @@ class KasirPelangganController extends Controller
             'detail_alamat' => 'required',
         ]);
 
-        // DITAMBAHKAN: Sisipkan ID cabang kasir secara otomatis
-        $validatedData['cabang_id'] = Auth::user()->cabang_id;
-
         TambahPelanggan::create($validatedData);
 
         return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan berhasil ditambahkan!');
     }
 
     /**
-     * Mengambil data pelanggan untuk form edit.
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        // DITAMBAHKAN: Pengecekan keamanan
-        $pelanggan = TambahPelanggan::where('id', $id)
-                                    ->where('cabang_id', Auth::user()->cabang_id)
-                                    ->firstOrFail(); // Akan error jika pelanggan tidak ditemukan di cabang ini
+        $pelanggan = TambahPelanggan::findOrFail($id);
         return response()->json($pelanggan);
     }
 
     /**
-     * Memperbarui data pelanggan.
+     * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        // DITAMBAHKAN: Pengecekan keamanan
-        $pelanggan = TambahPelanggan::where('id', $id)
-                                    ->where('cabang_id', Auth::user()->cabang_id)
-                                    ->firstOrFail();
-
         $validatedData = $request->validate([
             'nama' => 'required|max:255',
             'no_handphone' => 'required|max:20',
@@ -97,22 +114,17 @@ class KasirPelangganController extends Controller
             'detail_alamat' => 'required',
         ]);
 
-        $pelanggan->update($validatedData);
+        TambahPelanggan::where('id', $id)->update($validatedData);
 
         return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan berhasil diupdate!');
     }
 
     /**
-     * Menghapus data pelanggan.
+     * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        // DITAMBAHKAN: Pengecekan keamanan
-        $pelanggan = TambahPelanggan::where('id', $id)
-                                    ->where('cabang_id', Auth::user()->cabang_id)
-                                    ->firstOrFail();
-        
-        $pelanggan->delete();
+        TambahPelanggan::destroy($id);
 
         return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan berhasil dihapus!');
     }

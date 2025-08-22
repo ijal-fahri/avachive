@@ -14,13 +14,11 @@ class Admin
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-{
-    // Izinkan akses jika user adalah 'admin' ATAU 'owner'
-    if (Auth::user()->usertype !== 'admin' && Auth::user()->usertype !== 'owner') {
-        // Jika bukan keduanya, arahkan kembali ke halaman login
-        return redirect('/login'); 
+    {
+        if(Auth::user()->usertype != 'admin')
+        {
+            return redirect(route('admin.dashboard'));
+        }
+        return $next($request);
     }
-
-    return $next($request);
-}
 }
