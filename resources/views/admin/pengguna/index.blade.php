@@ -214,7 +214,7 @@
                 <input type="text" name="name" id="name" required>
                 
                 <label>Password</label>
-                <input type="password" name="password" id="password" placeholder="Kosongkan jika tidak ingin diubah">
+                <input type="password" name="password" id="password" placeholder="Isi dengan 8 karakter*">
                 
                 <label>Role</label>
                 <select name="usertype" id="usertype" required>
