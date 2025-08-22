@@ -23,29 +23,34 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+{
+    $request->authenticate();
+    $request->session()->regenerate();
+    $user = Auth::user();
 
-        $request->session()->regenerate();
-
-        if($request->user()->usertype == 'admin')
-        {
-        return redirect('/admin/dashboard'); 
-        }
-
-        if($request->user()->usertype == 'kasir')
-        {
-        return redirect('/kasir/dashboard'); 
-        }
-
-        if($request->user()->usertype == 'driver')
-        {
-        return redirect('/driver/dashboard'); 
-        }
-
-
-        return redirect()->intended(route('dashboard', absolute: false));
+    // --- LOGIKA PENTING UNTUK MULTI-CABANG ---
+    if ($user->usertype === 'owner') {
+        // Jika owner, biarkan session kosong dulu, akan diisi default di dashboard
+        session()->forget('cabang_aktif_id');
+    } else {
+        // Jika bukan owner (kasir, driver), LANGSUNG KUNCI session ke cabang miliknya
+        session(['cabang_aktif_id' => $user->cabang_id]);
     }
+    // --- AKHIR LOGIKA PENTING ---
+
+    // Arahkan ke dashboard yang sesuai
+    if ($user->usertype === 'owner' || $user->usertype === 'admin') {
+        return redirect()->intended(route('dashboard')); // Route ke admin dashboard
+    }
+    if ($user->usertype === 'kasir') {
+        return redirect()->intended('/kasir/dashboard'); // Sesuaikan dengan route kasir
+    }
+    if ($user->usertype === 'driver') {
+        return redirect()->intended('/driver/dashboard'); // Sesuaikan dengan route driver
+    }
+
+    return redirect()->intended(RouteServiceProvider::HOME);
+}
 
     /**
      * Destroy an authenticated session.

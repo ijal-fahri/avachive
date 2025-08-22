@@ -214,7 +214,7 @@
                 <input type="text" name="name" id="name" required>
                 
                 <label>Password</label>
-                <input type="password" name="password" id="password" placeholder="Kosongkan jika tidak ingin diubah">
+                <input type="password" name="password" id="password" placeholder="Isi dengan 8 karakter*">
                 
                 <label>Role</label>
                 <select name="usertype" id="usertype" required>
@@ -249,14 +249,15 @@
         }
 
         function openEditForm(id, name, usertype) {
-            userForm.reset();
-            modalTitle.innerText = 'Edit Karyawan';
-            userForm.action = `/pengguna/${id}`;
-            formMethod.value = 'PUT';
-            nameInput.value = name;
-            usertypeInput.value = usertype;
-            passwordInput.removeAttribute('required');
-            userModal.style.display = 'flex';
+    userForm.reset();
+    modalTitle.innerText = 'Edit Karyawan';
+    // Fix: gunakan URL sesuai route resource di dalam prefix /admin
+    userForm.action = "{{ url('admin/pengguna') }}/" + id;
+    formMethod.value = 'PUT';
+    nameInput.value = name;
+    usertypeInput.value = usertype;
+    passwordInput.removeAttribute('required');
+    userModal.style.display = 'flex';
         }
 
         window.onclick = function(e) {
