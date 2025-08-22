@@ -15,17 +15,18 @@ class KasirRiwayatOrderController extends Controller
     public function index(Request $request)
     {
         $query = BuatOrder::with('pelanggan')
-            ->where('status', 'Selesai'); // Selalu filter status Selesai
+            ->where('status', 'Selesai')
+            ->orderBy('created_at', 'desc');
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->whereHas('pelanggan', function($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('no_handphone', 'like', "%{$search}%");
-            });
+        // Fitur pencarian jika dibutuhkan
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = $request->search;
+            $query->whereHas('pelanggan', function ($q) use ($searchTerm) {
+                $q->where('nama', 'like', '%' . $searchTerm . '%');
+            })->orWhere('id', 'like', '%' . $searchTerm . '%');
         }
 
-        $historyOrders = $query->paginate(10);
+        $historyOrders = $query->get();
 
         return view('kasir.riwayat_order', compact('historyOrders'));
     }
