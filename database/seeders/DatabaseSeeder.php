@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,10 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Panggil OwnerSeeder yang baru kita buat
-        $this->call([
-            OwnerSeeder::class,
-            // Anda bisa menambahkan seeder lain di sini jika perlu
+        // User::factory(10)->create();
+
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
         ]);
     }
 }

@@ -1,167 +1,309 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pengaturan | Avachive</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pengaturan | Avachive</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts dan Bootstrap Icon -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  <style>
-    /* Custom styles untuk Poppins font & scrollbar */
-    body {
-      font-family: 'Poppins', sans-serif;
-    }
-    /* Simple Scrollbar Styling */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ecf0f1;
+            display: flex;
+            min-height: 100vh;
+        }
 
-    /* Kelas utilitas untuk rotasi arrow, dikontrol oleh JS */
-    .rotate {
-      transform: rotate(90deg);
-    }
-  </style>
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background-color: #14532d;
+            /* hijau tua */
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: transform 0.3s ease;
+            z-index: 998;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            color: #dcdde1;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .sidebar a i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .sidebar a:hover {
+            background-color: #166534;
+            /* hover hijau gelap */
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 40px 30px;
+            width: calc(100% - 240px);
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h3 {
+            font-size: 26px;
+            color: #2f3542;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #636e72;
+            font-size: 14px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .card h4 {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            color: #2f3542;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 10px;
+        }
+
+        .card h4 i {
+            margin-right: 10px;
+        }
+
+        .toggle-arrow {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .rotate {
+            transform: rotate(90deg);
+        }
+
+        .card-body {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            display: none;
+            line-height: 1.6;
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #2980b9;
+        }
+
+        .profile-info h4 {
+            margin: 0;
+            font-size: 18px;
+            color: #2f3542;
+        }
+
+        .profile-info p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .btn-logout {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout:hover {
+            opacity: 0.9;
+        }
+
+        /* Toggle sidebar */
+        #toggleMenu {
+            display: none;
+        }
+
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #14532d;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 20px;
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            #toggleMenu:checked~.sidebar {
+                transform: translateX(0);
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .profile-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-slate-100 text-slate-800 antialiased">
+<body>
 
-<div class="flex h-screen overflow-hidden bg-slate-100">
-  
-  <aside id="sidebar" class="w-64 bg-slate-900 text-slate-300 p-4 flex-col hidden md:flex">
-    <div class="mb-8 text-center">
-      <h2 class="text-2xl font-bold text-teal-400">Avachive Driver</h2>
+    <input type="checkbox" id="toggleMenu" hidden />
+    <label for="toggleMenu" class="mobile-toggle"><i class="bi bi-list"></i></label>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Avachive</h2>
+        <a href="/driver/dashboard"><i class="bi bi-box-seam"></i> Pengiriman</a>
+        <a href="/driver/riwayat"><i class="bi bi-clock-history"></i> Riwayat</a>
+        <a href="/driver/pengaturan"><i class="bi bi-gear"></i> Pengaturan</a>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h3><i class="bi bi-gear"></i> Pengaturan</h3>
+            <p>Informasi profil, tentang aplikasi, dan panduan penggunaan.</p>
+        </div>
+
+        <!-- Profil Driver -->
+        <div class="card">
+            <h4><i class="bi bi-person-circle"></i> Profil Driver</h4>
+            <div class="profile-card">
+                <img src="https://ui-avatars.com/api/?name=Rusqi+Yudha&background=2980b9&color=fff&size=128"
+                    alt="Foto Profil">
+                <div class="profile-info">
+                    <h4>Rusqi Yudha Wastu</h4>
+                    <p>rusqi@example.com</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tentang Aplikasi -->
+        <div class="card">
+            <h4 onclick="toggleCard('infoApp', this)">
+                <i class="bi bi-info-circle"></i> Tentang Aplikasi
+                <span class="toggle-arrow bi bi-caret-right-fill"></span>
+            </h4>
+            <div id="infoApp" class="card-body">
+                Avachive adalah aplikasi pengelolaan dan pengantaran laundry yang membantu driver mengelola tugas harian
+                secara efisien. Dengan antarmuka yang sederhana dan informatif, aplikasi ini mempermudah proses
+                pelacakan barang dan pengiriman ke pelanggan.
+            </div>
+        </div>
+
+        <!-- Cara Penggunaan -->
+        <div class="card">
+            <h4 onclick="toggleCard('caraPakai', this)">
+                <i class="bi bi-question-circle"></i> Cara Menggunakan Aplikasi
+                <span class="toggle-arrow bi bi-caret-right-fill"></span>
+            </h4>
+            <div id="caraPakai" class="card-body">
+                1. Masuk ke halaman <b>Pengiriman</b> untuk melihat daftar barang yang harus diantar.<br>
+                2. Klik tombol <b>Detail</b> untuk melihat informasi lengkap barang.<br>
+                3. Setelah barang dikirim, klik tombol <b>Selesai</b> untuk memindahkannya ke Riwayat.<br>
+                4. Masuk ke halaman <b>Riwayat</b> untuk melihat barang yang sudah dikirim.<br>
+                5. Gunakan menu <b>Pengaturan</b> untuk melihat profil dan panduan.
+            </div>
+        </div>
+
+        <!-- Logout -->
+        <div class="card">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-lg transition-colors duration-200 border border-red-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Keluar
+                </button>
+            </form>
+        </div>
     </div>
-    <nav class="flex flex-col space-y-2">
-      <a href="/driver/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">
-        <i class="bi bi-box-seam"></i> Pengiriman
-      </a>
-      <a href="/driver/riwayat" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">
-        <i class="bi bi-clock-history"></i> Riwayat
-      </a>
-      <a href="/driver/pengaturan" class="active flex items-center gap-3 px-4 py-3 rounded-lg text-white bg-teal-500 font-semibold transition-colors">
-        <i class="bi bi-gear"></i> Pengaturan
-      </a>
-    </nav>
-  </aside>
 
-  <main class="flex-1 p-4 sm:p-6 overflow-y-auto">
-    <div class="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border border-slate-200/60 p-4 rounded-xl shadow-lg mb-6 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <span class="text-2xl">⚙️</span>
-        <div>
-          <h1 class="font-semibold text-slate-800">Pengaturan Akun</h1>
-          <p class="text-xs text-slate-500">Profil & Informasi Aplikasi</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-3">
-        <span class="font-semibold text-sm hidden sm:inline">Driver</span>
-        <i class="bi bi-person-circle text-2xl text-slate-600"></i>
-      </div>
-    </div>
-
-    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-      <h3 class="flex items-center gap-3 text-xl font-semibold text-slate-800 mb-4">
-        <i class="bi bi-person-circle text-teal-500"></i>
-        Profil Driver
-      </h3>
-      <div class="flex flex-col items-center text-center md:flex-row md:text-left gap-6">
-        <img src="https://ui-avatars.com/api/?name=Rusqi+Yudha&background=3498db&color=fff&size=128&bold=true" alt="Foto Profil" class="w-24 h-24 rounded-full border-4 border-teal-400 shadow-md">
-        <div class="profile-info">
-          <h4 class="text-2xl font-bold text-slate-900">Rusqi Yudha Wastu</h4>
-          <p class="text-slate-500 mt-1">rusqi@example.com</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-      <h3 onclick="toggleCard('infoApp', this)" class="flex justify-between items-center text-xl font-semibold text-slate-800 cursor-pointer">
-        <div class="flex items-center gap-3">
-          <i class="bi bi-info-circle text-teal-500"></i>
-          Tentang Aplikasi
-        </div>
-        <span class="toggle-arrow bi bi-caret-right-fill text-slate-500 transition-transform"></span>
-      </h3>
-      <div id="infoApp" class="card-body hidden mt-4 pl-5 border-l-4 border-teal-400 text-slate-600 text-sm leading-relaxed">
-        Avachive adalah aplikasi pengelolaan dan pengantaran laundry yang membantu driver mengelola tugas harian secara efisien. Dengan antarmuka yang sederhana dan informatif, aplikasi ini mempermudah proses pelacakan barang dan pengiriman ke pelanggan.
-      </div>
-    </section>
-
-    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-      <h3 onclick="toggleCard('caraPakai', this)" class="flex justify-between items-center text-xl font-semibold text-slate-800 cursor-pointer">
-        <div class="flex items-center gap-3">
-          <i class="bi bi-question-circle text-teal-500"></i>
-          Cara Menggunakan Aplikasi
-        </div>
-        <span class="toggle-arrow bi bi-caret-right-fill text-slate-500 transition-transform"></span>
-      </h3>
-      <div id="caraPakai" class="card-body hidden mt-4 pl-5 border-l-4 border-teal-400 text-slate-600 text-sm leading-relaxed">
-        <ol class="list-decimal list-inside space-y-2">
-            <li>Masuk ke halaman <b class="font-semibold text-slate-700">Pengiriman</b> untuk melihat daftar barang yang harus diantar.</li>
-            <li>Klik tombol <b class="font-semibold text-slate-700">Detail</b> untuk melihat informasi lengkap pelanggan.</li>
-            <li>Setelah barang dikirim, klik tombol <b class="font-semibold text-slate-700">Selesai</b> untuk memindahkannya ke Riwayat.</li>
-            <li>Masuk ke halaman <b class="font-semibold text-slate-700">Riwayat</b> untuk melihat barang yang sudah dikirim.</li>
-            <li>Gunakan menu <b class="font-semibold text-slate-700">Pengaturan</b> untuk melihat profil dan panduan ini.</li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="bg-white rounded-2xl shadow-lg p-6">
-       <h3 class="flex items-center gap-3 text-xl font-semibold text-slate-800 mb-4">
-        <i class="bi bi-box-arrow-right text-teal-500"></i>
-        Keluar
-      </h3>
-      <p class="text-sm text-slate-600 mb-4">Anda akan keluar dari sesi ini dan perlu login kembali untuk mengakses dashboard.</p>
-      <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-br from-red-600 to-red-700 text-white font-semibold shadow-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 hover:-translate-y-0.5 active:scale-95">
-          <i class="bi bi-box-arrow-right"></i>
-          Keluar dari Akun
-        </button>
-      </form>
-    </section>
-
-    <footer class="text-center py-6 text-sm text-slate-500">
-      © 2025 Avachive Driver. All rights reserved.
-    </footer>
-  </main>
-  
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 text-slate-300 p-2 flex justify-around shadow-lg">
-      <a href="/driver/dashboard" class="flex flex-col items-center justify-center hover:text-white p-2 rounded-lg w-full">
-        <i class="bi bi-box-seam text-xl"></i><span class="text-xs">Pengiriman</span>
-      </a>
-      <a href="/driver/riwayat" class="flex flex-col items-center justify-center hover:text-white p-2 rounded-lg w-full">
-        <i class="bi bi-clock-history text-xl"></i><span class="text-xs">Riwayat</span>
-      </a>
-      <a href="/driver/pengaturan" class="active flex flex-col items-center justify-center text-teal-400 p-2 rounded-lg w-full">
-        <i class="bi bi-gear text-xl"></i><span class="text-xs">Pengaturan</span>
-      </a>
-  </nav>
-
-</div>
-
-<script>
-  function toggleCard(id, header) {
-    const content = document.getElementById(id);
-    const arrow = header.querySelector('.toggle-arrow');
-    const isVisible = !content.classList.contains('hidden');
-
-    if (isVisible) {
-      content.classList.add('hidden');
-      arrow.classList.remove('rotate');
-    } else {
-      content.classList.remove('hidden');
-      arrow.classList.add('rotate');
-    }
-  }
-</script>
+    <!-- Script -->
+    <script>
+        function toggleCard(id, header) {
+            const content = document.getElementById(id);
+            const arrow = header.querySelector('.toggle-arrow');
+            const isVisible = content.style.display === 'block';
+            content.style.display = isVisible ? 'none' : 'block';
+            arrow.classList.toggle('rotate', !isVisible);
+        }
+    </script>
 
 </body>
+
 </html>

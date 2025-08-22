@@ -1,65 +1,51 @@
 <?php
 
+// file: KasirDataOrderController.php
+
 namespace App\Http\Controllers\kasir;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BuatOrder;
-use Illuminate\Support\Facades\Auth;
+use App\Models\TambahPelanggan;
 
 class KasirDataOrderController extends Controller
 {
     /**
-     * Menampilkan daftar order sesuai cabang kasir.
+     * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request) // Tambahkan Request $request
     {
-        // Ambil ID cabang dari kasir yang sedang login
-        $cabangId = Auth::user()->cabang_id;
-
-        // Mulai query dengan filter cabang terlebih dahulu
-        $query = BuatOrder::with('pelanggan')->where('cabang_id', $cabangId);
+        $query = BuatOrder::with('pelanggan');
 
         // Logika untuk fitur pencarian
-        if ($request->filled('search')) {
+        if ($request->has('search') && $request->search != '') {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
+                // Cari berdasarkan nama pelanggan
                 $q->whereHas('pelanggan', function ($q2) use ($searchTerm) {
                     $q2->where('nama', 'like', '%' . $searchTerm . '%');
-                })->orWhere('id', 'like', '%' . $searchTerm . '%');
+                })->orWhere('id', 'like', '%' . $searchTerm . '%'); // Atau cari berdasarkan ID order
             });
         }
 
         // Logika untuk fitur filter status
-        if ($request->filled('status') && $request->status != 'Semua' && $request->status != 'Filter Status') {
+        if ($request->has('status') && $request->status != 'Semua') {
             $query->where('status', $request->status);
         }
 
-        // Pisahkan order yang belum selesai (menggunakan query yang sudah difilter)
-        $orders = (clone $query)->where('status', '!=', 'Selesai')
-                                ->orderBy('created_at', 'desc')
-                                ->paginate(10); // Menggunakan pagination
-        
-        // Pisahkan order yang sudah selesai (juga difilter berdasarkan cabang)
-        $historyOrders = BuatOrder::with('pelanggan')
-                                ->where('cabang_id', $cabangId)
-                                ->where('status', 'Selesai')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
+        // Pisahkan order yang belum selesai dan yang sudah selesai
+        $orders = $query->where('status', '!=', 'Selesai')->orderBy('created_at', 'desc')->paginate(10);
+        $historyOrders = BuatOrder::with('pelanggan')->where('status', 'Selesai')->orderBy('created_at', 'desc')->get();
 
         return view('kasir.data_order', compact('orders', 'historyOrders'));
     }
 
     /**
-     * Update status order.
+     * Update the status of the specified resource.
      */
     public function updateStatus(Request $request, BuatOrder $order)
     {
-        // Pengecekan keamanan: Pastikan kasir hanya bisa mengubah order di cabangnya sendiri
-        if ($order->cabang_id != Auth::user()->cabang_id) {
-            return response()->json(['message' => 'Akses ditolak.'], 403);
-        }
-
         $request->validate(['status' => 'required|in:Diproses,Sudah Bisa Diambil,Selesai']);
 
         $order->status = $request->status;

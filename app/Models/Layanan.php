@@ -18,7 +18,6 @@ class Layanan extends Model
         'paket',
         'kategori',
         'harga',
-        'satuan',
-        'cabang_id', // <-- INI YANG DITAMBAHKAN
+        'satuan', // <-- INI YANG DITAMBAHKAN
     ];
 }
