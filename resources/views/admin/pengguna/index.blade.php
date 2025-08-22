@@ -249,14 +249,15 @@
         }
 
         function openEditForm(id, name, usertype) {
-            userForm.reset();
-            modalTitle.innerText = 'Edit Karyawan';
-            userForm.action = `/pengguna/${id}`;
-            formMethod.value = 'PUT';
-            nameInput.value = name;
-            usertypeInput.value = usertype;
-            passwordInput.removeAttribute('required');
-            userModal.style.display = 'flex';
+    userForm.reset();
+    modalTitle.innerText = 'Edit Karyawan';
+    // Fix: gunakan URL sesuai route resource di dalam prefix /admin
+    userForm.action = "{{ url('admin/pengguna') }}/" + id;
+    formMethod.value = 'PUT';
+    nameInput.value = name;
+    usertypeInput.value = usertype;
+    passwordInput.removeAttribute('required');
+    userModal.style.display = 'flex';
         }
 
         window.onclick = function(e) {

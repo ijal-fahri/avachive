@@ -1,490 +1,152 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Driver | Avachive</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    :root{
-      --bg: #f0f4f8;
-      --bg-soft: #eef3f7;
-      --card: #ffffff;
-      --text: #2d3436;
-      --muted: #7f8c8d;
-      --brand: #0984e3;
-      --brand-2: #00cec9;
-      --good: #2ecc71;
-      --warn: #e67e22;
-      --shadow: 0 8px 24px rgba(0,0,0,.08);
-      --radius: 18px;
-    }
-    html, body { height: 100%; }
+    /* Custom styles untuk Poppins font & scrollbar */
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, var(--bg), var(--bg-soft));
-      color: var(--text);
     }
-
-    .admin-wrapper {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* ====== SIDEBAR (TIDAK DIUBAH) ====== */
-    .sidebar {
-      width: 250px;
-      background: #1e272e;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-    }
-    .sidebar h2 {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #00cec9;
-    }
-    .sidebar a {
-      color: #dcdde1;
-      text-decoration: none;
-      margin: 0.4rem 0;
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    }
-    .sidebar a:hover,
-    .sidebar a.active {
-      background: #00cec9;
-      color: #fff;
-    }
-
-    /* ====== MAIN ====== */
-    .main-content {
-      flex: 1;
-      padding: 1.5rem 2rem 2rem;
-      overflow-y: auto;
-      position: relative;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 5;
-      background: rgba(255,255,255,.75);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(0,0,0,.05);
-      padding: 1rem 1.25rem;
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      margin-bottom: 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .topbar .title {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      font-weight: 700;
-      letter-spacing: .2px;
-    }
-    .topbar .title .badge-day {
-      font-size: .75rem;
-      background: #eaf6ff;
-      color: var(--brand);
-      padding: .25rem .6rem;
-      border-radius: 999px;
-      border: 1px solid #d9ecff;
-    }
-    .topbar .user-info {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      font-weight: 600;
-      color: #2f3640;
-    }
-
-    /* ====== CARDS ====== */
-    .dashboard-section {
-      background: var(--card);
-      padding: 1.5rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 1.25rem;
-      animation: fadeIn .4s ease;
-    }
-    @keyframes fadeIn { from{opacity:0; transform: translateY(10px)} to{opacity:1; transform:none} }
-    .dashboard-section h3 {
-      margin-bottom: 1rem;
-      font-weight: 700;
-      color: var(--brand);
-      letter-spacing: .2px;
-    }
-
-    .stat-grid{
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: 1rem;
-    }
-    .stat-card {
-      background: linear-gradient(135deg, #0984e3, #6c5ce7);
-      padding: 1.25rem;
-      border-radius: 16px;
-      color: #fff;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-    .stat-card:nth-child(2){ background: linear-gradient(135deg, #0984e3,  #6c5ce7); }
-    .stat-card:nth-child(3){ background: linear-gradient(135deg, #0984e3, #6c5ce7); }
-    .stat-card:nth-child(4){ background: linear-gradient(135deg, #0984e3, #6c5ce7); }
-    .stat-card h4 { font-size: .95rem; opacity: .95; font-weight: 600; }
-    .stat-card p { font-size: 2rem; font-weight: 800; margin-top: .35rem; line-height: 1; }
-
-    /* ====== FILTER BAR ====== */
-    .filters{
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: .8rem;
-      margin-bottom: .75rem;
-      align-items: center;
-    }
-    .tabs{
-      display: flex;
-      gap: .5rem;
-      flex-wrap: wrap;
-    }
-    .tab{
-      background: #f3f6fa;
-      border: 1px solid #e7edf6;
-      padding: .55rem .9rem;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: .9rem;
-      font-weight: 600;
-      transition: .2s;
-      user-select: none;
-    }
-    .tab.active{
-      background: #eaf8ff;
-      border-color: #cbe9ff;
-      color: var(--brand);
-    }
-    .searchbar{
-      display: flex;
-      gap: .5rem;
-      align-items: center;
-    }
-    .input{
-      background: #fff;
-      border: 1px solid #e4e9f1;
-      padding: .6rem .9rem;
-      border-radius: 10px;
-      outline: none;
-      min-width: 260px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.03) inset;
-    }
-    .btn{
-      padding: .55rem .9rem;
-      font-size: .9rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      transition: transform .15s ease, box-shadow .15s ease, background .2s;
-      box-shadow: 0 6px 14px rgba(0,0,0,.06);
-    }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn-primary{ background: var(--brand); color:#fff; }
-    .btn-soft{ background: #f3f6fa; }
-    .btn-green{ background: var(--good); color:#fff; border-radius: 999px; padding:.6rem 1rem; text-decoration: none; }
-    .btn-gray{ background: #eef1f6; color:#2d3436; border-radius: 999px; padding:.6rem 1rem; text-decoration: none; }
-    .btn-detail{ background:#2980b9; color:#fff; }
-    .btn-selesai{ background:#27ae60; color:#fff; }
-
-    /* ====== TABLE ====== */
-    .table-wrap{
-      border: 1px solid #e8edf4;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    table { width: 100%; border-collapse: collapse; }
-    thead th{
-      background: var(--brand);
-      color:#fff;
-      text-align: left;
-      font-weight: 700;
-      padding: .85rem .9rem;
-      position: relative;
-      cursor: pointer;
-      user-select: none;
-    }
-    thead th .sort{
-      margin-left: .4rem;
-      font-size: .85rem;
-      opacity: .9;
-    }
-    tbody td{
-      padding: .85rem .9rem;
-      border-bottom: 1px solid #f0f3f8;
-      background: #fff;
-    }
-    tbody tr:nth-child(even) td{ background: #fafcff; }
-    tbody tr:hover td{ background: #f5f9ff; }
-
-    .badge{
-      padding: .35rem .7rem;
-      border-radius: 999px;
-      font-size: .75rem;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-    }
-    .badge-pending{ background: var(--warn); }
-    .badge-done{ background: var(--good); }
-
-    footer{
-      text-align: center;
-      padding: 1rem .5rem;
-      font-size: .85rem;
-      color: #94a3b8;
-    }
-
-    /* ====== MODAL ====== */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn .25s ease;
-      padding: 1rem;
-    }
-    .modal-content {
-      background-color: white;
-      padding: 22px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 560px;
-      position: relative;
-      box-shadow: var(--shadow);
-      animation: scaleUp .2s ease-in-out;
-    }
-    @keyframes scaleUp { from { transform: scale(0.98); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .modal-close {
-      position: absolute; top: 10px; right: 12px; font-size: 22px; color: #94a3b8; cursor: pointer;
-    }
-    .detail-grid{
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: .6rem .9rem;
-      margin-top: .6rem;
-    }
-    .detail-grid p{ font-size: .95rem; }
-    .button-group { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
-
-    /* ====== FLOAT ACTION (optional) ====== */
-    .fab{
-      position: fixed;
-      right: 22px; bottom: 22px;
-      background: var(--brand);
-      color: #fff;
-      width: 54px; height: 54px;
-      border-radius: 50%;
-      display: grid; place-items: center;
-      box-shadow: var(--shadow);
-      cursor: pointer;
-      z-index: 9;
-    }
-
-    /* ====== RESPONSIVE ====== */
-    @media (max-width: 1200px){
-      .stat-grid{ grid-template-columns: repeat(2,minmax(0,1fr)); }
-    }
-    @media (max-width: 900px){
-      .filters{ grid-template-columns: 1fr; }
-      .searchbar{ justify-content: space-between; }
-      .input{ flex: 1; min-width: 0; }
-      .detail-grid{ grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px){
-      .admin-wrapper { flex-direction: column; }
-      .sidebar {
-        flex-direction: row;
-        overflow-x: auto;
-        width: 100%;
-        padding: 0.5rem;
-      }
-      .sidebar a { flex: 1; justify-content: center; font-size: 0.9rem; }
-
-      /* table => cards */
-      .table-wrap { border: none; box-shadow: none; }
-      table, thead, tbody, th, td, tr { display: block; }
-      thead { display: none; }
-      tbody tr{
-        background: #fff;
-        border: 1px solid #e8edf4;
-        border-radius: 14px;
-        padding: .75rem .85rem;
-        margin-bottom: .8rem;
-        box-shadow: var(--shadow);
-      }
-      tbody td{
-        border: none;
-        padding: .35rem 0;
-        display: grid;
-        grid-template-columns: 120px 1fr;
-        gap: .5rem;
-      }
-      tbody td::before{
-        content: attr(data-label);
-        font-weight: 700;
-        color: var(--muted);
-      }
-      .topbar{ border-radius: 12px; }
-      
-    }
+    /* Simple Scrollbar Styling */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
   </style>
 </head>
-<body>
 
-<div class="admin-wrapper">
-<!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <h2>Avachive Driver</h2>
+<body class="bg-slate-100 text-slate-800 antialiased">
+
+<div class="flex h-screen overflow-hidden bg-slate-100">
+  
+  <aside id="sidebar" class="w-64 bg-slate-900 text-slate-300 p-4 flex-col hidden md:flex">
+    <div class="mb-8 text-center">
+      <h2 class="text-2xl font-bold text-teal-400">Avachive Driver</h2>
     </div>
-    <nav class="nav">
-      <a href="/driver/dashboard" class="active"><i class="bi bi-box-seam"></i> Pengiriman</a>
-      <a href="/driver/riwayat"><i class="bi bi-clock-history"></i> Riwayat</a>
-      <a href="/driver/pengaturan"><i class="bi bi-gear"></i> Pengaturan</a>
+    <nav class="flex flex-col space-y-2">
+      <a href="/driver/dashboard" class="active flex items-center gap-3 px-4 py-3 rounded-lg text-white bg-teal-500 font-semibold transition-colors">
+        <i class="bi bi-box-seam"></i> Pengiriman
+      </a>
+      <a href="/driver/riwayat" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">
+        <i class="bi bi-clock-history"></i> Riwayat
+      </a>
+      <a href="/driver/pengaturan" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">
+        <i class="bi bi-gear"></i> Pengaturan
+      </a>
     </nav>
   </aside>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <div class="topbar">
-      <div class="title">
-        <span style="font-size:1.2rem">🚚</span>
-        <span>Dashboard Driver Laundry (Cabang Ciomas)</span>
-        <span class="badge-day" id="todayBadge">Hari ini</span>
+  <main class="flex-1 p-4 sm:p-6 overflow-y-auto" id="main-content">
+    <div class="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border border-slate-200/60 p-4 rounded-xl shadow-lg mb-6 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🚚</span>
+        <div>
+          <h1 class="font-semibold text-slate-800 hidden sm:block">Dashboard Driver Laundry</h1>
+          <p class="text-xs text-slate-500">Cabang Ciomas</p>
+        </div>
       </div>
-      <div class="user-info">
-        <i class="bi bi-person-circle fs-5"></i> Driver
+      <div class="text-sm text-right">
+        <p class="font-semibold" id="todayBadge">Jumat, 22 Agustus 2025</p>
+        <p class="text-xs text-slate-500">Driver</p>
       </div>
     </div>
 
-    <!-- Statistik -->
-    <section class="dashboard-section">
-      <h3>Ringkasan</h3>
-      <div class="stat-grid">
-        <div class="stat-card">
-          <h4>Total Pengiriman</h4>
-          <p id="countTotal">0</p>
+    <section class="mb-6">
+      <h3 class="text-xl font-semibold text-blue-600 mb-4">Ringkasan Hari Ini</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="bg-gradient-to-br from-blue-600 to-blue-500 text-white p-5 rounded-xl shadow-lg transition hover:-translate-y-1">
+          <h4 class="font-medium text-blue-100">Total Pengiriman</h4>
+          <p id="countTotal" class="text-4xl font-bold mt-1">0</p>
         </div>
-        <div class="stat-card">
-          <h4>Belum Diantar</h4>
-          <p id="countBelum">0</p>
+        <div class="bg-gradient-to-br from-orange-500 to-orange-400 text-white p-5 rounded-xl shadow-lg transition hover:-translate-y-1">
+          <h4 class="font-medium text-orange-100">Belum Diantar</h4>
+          <p id="countBelum" class="text-4xl font-bold mt-1">0</p>
         </div>
-        <div class="stat-card">
-          <h4>Sudah Diantar</h4>
-          <p id="countSudah">0</p>
+        <div class="bg-gradient-to-br from-green-600 to-green-500 text-white p-5 rounded-xl shadow-lg transition hover:-translate-y-1">
+          <h4 class="font-medium text-green-100">Sudah Diantar</h4>
+          <p id="countSudah" class="text-4xl font-bold mt-1">0</p>
         </div>
-        <div class="stat-card">
-          <h4>Presentase Selesai</h4>
-          <p id="countPercent">0%</p>
+        <div class="bg-gradient-to-br from-slate-800 to-slate-700 text-white p-5 rounded-xl shadow-lg transition hover:-translate-y-1">
+          <h4 class="font-medium text-slate-300">Presentase Selesai</h4>
+          <p id="countPercent" class="text-4xl font-bold mt-1">0%</p>
         </div>
       </div>
     </section>
 
-    <!-- Daftar Pengiriman -->
-    <section class="dashboard-section">
-      <div class="filters">
-        <div class="tabs" id="statusTabs">
-          <button class="tab active" data-status="ALL"><i class="bi bi-ui-checks-grid"></i> Semua</button>
-          <button class="tab" data-status="Belum Diantar"><i class="bi bi-hourglass-split"></i> Belum</button>
-          <button class="tab" data-status="Sudah Diantar"><i class="bi bi-check2-circle"></i> Sudah</button>
+    <section class="bg-white rounded-2xl shadow-lg p-5">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-5">
+        <div id="statusTabs" class="flex flex-wrap items-center gap-2">
+          <button class="tab active flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full bg-blue-100 text-blue-700 transition-colors" data-status="ALL"><i class="bi bi-ui-checks-grid"></i> Semua</button>
+          <button class="tab flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" data-status="Belum Diantar"><i class="bi bi-hourglass-split"></i> Belum</button>
+          <button class="tab flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" data-status="Sudah Diantar"><i class="bi bi-check2-circle"></i> Sudah</button>
         </div>
-        <div class="searchbar">
-          <input type="text" class="input" id="searchInput" placeholder="Cari nama / alamat / barang..." />
-          <button class="btn btn-soft" id="resetBtn"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        <div class="flex w-full md:w-auto items-center gap-2">
+          <input type="text" id="searchInput" placeholder="Cari nama, alamat, barang..." class="w-full md:w-64 px-4 py-2 text-sm border border-slate-300 rounded-full focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition" />
+          <button id="resetBtn" class="px-3 py-2 bg-slate-200 text-slate-700 rounded-full hover:bg-slate-300 transition-transform active:scale-95"><i class="bi bi-arrow-counterclockwise"></i></button>
         </div>
       </div>
 
-      <div class="table-wrap">
-        <table id="shipTable">
-          <thead>
-            <tr>
-              <th data-key="no">No. <span class="sort">↕</span></th>
-              <th data-key="nama">Nama <span class="sort">↕</span></th>
-              <th data-key="alamat">Alamat <span class="sort">↕</span></th>
-              <th data-key="barang">Barang <span class="sort">↕</span></th>
-              <th data-key="tanggal">Tanggal Kirim <span class="sort">↕</span></th>
-              <th data-key="status">Status <span class="sort">↕</span></th>
-              <th>Aksi</th>
+      <div class="overflow-x-auto">
+        <table id="shipTable" class="w-full text-sm">
+          <thead class="hidden md:table-header-group">
+            <tr class="bg-slate-200">
+              <th class="p-3 text-left font-semibold text-slate-600 rounded-l-lg cursor-pointer" data-key="no">No. <span class="sort">↕</span></th>
+              <th class="p-3 text-left font-semibold text-slate-600 cursor-pointer" data-key="nama">Nama <span class="sort">↕</span></th>
+              <th class="p-3 text-left font-semibold text-slate-600 cursor-pointer" data-key="alamat">Alamat <span class="sort">↕</span></th>
+              <th class="p-3 text-left font-semibold text-slate-600 cursor-pointer" data-key="barang">Barang <span class="sort">↕</span></th>
+              <th class="p-3 text-left font-semibold text-slate-600 cursor-pointer" data-key="tanggal">Tanggal Kirim <span class="sort">↕</span></th>
+              <th class="p-3 text-left font-semibold text-slate-600 cursor-pointer" data-key="status">Status <span class="sort">↕</span></th>
+              <th class="p-3 text-left font-semibold text-slate-600 rounded-r-lg">Aksi</th>
             </tr>
           </thead>
           <tbody id="tbody">
-            <!-- ROW 1 -->
-            <tr>
-              <td data-label="No.">1</td>
-              <td data-label="Nama">Andi Saputra</td>
-              <td data-label="Alamat">Jl. Anggrek No. 12, Bogor</td>
-              <td data-label="Barang">Kemeja Laundry</td>
-              <td data-label="Tanggal Kirim">03 Agustus 2025</td>
-              <td data-label="Status"><span class="badge badge-pending">Belum Diantar</span></td>
-              <td data-label="Aksi">
-                <button class="btn btn-detail"
-                  data-nama="Andi Saputra"
-                  data-hp="+628123456789"
-                  data-alamat="Jl. Anggrek No. 12, Bogor"
-                  data-barang="Kemeja Laundry"
-                  data-metode="Diantar"
-                  data-pembayaran="Tunai"
-                  data-tanggal="03 Agustus 2025">
-                  <i class="bi bi-eye"></i> Detail
-                </button>
-                <button class="btn btn-selesai"><i class="bi bi-check-circle"></i> Selesai</button>
+            <tr class="block mb-4 p-4 bg-white rounded-lg shadow-md md:table-row md:mb-0 md:shadow-none md:p-0 md:border-b md:border-slate-200 md:even:bg-slate-50">
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">No: </span>1</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Nama: </span>Andi Saputra</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Alamat: </span>Jl. Anggrek No. 12, Bogor</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Barang: </span>Kemeja Laundry</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Tgl Kirim: </span>03 Agustus 2025</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Status: </span><span class="badge badge-pending text-xs font-semibold inline-block py-1 px-3 rounded-full text-orange-600 bg-orange-200">Belum Diantar</span></td>
+              <td class="block py-2 md:table-cell md:p-3">
+                <div class="flex gap-2 mt-2 md:mt-0">
+                  <button class="btn-detail flex-1 text-sm px-3 py-2 rounded-md bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition active:scale-95" data-nama="Andi Saputra" data-hp="+628123456789" data-alamat="Jl. Anggrek No. 12, Bogor" data-barang="Kemeja Laundry" data-metode="Diantar" data-pembayaran="Tunai" data-tanggal="03 Agustus 2025">
+                    <i class="bi bi-eye mr-1"></i> Detail
+                  </button>
+                  <button class="btn-selesai flex-1 text-sm px-3 py-2 rounded-md bg-green-600 text-white font-semibold shadow hover:bg-green-700 transition active:scale-95">
+                    <i class="bi bi-check-circle mr-1"></i> Selesai
+                  </button>
+                </div>
               </td>
             </tr>
-            <!-- ROW 2 -->
-            <tr>
-              <td data-label="No.">2</td>
-              <td data-label="Nama">Siti Aminah</td>
-              <td data-label="Alamat">Perumahan Citra Asri Blok B2</td>
-              <td data-label="Barang">Seprai + Gorden</td>
-              <td data-label="Tanggal Kirim">02 Agustus 2025</td>
-              <td data-label="Status"><span class="badge badge-pending">Belum Diantar</span></td>
-              <td data-label="Aksi">
-                <button class="btn btn-detail"
-                  data-nama="Siti Aminah"
-                  data-hp="+628777888999"
-                  data-alamat="Perumahan Citra Asri Blok B2"
-                  data-barang="Seprai + Gorden"
-                  data-metode="Diantar"
-                  data-pembayaran="Transfer"
-                  data-tanggal="02 Agustus 2025">
-                  <i class="bi bi-eye"></i> Detail
-                </button>
-                <button class="btn btn-selesai"><i class="bi bi-check-circle"></i> Selesai</button>
+            <tr class="block mb-4 p-4 bg-white rounded-lg shadow-md md:table-row md:mb-0 md:shadow-none md:p-0 md:border-b md:border-slate-200 md:even:bg-slate-50">
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">No: </span>2</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Nama: </span>Siti Aminah</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Alamat: </span>Perumahan Citra Asri Blok B2</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Barang: </span>Seprai + Gorden</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Tgl Kirim: </span>02 Agustus 2025</td>
+              <td class="block py-1 md:table-cell md:p-3"><span class="font-semibold md:hidden">Status: </span><span class="badge badge-pending text-xs font-semibold inline-block py-1 px-3 rounded-full text-orange-600 bg-orange-200">Belum Diantar</span></td>
+              <td class="block py-2 md:table-cell md:p-3">
+                <div class="flex gap-2 mt-2 md:mt-0">
+                  <button class="btn-detail flex-1 text-sm px-3 py-2 rounded-md bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition active:scale-95" data-nama="Siti Aminah" data-hp="+628777888999" data-alamat="Perumahan Citra Asri Blok B2" data-barang="Seprai + Gorden" data-metode="Diantar" data-pembayaran="Transfer" data-tanggal="02 Agustus 2025">
+                    <i class="bi bi-eye mr-1"></i> Detail
+                  </button>
+                  <button class="btn-selesai flex-1 text-sm px-3 py-2 rounded-md bg-green-600 text-white font-semibold shadow hover:bg-green-700 transition active:scale-95">
+                    <i class="bi bi-check-circle mr-1"></i> Selesai
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -492,19 +154,31 @@
       </div>
     </section>
 
-    <footer>
-      &copy; 2025 Avachive Driver. All rights reserved.
+    <footer class="text-center py-6 text-sm text-slate-500">
+      © 2025 Avachive Driver. All rights reserved.
     </footer>
   </main>
+  
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 text-slate-300 p-2 flex justify-around shadow-lg">
+      <a href="/driver/dashboard" class="active flex flex-col items-center justify-center text-teal-400 p-2 rounded-lg w-full">
+        <i class="bi bi-box-seam text-xl"></i><span class="text-xs">Pengiriman</span>
+      </a>
+      <a href="/driver/riwayat" class="flex flex-col items-center justify-center hover:text-white p-2 rounded-lg w-full">
+        <i class="bi bi-clock-history text-xl"></i><span class="text-xs">Riwayat</span>
+      </a>
+      <a href="/driver/pengaturan" class="flex flex-col items-center justify-center hover:text-white p-2 rounded-lg w-full">
+        <i class="bi bi-gear text-xl"></i><span class="text-xs">Pengaturan</span>
+      </a>
+  </nav>
+
 </div>
 
-<!-- Modal -->
-<div class="modal" id="detailModal">
-  <div class="modal-content">
-    <span class="modal-close" id="modalCloseBtn">&times;</span>
-    <h4 style="font-size:1.15rem; font-weight:700; color:var(--brand)">Detail Pengiriman</h4>
+<div class="modal hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 justify-center items-center p-4" id="detailModal">
+  <div class="modal-content bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg relative animate-scale-up">
+    <button class="modal-close absolute top-3 right-4 text-2xl text-slate-500 hover:text-slate-800" id="modalCloseBtn">×</button>
+    <h4 class="text-xl font-bold text-blue-600 mb-4">Detail Pengiriman</h4>
 
-    <div class="detail-grid">
+    <div class="space-y-3 text-sm">
       <p><strong>Nama:</strong> <span id="modalNama"></span></p>
       <p><strong>No HP:</strong> <span id="modalHp"></span></p>
       <p><strong>Alamat:</strong> <span id="modalAlamat"></span></p>
@@ -514,25 +188,41 @@
       <p><strong>Tanggal Kirim:</strong> <span id="modalTanggal"></span></p>
     </div>
 
-    <div class="button-group">
-      <a href="#" id="whatsappLink" class="btn-green" target="_blank">
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="#" id="whatsappLink" class="flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-green-500 text-white font-semibold shadow hover:bg-green-600 transition active:scale-95" target="_blank">
         <i class="bi bi-whatsapp"></i> WhatsApp
       </a>
-      <a href="#" id="mapLink" class="btn-gray" target="_blank">
+      <a href="#" id="mapLink" class="flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-slate-700 text-white font-semibold shadow hover:bg-slate-800 transition active:scale-95" target="_blank">
         <i class="bi bi-geo-alt-fill"></i> Lihat di Maps
       </a>
     </div>
   </div>
 </div>
 
+<button class="fab hidden fixed right-6 bottom-20 md:bottom-6 z-20 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg grid place-items-center text-2xl hover:bg-blue-700 transition active:scale-95" id="scrollTopBtn" title="Kembali ke atas">
+  <i class="bi bi-arrow-up"></i>
+</button>
 
-<!-- FAB -->
-<button class="fab" id="scrollTopBtn" title="Kembali ke atas"><i class="bi bi-arrow-up"></i></button>
+<style>
+  /* Animasi untuk modal */
+  @keyframes scale-up {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .animate-scale-up {
+    animation: scale-up 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+</style>
 
 <script>
+  // ==========================================================
+  // JAVASCRIPT LOGIC (DIPERTAHANKAN DAN DISESUAIKAN)
+  // ==========================================================
+
   // ====== UTIL ======
   const el = sel => document.querySelector(sel);
   const els = sel => document.querySelectorAll(sel);
+  const mainContent = el('#main-content');
 
   // Today badge
   (function setToday(){
@@ -545,7 +235,7 @@
   function recalcCounters(){
     const rows = [...el('#tbody').querySelectorAll('tr')];
     const total = rows.length;
-    const belum = rows.filter(r => r.querySelector('.badge')?.textContent.includes('Belum')).length;
+    const belum = rows.filter(r => r.querySelector('.badge-pending')).length;
     const sudah = total - belum;
     el('#countTotal').textContent = total;
     el('#countBelum').textContent = belum;
@@ -566,16 +256,20 @@
     el('#modalPembayaran').textContent = data.pembayaran;
     el('#modalTanggal').textContent = data.tanggal;
 
-    const waMessage = `Halo ${data.nama}, pesanan Anda (${data.barang}) akan segera diantar. Mohon siapkan pembayaran (${data.pembayaran}). Terima kasih 🙏`;
+    const waMessage = `Halo ${data.nama}, pesanan laundry Anda (${data.barang}) akan segera diantar ke alamat: ${data.alamat}. Mohon siapkan pembayaran (${data.pembayaran}). Terima kasih 🙏 - Avachive Driver`;
     el('#whatsappLink').href = `https://wa.me/${data.hp.replace('+','')}?text=${encodeURIComponent(waMessage)}`;
-    el('#mapLink').href = `https://www.google.com/maps?q=${encodeURIComponent(data.alamat)}`;
+    el('#mapLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.alamat)}`;
 
-    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
   }
-  function closeModal(){ modal.style.display = 'none'; }
+  function closeModal(){
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
   modalClose.addEventListener('click', closeModal);
   window.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
-  // Attach detail buttons
+
   function bindDetailButtons(scope=document){
     scope.querySelectorAll('.btn-detail').forEach(button=>{
       button.addEventListener('click', ()=>{
@@ -595,27 +289,27 @@
   // ====== ACTION SELESAI ======
   function bindSelesaiButtons(scope=document){
     scope.querySelectorAll('.btn-selesai').forEach(btn=>{
-      // Hindari bind dobel
       if(btn.dataset.bound === '1') return;
       btn.dataset.bound = '1';
 
       btn.addEventListener('click', ()=>{
         Swal.fire({
-          title: 'Yakin alamat sudah sesuai?',
+          title: 'Selesaikan pengiriman ini?',
+          text: "Pastikan Anda sudah berada di lokasi yang benar.",
           icon: 'question',
           showCancelButton: true,
           confirmButtonText: 'Ya, Selesai',
           cancelButtonText: 'Batal',
-          confirmButtonColor: '#27ae60',
-          cancelButtonColor: '#e74c3c'
+          confirmButtonColor: '#16a34a', // green-600
+          cancelButtonColor: '#dc2626'  // red-600
         }).then(res=>{
           if(res.isConfirmed){
             const row = btn.closest('tr');
-            const statusCell = row.querySelector('td:nth-child(6)');
-            statusCell.innerHTML = '<span class="badge badge-done">Sudah Diantar</span>';
+            const statusCell = row.querySelector('td:nth-of-type(6)');
+            statusCell.innerHTML = '<span class="font-semibold md:hidden">Status: </span><span class="badge badge-done text-xs font-semibold inline-block py-1 px-3 rounded-full text-green-700 bg-green-200">Sudah Diantar</span>';
             recalcCounters();
-            Swal.fire('Selesai!', 'Pengiriman telah ditandai selesai.', 'success');
-            applyFilters(); // jaga konsistensi tampilan saat filter aktif
+            Swal.fire('Berhasil!', 'Pengiriman telah ditandai selesai.', 'success');
+            applyFilters();
           }
         });
       });
@@ -638,68 +332,74 @@
     const haystack = normalize(`${nama} ${alamat} ${barang}`);
     return haystack.includes(normalize(q));
   }
+  
   function rowMatchesStatus(row){
     if(activeStatus === 'ALL') return true;
-    const statusTxt = row.querySelector('.badge')?.textContent.trim() || '';
+    const statusTxt = row.querySelector('td:nth-of-type(6)')?.textContent.trim() || '';
     return statusTxt === activeStatus;
   }
+
   function applyFilters(){
     const q = searchInput.value.trim();
     const rows = [...el('#tbody').querySelectorAll('tr')];
-    rows.forEach((r,i)=>{
-      const ok = rowMatchesSearch(r, q) && rowMatchesStatus(r);
-      r.style.display = ok ? '' : 'none';
-      // Renumber visible rows
-      const noCell = r.querySelector('td:first-child');
-      if(noCell) noCell.textContent = i+1;
-      // For mobile cards: add data-label to td
-      const labels = ['No.','Nama','Alamat','Barang','Tanggal Kirim','Status','Aksi'];
-      r.querySelectorAll('td').forEach((td,idx)=> td.setAttribute('data-label', labels[idx] || ''));
+    let visibleCount = 0;
+    rows.forEach((r)=>{
+      const isVisible = rowMatchesSearch(r, q) && rowMatchesStatus(r);
+      r.style.display = isVisible ? '' : 'none';
+      
+      if(isVisible){
+        visibleCount++;
+        const noCell = r.querySelector('td:first-child');
+        if(noCell) {
+          // Memastikan label mobile tetap ada setelah filter/sort
+          noCell.innerHTML = `<span class="font-semibold md:hidden">No: </span>${visibleCount}`;
+        }
+      }
     });
   }
   searchInput.addEventListener('input', applyFilters);
+
   resetBtn.addEventListener('click', ()=>{
     searchInput.value = '';
     activeStatus = 'ALL';
-    el('#statusTabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    el('#statusTabs').querySelector('[data-status="ALL"]').classList.add('active');
+    el('#statusTabs').querySelectorAll('.tab').forEach(t=>{
+        t.classList.remove('active', 'bg-blue-100', 'text-blue-700');
+        t.classList.add('bg-slate-100', 'hover:bg-slate-200', 'text-slate-600');
+    });
+    const allTab = el('#statusTabs').querySelector('[data-status="ALL"]');
+    allTab.classList.add('active', 'bg-blue-100', 'text-blue-700');
+    allTab.classList.remove('bg-slate-100', 'hover:bg-slate-200', 'text-slate-600');
     applyFilters();
   });
 
-  // Tabs
   el('#statusTabs').querySelectorAll('.tab').forEach(tab=>{
     tab.addEventListener('click', ()=>{
-      el('#statusTabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-      tab.classList.add('active');
+      el('#statusTabs').querySelectorAll('.tab').forEach(t=>{
+          t.classList.remove('active', 'bg-blue-100', 'text-blue-700');
+          t.classList.add('bg-slate-100', 'hover:bg-slate-200', 'text-slate-600');
+      });
+      tab.classList.add('active', 'bg-blue-100', 'text-blue-700');
+      tab.classList.remove('bg-slate-100', 'hover:bg-slate-200', 'text-slate-600');
       activeStatus = tab.dataset.status;
       applyFilters();
     });
   });
 
   // ====== SORT TABLE ======
-  let sortState = { key:null, dir:1 }; // 1 asc, -1 desc
+  let sortState = { key:null, dir:1 };
   const keyIndex = { no:0, nama:1, alamat:2, barang:3, tanggal:4, status:5 };
 
   function parseDateId(text){
-    // format contoh: "03 Agustus 2025"
-    const map = {
-      januari:0,februari:1,maret:2,april:3,mei:4,juni:5,
-      juli:6,agustus:7,september:8,oktober:9,november:10,desember:11
-    };
+    const map = { januari:0,februari:1,maret:2,april:3,mei:4,juni:5, juli:6,agustus:7,september:8,oktober:9,november:10,desember:11 };
     const parts = text.trim().toLowerCase().split(' ');
-    if(parts.length >= 3){
-      const d = parseInt(parts[0],10)||1;
-      const m = map[parts[1]] ?? 0;
-      const y = parseInt(parts[2],10)||1970;
-      return new Date(y,m,d).getTime();
-    }
-    return 0;
+    if(parts.length < 3) return 0;
+    const d = parseInt(parts[0],10)||1;
+    const m = map[parts[1]] ?? 0;
+    const y = parseInt(parts[2],10)||1970;
+    return new Date(y,m,d).getTime();
   }
 
   function sortBy(key){
-    const ths = document.querySelectorAll('thead th');
-    ths.forEach(th => th.style.textDecoration='none');
-
     if(sortState.key === key) sortState.dir *= -1;
     else { sortState.key = key; sortState.dir = 1; }
 
@@ -711,27 +411,15 @@
       const B = b.cells[idx]?.innerText.trim() || '';
       if(key === 'tanggal'){
         return (parseDateId(A) - parseDateId(B)) * sortState.dir;
-      }else if(key === 'status'){
-        return A.localeCompare(B) * sortState.dir;
-      }else if(key === 'no'){
+      } else if(key === 'no'){
         return (parseInt(A,10)-parseInt(B,10)) * sortState.dir;
-      }else{
-        return A.localeCompare(B, 'id') * sortState.dir;
+      } else {
+        return A.localeCompare(B, 'id', { sensitivity: 'base' }) * sortState.dir;
       }
     });
 
-    // Re-append rows
-    rows.forEach((r,i)=>{
-      r.cells[0].innerText = i+1;
-      el('#tbody').appendChild(r);
-    });
-
-    // mark sorted column
-    ths.forEach(th=>{
-      if(th.dataset.key === key){
-        th.style.textDecoration = 'underline';
-      }
-    });
+    rows.forEach(r => el('#tbody').appendChild(r));
+    applyFilters();
   }
 
   document.querySelectorAll('thead th[data-key]').forEach(th=>{
@@ -740,11 +428,10 @@
 
   // ====== SCROLL TOP FAB ======
   const scrollBtn = el('#scrollTopBtn');
-  scrollBtn.addEventListener('click', ()=> window.scrollTo({ top:0, behavior:'smooth' }));
-  window.addEventListener('scroll', ()=>{
-    scrollBtn.style.display = (window.scrollY > 300) ? 'grid' : 'none';
+  scrollBtn.addEventListener('click', ()=> mainContent.scrollTo({ top:0, behavior:'smooth' }));
+  mainContent.addEventListener('scroll', ()=>{
+    scrollBtn.style.display = (mainContent.scrollTop > 300) ? 'grid' : 'none';
   });
-  scrollBtn.style.display = 'none';
 
   // ====== INIT ======
   function init(){
@@ -754,6 +441,7 @@
     applyFilters();
   }
   init();
+
 </script>
 
 </body>
